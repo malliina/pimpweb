@@ -1,0 +1,22 @@
+@()
+
+@docuBase("win", Home.windowsConfFile) {
+    <div class="row">
+        <div class="span6">
+            <div class="page-header">
+                <h1>Windows</h1>
+            </div>
+            <h2>System Requirements</h2>
+            <ul>
+                <li><a href="http://java.com/en/download/index.jsp">Java 7</a></li>
+                <li>A modern browser, such as <a href="http://windows.microsoft.com/en-us/internet-explorer/ie-10-worldwide-languages">Internet Explorer 10</a>
+                    or a recent version of <a href="http://getfirefox.com">Firefox</a> or <a href="http://www.google.com/chrome">Chrome</a></li>
+                <li><a href="http://www.microsoft.com/net/download">.NET Framework</a> 3.5 or higher </li>
+            </ul>
+            <h2> Installation </h2>
+            <p> Download and run <a href="@Home.msiUrl">@Home.msiFileName</a>.</p>
+        </div>
+    </div>
+} {
+    <p> Uninstall MusicPimp using the Add/Remove Programs section in the Control Panel.</p>
+}

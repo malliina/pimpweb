@@ -1,0 +1,20 @@
+@()
+
+@docuBase("rpm", Home.linuxConfFile)(rpmInstall)(rpmUninstall)
+
+@rpmInstall = {
+    <div class="row">
+        <div class="span5">
+            <div class="page-header">
+                <h1> RPM </h1>
+            </div>
+            @linuxReqs()
+            <h2> Installation </h2>
+            <p> Download <a href="@Home.rpmUrl">@Home.rpmFileName</a> and execute:
+                <code>rpm -ivh @Home.rpmFileName</code></p>
+        </div>
+    </div>
+}
+@rpmUninstall = {
+    <p> <code> rpm -e musicpimp </code> </p>
+}

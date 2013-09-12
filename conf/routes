@@ -1,0 +1,18 @@
+GET        /                     controllers.Home.index
+GET        /ping                 controllers.Home.ping
+GET        /downloads            controllers.Home.downloads
+GET        /previous             controllers.Home.previous
+GET        /docs                 controllers.Home.win
+GET        /docs/win             controllers.Home.win
+GET        /docs/deb             controllers.Home.deb
+GET        /docs/rpm             controllers.Home.rpm
+GET        /docs/wp              controllers.Home.wp
+GET        /docs/api             controllers.Home.api
+GET        /forum                controllers.Home.forum
+GET        /about                controllers.Home.about
+GET        /success              controllers.Home.success
+GET        /cancel               controllers.Home.cancel
+GET        /complete             controllers.Home.complete
+GET        /incomplete           controllers.Home.incomplete
+GET        /legal/privacy        controllers.Home.privacyPolicy
+GET        /assets/*file         controllers.Assets.at(path = "/public", file)
