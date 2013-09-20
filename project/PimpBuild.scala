@@ -37,7 +37,6 @@ object PimpBuild extends Build {
 
 object Dependencies {
   val utilVersion = "1.0.0"
-  val oldUtilVersion = "0.7.1"
   val utilGroup = "com.github.malliina"
   val utilDep = utilGroup %% "util" % utilVersion
   val utilAzure = utilGroup %% "util-azure" % utilVersion
