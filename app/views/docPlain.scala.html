@@ -2,14 +2,14 @@
 
 @indexMain("documentation") {
     <div class="row">
-        <div class="span6">
+        <div class="col-md-6">
             <div class="page-header">
                 <h1>Documentation</h1>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="span6">
+        <div class="col-md-6">
             <div class="btn-group" src-toggle="buttons-radio">
                 <button type="button" class="btn btn-primary @(" active".when(os == "win"))" onclick="location.href='@routes.Home.win()'">Windows</button>
                 <button type="button" class="btn btn-primary @(" active".when(os == "deb"))" onclick="location.href='@routes.Home.deb()'">DEB</button>
@@ -19,7 +19,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="span6">
+        <div class="col-md-6">
             @content
         </div>
     </div>

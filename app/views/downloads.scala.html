@@ -2,43 +2,43 @@
 
 @indexMain("downloads") {
     <div class="row">
-        <div class="span10">
+        <div class="col-md-10">
             <div class="page-header">
                 <h1>Downloads</h1>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="span10">
+        <div class="col-md-10">
             <p class="lead">Download a 30-day trial. Donate for a perpetual software license. You choose the donation amount. @paypalButton()</p>
         </div>
     </div>
     <div class="row">
-        <div class="span5">
+        <div class="col-md-5">
             <h2><i class="icon-windows"></i> Windows</h2>
             <p class="lead">Download for Windows</p>
-            <p class="lead"><a class="btn btn-large btn-primary" href="@Home.msiUrl"><i class="icon-download"></i> @Home.msiFileName</a></p>
+            <p class="lead"><a class="btn btn-lg btn-primary" href="@Home.msiUrl"><i class="glyphicon glyphicon-download"></i> @Home.msiFileName</a></p>
         </div>
-        <div class="span5">
-            <h2><i class="icon-linux"></i> Linux </h2>
-            <p>Download DEB: <a class="btn" href="@Home.debUrl"><i class="icon-download"></i> @Home.debFileName</a><p/>
+        <div class="col-md-5">
+            <h2><i class="glyphicon glyphicon-linux"></i> Linux </h2>
+            <p>Download DEB: <a class="btn btn-default" href="@Home.debUrl"><i class="glyphicon glyphicon-download"></i> @Home.debFileName</a><p/>
             <p>DEB packages are tested on Ubuntu.</p>
-            <p>Download RPM: <a class="btn" href="@Home.rpmUrl"><i class="icon-download"></i> @Home.rpmFileName</a><p/>
+            <p>Download RPM: <a class="btn btn-default" href="@Home.rpmUrl"><i class="glyphicon glyphicon-download"></i> @Home.rpmFileName</a><p/>
             <p>RPM packages are tested on Fedora.</p>
         </div>
     </div>
     <div class="row">
-        <div class="span10">
-            <h2> What next? </h2>
-            <p> Install the software and navigate to <a href="http://localhost:8456/">http://localhost:8456/</a>. For more information, check the <a href="@routes.Home.win()">documentation</a>.</p>
+        <div class="col-md-10">
+            <h2>What next?</h2>
+            <p>Install the software and navigate to <a href="http://localhost:8456/">http://localhost:8456/</a>. For more information, check the <a href="@routes.Home.win()">documentation</a>.</p>
         </div>
     </div>
     <div class="row">
-        <div class="span6">
+        <div class="col-md-6">
             <h3>Previous versions</h3>
             <ul>
                 @previous.map { prev =>
-                  <li><a href="@(Home.downloadBaseUrl+prev)">@prev</a>  </li>
+                  <li><a href="@(Home.downloadBaseUrl+prev)">@prev</a></li>
                 }
             </ul>
         </div>

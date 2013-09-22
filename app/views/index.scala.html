@@ -2,17 +2,17 @@
 
 @indexMain("home") {
     <div class="row">
-        <div class="span5 offset2">
+        <div class="col-md-5 col-md-offset-2">
             <h2>MusicPimp</h2>
             <p class="lead">Control remote music libraries with your phone. Play the music on your phone, home stereo system or in your car.</p>
         </div>
     </div>
     <div class="row">
-        <div class="span4 offset1">
-            <img src="@routes.Assets.at("img/download-alt-lightgreen-128.png")" class="pull-right"/>
+        <div class="col-md-4 col-md-offset-1">
+            <img src="@routes.Assets.at("img/download-alt-lightgreen-128.png")" class="pull-right visible-lg visible-md"/>
         </div>
-        <div class="span4">
-            <h2>Get it <a class="btn btn-primary" href="@Home.msiUrl"><i class="icon-download"></i> Download for Windows</a></h2>
+        <div class="col-md-4">
+            <h2>Get it <a class="btn btn-primary" href="@Home.msiUrl"><i class="glyphicon glyphicon-download"></i> Download for Windows</a></h2>
             <p class="lead"><a href="@routes.Home.downloads()">Download</a>
                 the server for <a href="@Home.msiUrl">Windows</a>
                 or Linux. Get the <strong>MusicPimp</strong> apps
@@ -20,26 +20,26 @@
         </div>
     </div>
     <div class="row">
-        <div class="span4 offset1">
+        <div class="col-md-4 col-md-offset-1">
            <h2>New! MusicBeamer</h2>
            <p class="lead">Stream tracks from your music library to any PC using <strong>MusicBeamer</strong> at <a href="http://beam.musicpimp.org">http://beam.musicpimp.org</a>.</p>
         </div>
-        <div class="span4">
-            <img src="@routes.Assets.at("img/upload-alt-blue-128.png")" class="pull-left"/>
+        <div class="col-md-4">
+            <img src="@routes.Assets.at("img/upload-alt-blue-128.png")" class="pull-left visible-lg visible-md"/>
         </div>
     </div>
     <div class="row">
-        <div class="span4">
+        <div class="col-md-4">
             <h2>PC to Phone</h2>
             <p><img src="@routes.Assets.at("img/pc-phone.png")"/></p>
             <p class="lead">Make the music library on a PC available for playback on your phone.</p>
         </div>
-        <div class="span4">
+        <div class="col-md-4">
             <h2>Phone to PC</h2>
             <p><img src="@routes.Assets.at("img/phone-pc.png")"/></p>
             <p class="lead">Play the music stored on your phone on speakers connected to a PC.</p>
         </div>
-        <div class="span4">
+        <div class="col-md-4">
             <h2>PC to Phone to PC</h2>
             <p><img src="@routes.Assets.at("img/pc-phone-pc.png")"/></p>
             <p class="lead">Play music from your PC on another PC. Control playback with your phone.</p>
@@ -47,17 +47,17 @@
     </div>
 
     <div class="row">
-        <div class="span4 offset4">
+        <div class="col-md-4 col-md-offset-4">
             <h2>Getting Started</h2>
             <p class="lead">Get started in minutes. Check the <a href="@routes.Home.win()">documentation</a> for instructions.</p>
         </div>
     </div>
     <div class="row">
-        <div class="span4">
+        <div class="col-md-4">
             <h2>Develop</h2>
             <p>Build cool apps using the JSON <a href="@routes.Home.api()">API</a>.</p>
         </div>
-        <div class="span4 offset4">
+        <div class="col-md-4 col-md-offset-4">
             <h2>Donate</h2>
             <p>Support a good cause. Donate any amount you like to the development team to obtain a perpetual software license.</p>
             @paypalButton()

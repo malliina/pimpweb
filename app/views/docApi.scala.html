@@ -2,20 +2,20 @@
 
 @indexMain("api") {
     <div class="row">
-        <div class="span12">
+        <div class="col-md-12">
             <div class="page-header">
                 <h1>Develop</h1>
             </div>
             <div class="row">
-                <div class="span9">
+                <div class="col-md-9">
                     <p class="lead">Develop apps for MusicPimp using the JSON API.</p>
                 </div>
             </div>
             <div class="row">
-                <div class="span6">
+                <div class="col-md-6">
                     <h2>Requests</h2>
                     <p> Clients may interact with the MusicPimp server using HTTP requests and/or
-                        <a href="http://en.wikipedia.org/wiki/WebSockets">WebSocket <i class="icon-external-link"></i></a> connections.</p>
+                        <a href="http://en.wikipedia.org/wiki/WebSockets">WebSocket <i class="glyphicon glyphicon-external-link"></i></a> connections.</p>
                     <p> Send JSON-formatted messages either in the body of HTTP POST requests or as WebSocket messages.
                         The use of WebSockets is optional.</p>
                     <p> To upload files, HTTP POST them as <strong>multipart/form-data</strong>.</p>
@@ -26,12 +26,12 @@
                         the value of the Authorization header should be <code>Basic aV9sb3ZlOm1pY2hhZWw=</code>,
                         where <code>aV9sb3ZlOm1pY2hhZWw=</code> is <code>i_love:michael</code> base64-encoded.</p>
                 </div>
-                <div class="span6">
+                <div class="col-md-6">
                     <h2>Responses</h2>
                     <p>The MusicPimp server responds to requests in either <strong>JSON</strong> (application/json)
                         or <strong>HTML</strong> (text/html).
                         Clients indicate the desired response format in the HTTP <strong>Accept</strong> header of the requests.</p>
-                    <p><span class="label label-info"> Note </span> To force a JSON response regardless of the Accept header,
+                    <p><span class="label label-info">Note</span> To force a JSON response regardless of the Accept header,
                         append query parameter <code>f=json</code> to the request URL.<p/>
                     <h3>Compression</h3>
                     <p>The MusicPimp server sends gzip-compressed responses provided that the
@@ -45,7 +45,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="span6">
+                <div class="col-md-6">
                     <h2>Client-side methods</h2>
                     <p>HTTP requests are made using URLs like <code>http://my_server_ip:8456@Home.serverPostResource</code>.</p>
                     <h3 id="library"> Library </h3>
@@ -94,7 +94,7 @@
 }</pre>
                     <h4>Get subfolder<small> GET /folders/my_folder_id_here </small> </h4>
                     <p> Returns the contents of the specified music library folder.</p>
-                    <p> <span class="label label-info"> Note </span> First request the contents of the root folder
+                    <p> <span class="label label-info">Note</span> First request the contents of the root folder
                         in order to get a list of subfolders for further browsing.</p>
                     <h4>Get track<small> GET /tracks/my_track_id</small> </h4>
                     <p>Retrieves the file with the specified ID. Supply this to a media player that accepts a URI as media source, for example.</p>
@@ -116,12 +116,12 @@
                     <h4>Play track <small>HTTP POST or WebSocket</small></h4>
                     <p>Start playback of the track with the given ID using the following HTTP request body or WebSocket message:
                         <code>{"cmd": "play", "track": "my_track_id"}</code>.</p>
-                    <p> <span class="label label-info"> Note </span> Browse the music <a href="#library">library</a>
+                    <p> <span class="label label-info">Note</span> Browse the music <a href="#library">library</a>
                             to obtain IDs of available tracks. If the track you wish to play is not
                             located on the MusicPimp server, see the next item instead.</p>
                     <h4>Play uploaded file <small>POST to @Home.serverPostResource/uploads</small></h4>
                     <p> Starts playback of the file uploaded as multipart/form-data.</p>
-                    <p><span class="label label-important">Note</span> Uploaded playback is at the moment
+                    <p><span class="label label-warning">Note</span> Uploaded playback is at the moment
                         only supported when the playback device is the MusicPimp server.</p>
                     <h4>Stop playback <small>HTTP POST or WebSocket</small></h4>
                     <p>Stop playback: <code>{"cmd": "stop"}</code>.</p>
@@ -182,9 +182,7 @@
                     <p>Start playback of the track at the specified playlist index: <code>{"cmd": "skip", "value": 3}</code>.</p>
                     <h3> Miscellaneous </h3>
                     <h4>Ping <small>GET /ping</small></h4>
-                    <p>Pings the server.</p>
-                    <p>Example response:</p>
-                    <pre>{"status":"ok"}</pre>
+                    <p>Pings the server. Returns a 200 OK HTTP response on success.</p>
                     <p><span class="label label-info">Note</span> Ping is the only API call that does not require authentication.</p>
                     <h4>Authenticated ping <small>GET /pingauth</small> </h4>
                     <p>Pings the server and validates the supplied credentials.</p>
@@ -193,7 +191,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="span6">
+                <div class="col-md-6">
                     <h2>Server-side events</h2>
                     <p>You can subscribe to server-side playback updates.
                         This is useful when you want to display a player in your app even though playback happens on another device.
@@ -258,7 +256,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="span8">
+                <div class="col-md-8">
                     <h2>Code samples</h2>
                     <p>As an example, let's use the API to ping a locally installed MusicPimp server and validate our credentials.
                     We make a request and expect to get an HTTP response with status code 200 (<a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html">OK</a>).</p>
