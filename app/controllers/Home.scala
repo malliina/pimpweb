@@ -26,7 +26,7 @@ object Home extends Controller with Log {
   val winStoreAppUri = "http://apps.microsoft.com/windows/en-us/app/musicpimp/73b9a42c-e38a-4edf-ac7e-00672230f7b6"
 
   val serverWebSocketResource = "/ws/playback"
-  val serverPostResource = "/playback"
+  val serverPlaybackResource = "/playback"
   val webPlayWebSocketResource = "/ws/webplay"
   val webPlayPostResource = "/webplay"
 

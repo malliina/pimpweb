@@ -47,7 +47,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <h2>Client-side methods</h2>
-                    <p>HTTP requests are made using URLs like <code>http://my_server_ip:8456@Home.serverPostResource</code>.</p>
+                    <p>HTTP requests are made using URLs like <code>http://my_server_ip:8456@Home.serverPlaybackResource</code>.</p>
                     <h3 id="library"> Library </h3>
                     <p>Library folders contain audio tracks and subfolders.</p>
                     <h4>Get root folder <small>GET /folders</small> </h4>
@@ -74,6 +74,7 @@
             "title":"Preludio Obsesivo",
             "artist":"Rata Blanca",
             "album":"Rata Blanca",
+            "duration_seconds":222,
             "size":3108553
         },
         {
@@ -81,6 +82,7 @@
             "title":"Turn Me On",
             "artist":"Kevin Lyttle",
             "album":"Summer In The City - Latin Party",
+            "duration_seconds":175,
             "size":4225234
         },
         {
@@ -88,6 +90,7 @@
             "title":"Take On Me [October 1985]",
             "artist":"A-Ha",
             "album":"The Definitive Singles Collection 1984-2004",
+            "duration_seconds":227,
             "size":5470208
         }
     ]
@@ -109,7 +112,7 @@
                         <li>clients connected to the MusicPimp server, such as a web browser</li>
                     </ul>
                     <p>To use the MusicPimp server as the playback device, open a WebSocket connection to
-                        <code>@Home.serverWebSocketResource</code> or HTTP POST to <code>@Home.serverPostResource</code>.
+                        <code>@Home.serverWebSocketResource</code> or HTTP POST to <code>@Home.serverPlaybackResource</code>.
                     To control the playback devices of clients connected to the MusicPimp server, open a WebSocket connection to
                         <code>@Home.webPlayWebSocketResource</code> or HTTP POST to <code>@Home.webPlayPostResource</code>.
                         The available commands are described below.</p>
@@ -119,7 +122,7 @@
                     <p> <span class="label label-info">Note</span> Browse the music <a href="#library">library</a>
                             to obtain IDs of available tracks. If the track you wish to play is not
                             located on the MusicPimp server, see the next item instead.</p>
-                    <h4>Play uploaded file <small>POST to @Home.serverPostResource/uploads</small></h4>
+                    <h4>Play uploaded file <small>POST to @Home.serverPlaybackResource/uploads</small></h4>
                     <p> Starts playback of the file uploaded as multipart/form-data.</p>
                     <p><span class="label label-warning">Note</span> Uploaded playback is at the moment
                         only supported when the playback device is the MusicPimp server.</p>
@@ -131,11 +134,12 @@
                     <p>Seek playback to the specified position, in seconds, of the current track: <code>{"cmd": "seek", "value": 42}</code>.</p>
                     <h4>Adjust volume <small>HTTP POST or WebSocket</small></h4>
                     <p>Adjust the volume, which is an integer in the range [0, 100]: <code>{"cmd": "volume", "value": 42}</code>.</p>
-                    <h4>Status <small>GET @Home.serverPostResource</small></h4>
+                    <h4>Status <small>GET @Home.serverPlaybackResource</small></h4>
                     <p>Returns a server player status message.</p>
                     <p>Example response:</p>
                     <pre>{
-    "status":"ok",
+    "event":"status",
+    "id":"Paola+-+Interstellar+Love.mp3",
     "title":"Interstellar Love",
     "album":"Stockcity Girl",
     "artist":"Paola",
@@ -148,14 +152,20 @@
     "gain":40,
     "playlist":[
         {
+            "id":"Paola+-+Interstellar+Love.mp3",
             "title":"Interstellar Love",
             "album":"Stockcity Girl",
-            "artist":"Paola"
+            "artist":"Paola",
+            "duration_seconds":201,
+            "size":4840094
         },
         {
+            "id":"cheap+trick+-+hello+there.mp3",
             "title":"Hello There",
             "album":"The Essential Cheap Trick",
-            "artist":"Cheap Trick"
+            "artist":"Cheap Trick",
+            "duration_seconds":100,
+            "size":2573904
         }
     ],
     "playlist_index":0
