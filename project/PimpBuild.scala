@@ -11,8 +11,8 @@ object PimpBuild extends Build {
   lazy val pimpWeb = Project("pimpweb", file("."), settings = pimpSettings)
 
   lazy val commonSettings = Defaults.defaultSettings ++ Seq(
-    version := "1.2.0",
-    scalaVersion := "2.10.2",
+    version := "1.3.0",
+    scalaVersion := "2.10.3",
     libraryDependencies ++= Seq(utilDep, utilAzure, scalaTest, newRelic),
     retrieveManaged := false,
     fork in Test := true,
