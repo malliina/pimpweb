@@ -32,7 +32,7 @@ object Home extends Controller with Log {
 
   private def toUrl(fileName: String) = downloadBaseUrl + fileName
 
-  def ping = Action(Ok(Json.obj("status" -> "ok")).withHeaders(CACHE_CONTROL -> "no-cache"))
+  def ping = Action(Ok.withHeaders(CACHE_CONTROL -> "no-cache"))
 
   def index = GoTo(html.index())
 
