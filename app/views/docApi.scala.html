@@ -25,8 +25,9 @@
                         clients should be explicit about which version of the format they accept. The following formats are
                         currently valid:</p>
                     <ul>
-                        <li>vnd.musicpimp.v18+json</li>
-                        <li>vnd.musicpimp+json</li>
+                        <li>application/vnd.musicpimp.v18+json</li>
+                        <li>application/vnd.musicpimp.v17+json</li>
+                        <li>application/vnd.musicpimp+json</li>
                         <li>application/json</li>
                     </ul>
                     <p>Remember this also when opening WebSocket connections; the value in the Accept header of the
@@ -34,7 +35,7 @@
                     <p>Whenever backwards-incompatible changes are made to the JSON response format in future MusicPimp server
                         updates, they will be made under a new version. However, new content (name/value pairs) may be added to an existing
                         format without notice. The examples in this documentation are based on the latest format,
-                        vnd.musicpimp.v18+json.</p>
+                        application/vnd.musicpimp.v18+json.</p>
                     <p><span class="label label-info">Note</span> To force the server to respond with the latest JSON format
                         regardless of the Accept header, append query parameter <code>f=json</code> to the request URL.<p/>
                     <h3>Authentication</h3>
