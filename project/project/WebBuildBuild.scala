@@ -8,7 +8,7 @@ import sbt.Keys._
 object WebBuildBuild extends Build {
   // "build.sbt" goes here
   override lazy val settings = super.settings ++ Seq(
-    scalaVersion := "2.10.2",
+    scalaVersion := "2.10.3",
     resolvers ++= Seq(
       "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/",
       "Typesafe ivy releases" at "http://repo.typesafe.com/typesafe/ivy-releases/",
@@ -17,7 +17,7 @@ object WebBuildBuild extends Build {
   ) ++ sbtPlugins
 
   def sbtPlugins = Seq(
-    "com.typesafe.play" % "sbt-plugin" % "2.2.0",
+    "com.typesafe.play" % "sbt-plugin" % "2.2.1",
     "com.github.malliina" %% "sbt-paas-deployer" % "1.0.0",
     "com.github.mpeltonen" % "sbt-idea" % "1.5.1",
     "com.eed3si9n" % "sbt-buildinfo" % "0.2.5",
