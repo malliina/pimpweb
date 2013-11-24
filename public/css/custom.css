@@ -1,6 +1,12 @@
 body {
     background: url("/assets/img/guitar.png") no-repeat center;
 }
+
 .navbar {
-      margin-bottom: 0;
+    margin-bottom: 0;
+}
+
+.badge {
+    margin-right: 20px;
+    background: none;
 }
