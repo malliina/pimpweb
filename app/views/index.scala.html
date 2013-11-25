@@ -15,26 +15,16 @@
                     the free server for <a href="@Home.msiUrl">Windows</a>
                     or <a href="@Home.debUrl">Linux</a>. Get the <strong>MusicPimp</strong> apps
                     for <a href="@Home.androidAppUri">Android</a>, <a href="@Home.winPhoneAppUri">Windows Phone</a> and <a href="@Home.winStoreAppUri">Windows 8</a>.</p>
+                @*  and <a href="@Home.amazonAppUri">Kindle Fire</a> *@
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
-                <a href="https://play.google.com/store/apps/details?id=org.musicpimp" class="visible-lg visible-md pull-left badge">
-                    <img alt="Android app on Google Play"
-                    src="https://developer.android.com/images/brand/en_app_rgb_wo_60.png" />
-                </a>
-                @*<a href="http://www.amazon.com/gp/product/ASIN number/ref=mas_pm_musicpimp" class="visible-lg visible-md pull-left badge">*@
-                    @*<img alt="Android app on Amazon AppStore"*@
-                    @*src="@routes.Assets.at("img/amazon-apps-kindle-us-gray.png")" />*@
-                @*</a>*@
-                <a href="@Home.winPhoneAppUri" class="visible-lg visible-md pull-left badge">
-                    <img alt="Windows Phone app"
-                    src="@routes.Assets.at("img/badge_winphone2.png")"/>
-                </a>
-                <a href="@Home.winStoreAppUri" class="visible-lg visible-md pull-left badge">
-                    <img alt="Windows Store app"
-                    src="@routes.Assets.at("img/badge_winstore.png")"/>
-                </a>
+                @badge(Home.androidAppUri, "Android app on Google Play",
+                    "https://developer.android.com/images/brand/en_app_rgb_wo_60.png")
+              @* @badgeFromAssets(Home.amazonAppUri, "Android app on Amazon AppStore", "amazon-apps-kindle-us-gray.png") *@
+                @badgeFromAssets(Home.winPhoneAppUri, "Windows Phone app", "badge_winphone2.png")
+                @badgeFromAssets(Home.winStoreAppUri, "Windows Store app", "badge_winstore.png")
             </div>
         </div>
         <hr>
@@ -44,26 +34,14 @@
                <p class="lead">Stream tracks from your music library to any PC using <strong>MusicBeamer</strong> at <a href="http://beam.musicpimp.org">http://beam.musicpimp.org</a>.</p>
             </div>
             <div class="col-md-4">
-                <img src="@routes.Assets.at("img/upload-alt-blue-128.png")" class="pull-left visible-lg visible-md"/>
+                <img src="@pic("upload-alt-blue-128.png")" class="pull-left visible-lg visible-md"/>
             </div>
         </div>
         <hr>
         <div class="row">
-            <div class="col-md-4">
-                <h2>PC to Phone</h2>
-                <p><img src="@routes.Assets.at("img/pc-phone.png")"/></p>
-                <p class="lead">Make the music library on a PC available for playback on your phone.</p>
-            </div>
-            <div class="col-md-4">
-                <h2>Phone to PC</h2>
-                <p><img src="@routes.Assets.at("img/phone-pc.png")"/></p>
-                <p class="lead">Play the music stored on your phone on speakers connected to a PC.</p>
-            </div>
-            <div class="col-md-4">
-                <h2>PC to Phone to PC</h2>
-                <p><img src="@routes.Assets.at("img/pc-phone-pc.png")"/></p>
-                <p class="lead">Play music from your PC on another PC. Control playback with your phone.</p>
-            </div>
+            @feature("PC to Phone","pc-phone.png","Make the music library on a PC available for playback on your phone.")
+            @feature("Phone to PC","phone-pc.png","Play the music stored on your phone on speakers connected to a PC.")
+            @feature("PC to Phone to PC","pc-phone-pc.png","Play music from your PC on another PC. Control playback with your phone.")
         </div>
         <hr>
         <div class="row">
@@ -85,4 +63,28 @@
             </div>
         </div>
     </div>
+}
+
+@badgeFromAssets(link:String,altText:String,img:String)={
+    @badge(link,altText,routes.Assets.at("img/"+img).toString)
+}
+@badge(link:String,altText:String,img:String)={
+    <a href="@link" class="visible-lg visible-md pull-left badge">
+        <img alt="@altText"
+        src="@img"/>
+    </a>
+}
+@feature(title:String, img:String, leadText:String) = {
+    <div class="col-md-4">
+        <h2>@title</h2>
+        @picPara(img)
+        <p class="lead">@leadText</p>
+    </div>
+}
+
+@picPara(file:String)={
+    <p><img src="@pic(file)"/></p>
+}
+@pic(file:String) = {
+    @routes.Assets.at("img/"+file)
 }
