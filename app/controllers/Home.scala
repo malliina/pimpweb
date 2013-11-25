@@ -25,7 +25,7 @@ object Home extends Controller with Log {
   val winPhoneAppUri = "http://windowsphone.com/s?appId=d31b505b-ac9f-4d93-8812-6b649734a5a6"
   val winStoreAppUri = "http://apps.microsoft.com/windows/en-us/app/musicpimp/73b9a42c-e38a-4edf-ac7e-00672230f7b6"
   val androidAppUri = "https://play.google.com/store/apps/details?id=org.musicpimp"
-  val amazonAppUri = "http://www.amazon.com/gp/product/ASIN number/ref=mas_pm_musicpimp"
+  val amazonAppUri = "http://www.amazon.com/gp/product/B00GVHTEJY/ref=mas_pm_musicpimp"
 
   val serverWebSocketResource = "/ws/playback"
   val serverPlaybackResource = "/playback"
