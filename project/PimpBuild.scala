@@ -5,15 +5,12 @@ import com.mle.sbt.cloud._
 import sbtbuildinfo.Plugin._
 
 object PimpBuild extends Build {
+  lazy val pimpWeb = Project("pimpweb", file(".")).settings(pimpSettings: _*)
 
-  import Dependencies._
-
-  lazy val pimpWeb = Project("pimpweb", file("."), settings = pimpSettings)
-
-  lazy val commonSettings = Defaults.defaultSettings ++ Seq(
+  lazy val commonSettings = Seq(
     version := "1.3.0",
     scalaVersion := "2.10.3",
-    libraryDependencies ++= Seq(utilDep, utilAzure, scalaTest, newRelic),
+    libraryDependencies ++= deps,
     retrieveManaged := false,
     fork in Test := true,
     resolvers += "Sonatype snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/"
@@ -33,13 +30,14 @@ object PimpBuild extends Build {
     buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion),
     buildInfoPackage := "com.mle.pimpweb"
   )
-}
 
-object Dependencies {
   val utilVersion = "1.0.0"
   val utilGroup = "com.github.malliina"
-  val utilDep = utilGroup %% "util" % utilVersion
-  val utilAzure = utilGroup %% "util-azure" % utilVersion
-  val scalaTest = "org.scalatest" %% "scalatest" % "1.9.2" % "test"
-  val newRelic = "com.newrelic.agent.java" % "newrelic-agent" % "2.15.1" % "provided"
+
+  lazy val deps = Seq(
+    utilGroup %% "util" % utilVersion,
+    utilGroup %% "util-azure" % utilVersion,
+    "org.scalatest" %% "scalatest" % "1.9.2" % "test",
+    "com.newrelic.agent.java" % "newrelic-agent" % "2.15.1" % "provided"
+  )
 }
