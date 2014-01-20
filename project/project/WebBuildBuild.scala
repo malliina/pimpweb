@@ -20,7 +20,7 @@ object WebBuildBuild extends Build {
     "com.typesafe.play" % "sbt-plugin" % "2.2.1",
     "com.github.malliina" %% "sbt-paas-deployer" % "1.0.0",
     "com.github.mpeltonen" % "sbt-idea" % "1.5.1",
-    "com.eed3si9n" % "sbt-buildinfo" % "0.2.5",
+    "com.eed3si9n" % "sbt-buildinfo" % "0.3.0",
     "com.timushev.sbt" % "sbt-updates" % "0.1.2",
     "net.virtual-void" % "sbt-dependency-graph" % "0.7.4"
   ) map addSbtPlugin
