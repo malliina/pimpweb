@@ -9,10 +9,6 @@ object WebBuildBuild extends Build {
   // "build.sbt" goes here
   override lazy val settings = super.settings ++ Seq(
     scalaVersion := "2.10.3",
-    resolvers ++= Seq(
-      "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/",
-      "Typesafe ivy releases" at "http://repo.typesafe.com/typesafe/ivy-releases/",
-      "Sonatype snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/"),
     scalacOptions ++= Seq("-unchecked", "-deprecation")
   ) ++ sbtPlugins
 

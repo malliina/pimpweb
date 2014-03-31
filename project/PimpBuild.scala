@@ -31,7 +31,7 @@ object PimpBuild extends Build {
     buildInfoPackage := "com.mle.pimpweb"
   )
 
-  val utilVersion = "1.2.1"
+  val utilVersion = "1.3.0"
   val myGroup = "com.github.malliina"
 
   lazy val deps = Seq(
