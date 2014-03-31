@@ -13,7 +13,7 @@ import java.net.URI
  */
 object Home extends Controller with Log {
   val downloadBaseUrl = "http://files.musicpimp.org/files/"
-  val version = "2.1.1"
+  val version = "2.3.5"
   val msiFileName = s"musicpimp-$version.msi"
   val debFileName = s"musicpimp-$version.deb"
   val rpmFileName = s"musicpimp-$version-0.noarch.rpm"
@@ -54,6 +54,8 @@ object Home extends Controller with Log {
 
   def api = GoTo(html.docApi())
 
+  def alarms = GoTo(html.alarms())
+
   def forum = GoTo(html.forum())
 
   def about = GoTo(html.about())
@@ -76,11 +78,12 @@ object Home extends Controller with Log {
   private def isLatest(fileName: String) =
     fileName == msiFileName || fileName == debFileName || fileName == rpmFileName
 
-  private def downloadables = {
-    val creds = AzureStorageCredentialReader.load
-    val client = new StorageClient(creds.accountName, creds.accountKey)
-    val uriStrings = client uris "files"
-    uriStrings map fileName filter (_.startsWith("musicpimp"))
+  private def downloadables: Iterable[String] = {
+    AzureStorageCredentialReader.loadOpt.map(creds => {
+      val client = new StorageClient(creds.accountName, creds.accountKey)
+      val uriStrings = client uris "files"
+      uriStrings map fileName filter (_.startsWith("musicpimp"))
+    }).getOrElse(Seq.empty)
   }
 
   private def fileName(uri: URI) = {

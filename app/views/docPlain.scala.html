@@ -1,26 +1,16 @@
 @(os: String)(content:Html)
 
 @indexMain("documentation") {
-    <div class="row">
-        <div class="col-md-6">
-            <div class="page-header">
-                <h1>Documentation</h1>
-            </div>
+    @bs.headerRow("Documentation","col-md-6")
+    @bs.rowColumn("col-md-6"){
+        <div class="btn-group" src-toggle="buttons-radio">
+            <button type="button" class="btn btn-primary @(" active".when(os == "win"))" onclick="location.href='@routes.Home.win()'">Windows</button>
+            <button type="button" class="btn btn-primary @(" active".when(os == "deb"))" onclick="location.href='@routes.Home.deb()'">DEB</button>
+            <button type="button" class="btn btn-primary @(" active".when(os == "rpm"))" onclick="location.href='@routes.Home.rpm()'">RPM</button>
+            <button type="button" class="btn btn-primary @(" active".when(os == "wp"))" onclick="location.href='@routes.Home.wp()'">Windows Phone</button>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="btn-group" src-toggle="buttons-radio">
-                <button type="button" class="btn btn-primary @(" active".when(os == "win"))" onclick="location.href='@routes.Home.win()'">Windows</button>
-                <button type="button" class="btn btn-primary @(" active".when(os == "deb"))" onclick="location.href='@routes.Home.deb()'">DEB</button>
-                <button type="button" class="btn btn-primary @(" active".when(os == "rpm"))" onclick="location.href='@routes.Home.rpm()'">RPM</button>
-                <button type="button" class="btn btn-primary @(" active".when(os == "wp"))" onclick="location.href='@routes.Home.wp()'">Windows Phone</button>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            @content
-        </div>
-    </div>
+    }
+    @bs.rowColumn("col-md-6"){
+        @content
+    }
 }

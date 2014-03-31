@@ -8,60 +8,53 @@
         </div>
     </div>
     <div class="container">
-        <div class="row">
-            <div class="col-md-10">
-                <h2>Get it <a class="btn btn-primary" href="@Home.msiUrl"><i class="glyphicon glyphicon-download"></i> Download for Windows</a></h2>
-                <p class="lead"><a href="@routes.Home.downloads()">Download</a>
-                    the free server for <a href="@Home.msiUrl">Windows</a>
-                    or <a href="@Home.debUrl">Linux</a>. Get the <strong>MusicPimp</strong> apps
-                    for <a href="@Home.androidAppUri">Android</a> and <a href="@Home.amazonAppUri">Kindle Fire</a>,
-                    <a href="@Home.winPhoneAppUri">Windows Phone</a> and <a href="@Home.winStoreAppUri">Windows 8</a>.</p>
-
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                @badgeFromAssets(Home.androidAppUri, "Android app on Google Play", "en_app_rgb_wo_60.png")
-                @badgeFromAssets(Home.amazonAppUri, "Android app on Amazon AppStore", "amazon-apps-kindle-us-gray.png")
-                @badgeFromAssets(Home.winPhoneAppUri, "Windows Phone app", "badge_winphone2.png")
-                @badgeFromAssets(Home.winStoreAppUri, "Windows Store app", "badge_winstore.png")
-            </div>
-        </div>
+        @bs.rowColumn("col-md-10"){
+            <h2>Get it <a class="btn btn-primary" href="@Home.msiUrl"><i class="glyphicon glyphicon-download"></i> Download for Windows</a></h2>
+            <p class="lead"><a href="@routes.Home.downloads()">Download</a>
+                the free server for <a href="@Home.msiUrl">Windows</a>
+                or <a href="@Home.debUrl">Linux</a>. Get the <strong>MusicPimp</strong> apps
+                for <a href="@Home.androidAppUri">Android</a> and <a href="@Home.amazonAppUri">Kindle Fire</a>,
+                <a href="@Home.winPhoneAppUri">Windows Phone</a> and <a href="@Home.winStoreAppUri">Windows 8</a>.</p>
+        }
+      @bs.rowColumn("col-md-12"){
+          @badgeFromAssets(Home.androidAppUri, "Android app on Google Play", "en_app_rgb_wo_60.png")
+          @badgeFromAssets(Home.amazonAppUri, "Android app on Amazon AppStore", "amazon-apps-kindle-us-gray.png")
+          @badgeFromAssets(Home.winPhoneAppUri, "Windows Phone app", "badge_winphone2.png")
+          @badgeFromAssets(Home.winStoreAppUri, "Windows Store app", "badge_winstore.png")
+      }
         <hr>
-        <div class="row">
-            <div class="col-md-4 col-md-offset-2">
-               <h2>New! MusicBeamer</h2>
-               <p class="lead">Stream tracks from your music library to any PC using <strong>MusicBeamer</strong> at <a href="https://beam.musicpimp.org">https://beam.musicpimp.org</a>.</p>
-            </div>
-            <div class="col-md-4">
+        @bs.row{
+            @util.div("col-md-4 col-md-offset-2"){
+                <h2>New! MusicBeamer</h2>
+                <p class="lead">Stream tracks from your music library to any PC using <strong>MusicBeamer</strong> at <a href="https://beam.musicpimp.org">https://beam.musicpimp.org</a>.</p>
+            }
+            @util.div("col-md-4"){
                 <img src="@pic("upload-alt-blue-128.png")" class="pull-left visible-lg visible-md"/>
-            </div>
-        </div>
+            }
+        }
         <hr>
-        <div class="row">
+        @bs.row {
             @feature("PC to Phone", "pc-phone.png", "Make the music library on a PC available for playback on your phone.")
             @feature("Phone to PC", "phone-pc.png", "Play the music stored on your phone on speakers connected to a PC.")
             @feature("PC to Phone to PC", "pc-phone-pc.png", "Play music from your PC on another PC. Control playback with your phone.")
-        </div>
+        }
         <hr>
-        <div class="row">
-            <div class="col-md-4 col-md-offset-4">
-                <h2>Getting Started</h2>
-                <p class="lead">Get started in minutes. Check the <a href="@routes.Home.win()">documentation</a> for instructions.</p>
-            </div>
-        </div>
+        @bs.rowColumn("col-md-4 col-md-offset-4"){
+            <h2>Getting Started</h2>
+            <p class="lead">Get started in minutes. Check the <a href="@routes.Home.win()">documentation</a> for instructions.</p>
+        }
         <hr>
-        <div class="row">
-            <div class="col-md-4">
+        @bs.row {
+            @util.div("col-md-4"){
                 <h2>Develop</h2>
                 <p>Build cool apps using the JSON <a href="@routes.Home.api()">API</a>.</p>
-            </div>
-            <div class="col-md-4 col-md-offset-4">
+            }
+            @util.div("col-md-4 col-md-offset-4"){
                 <h2>Donate</h2>
                 <p>Support a good cause. Donate any amount you like to the development team.</p>
                 @paypalButton()
-            </div>
-        </div>
+            }
+        }
     </div>
 }
 
@@ -74,11 +67,11 @@
     </a>
 }
 @feature(title:String, img:String, leadText:String) = {
-    <div class="col-md-4">
+    @util.div("col-md-4"){
         <h2>@title</h2>
         @picPara(img)
         <p class="lead">@leadText</p>
-    </div>
+    }
 }
 
 @picPara(file: String)={

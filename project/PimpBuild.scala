@@ -8,8 +8,8 @@ object PimpBuild extends Build {
   lazy val pimpWeb = Project("pimpweb", file(".")).settings(pimpSettings: _*)
 
   lazy val commonSettings = Seq(
-    version := "1.3.0",
-    scalaVersion := "2.10.3",
+    version := "1.3.1",
+    scalaVersion := "2.10.4",
     libraryDependencies ++= deps,
     retrieveManaged := false,
     fork in Test := true,
@@ -31,13 +31,14 @@ object PimpBuild extends Build {
     buildInfoPackage := "com.mle.pimpweb"
   )
 
-  val utilVersion = "1.0.0"
-  val utilGroup = "com.github.malliina"
+  val utilVersion = "1.2.1"
+  val myGroup = "com.github.malliina"
 
   lazy val deps = Seq(
-    utilGroup %% "util" % utilVersion,
-    utilGroup %% "util-azure" % utilVersion,
-    "org.scalatest" %% "scalatest" % "1.9.2" % "test",
+    myGroup %% "util" % utilVersion,
+    myGroup %% "util-azure" % utilVersion,
+    myGroup %% "play-base" % "0.0.4",
+    "org.scalatest" %% "scalatest" % "2.0" % "test",
     "com.newrelic.agent.java" % "newrelic-agent" % "2.15.1" % "provided"
   )
 }

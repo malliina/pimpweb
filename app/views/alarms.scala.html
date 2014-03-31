@@ -1,0 +1,38 @@
+@()
+
+@indexMain("api") {
+    @bs.headerRow("Alarms")
+    @bs.rowColumn("col-md-6") {
+        <h2>Alarm clock management</h2>
+        <p>Control the alarm clock on the MusicPimp server using the following API.</p>
+        <h4>Get alarms <small>GET /alarms</small></h4>
+        <p>Returns the currently configured alarms.</p>
+        <p>Example response:</p>
+        <pre>TODO</pre>
+        <h4>Remove alarm <small>HTTP POST to /alarms or WebSocket</small></h4>
+        <p>Remove an alarm: </p>
+        <code>{"cmd": "delete", "id": "alarm_id_here"}</code>
+        <h4>Add or update an alarm</h4>
+        <p>Add a new alarm or update an existing one. When updating, include the ID of the alarm you update. If no ID is provided,
+        the interpretation is that you add a new alarm; the server will generate a new ID.</p>
+        <pre>{
+    "cmd": "save",
+    "ap": {
+        "id": "alarm_id_here_if_updating",
+        "enabled": true,
+        "job": {
+
+        },
+        "when": {
+
+        }
+    }
+}</pre>
+        <h4>Start an alarm</h4>
+        <p>Useful for testing.</p>
+        <code>{"cmd": "start", "id": "alarm_id_here"}</code>
+        <h4>Stop an alarm</h4>
+        <p>Stops any alarm currently playing.</p>
+        <code>{"cmd": "stop"}</code>
+    }
+}

@@ -1,16 +1,16 @@
 @(tabName: String)(content: Html)
 @plainMain("MusicPimp") {
-    <div class="navbar navbar-default">
-        <div class="container">
-            <div class="navbar-header">
+    @util.div("navbar navbar-default"){
+        @util.div("container"){
+            @util.div("navbar-header"){
                 <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="@routes.Home.index()">MusicPimp</a>
-            </div>
-            <div class="navbar-collapse collapse">
+            }
+            @util.div("navbar-collapse collapse"){
                 <ul class="nav navbar-nav">
                     <li class="@("active".when(tabName == "home"))"><a href="@routes.Home.index()"><i class="glyphicon glyphicon-home"></i> Home</a></li>
                     <li class="@("active".when(tabName == "downloads"))"><a href="@routes.Home.downloads()"><i class="glyphicon glyphicon-download-alt"></i> Downloads</a></li>
@@ -21,8 +21,8 @@
                     <li class="@("active".when(tabName == "api"))"><a href="@routes.Home.api()"><i class="glyphicon glyphicon-edit"></i> Develop</a></li>
                     <li class="@("active".when(tabName == "about"))"><a href="@routes.Home.about()"> <i class="glyphicon glyphicon-globe"></i> About</a></li>
                 </ul>
-            </div>
-        </div>
-    </div>
+            }
+        }
+    }
     @content
 }

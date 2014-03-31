@@ -1,6 +1,4 @@
 @(tabName: String)(content: Html)
-@indexNoContainer(tabName) {
-    <div class="container">
-    @content
-    </div>
-}
+    @indexNoContainer(tabName) {
+        @util.div("container")(content)
+    }

@@ -1,32 +1,26 @@
 @()
 
 @docPlain("wp") {
-    <div class="row">
-        <div class="col-md-12">
-            <section id="wp8">
-                <div class="page-header">
-                    <h1>Windows Phone</h1>
-                </div>
-                <h2>System Requirements</h2>
-                <p>Windows Phone 7.5 and higher are supported.</p>
-                <h2>Installation</h2>
-                <p>Install the <strong>MusicPimp</strong>
-                    <a href="@Home.winPhoneAppUri">app</a> to your Windows Phone device.</p>
-                <h2>Usage</h2>
-                <ol>
-                    <li>Add music endpoints to your app. Any PC on which MusicPimp is installed works as a music endpoint.</li>
-                    <li>Set the PC as the music source or use it for music playback in the app.</li>
-                </ol>
-                <h3>HTTPS</h3>
-                <p>You may wish to connect to your music server over HTTPS. HTTPS is currently supported on Windows Phone
-                    provided that the server certificate passes validation and is trusted by your phone. This means that
-                    self-signed certificates will most likely not work. However, free certificates available from
-                    <a href="https://www.startssl.com/">StartSSL</a> have been verified to work. Commercial certificates
-                    are likely to work as well.</p>
-                <h3>Miscellaneous</h3>
-                <p>MusicPimp for Windows Phone also supports the <a href="http://www.subsonic.org">Subsonic</a>
-                    media streamer as a music server.</p>
-            </section>
-        </div>
-    </div>
+    @bs.headerRow("Windows Phone")
+    @bs.rowColumn("col-md-12") {
+        <h2>System Requirements</h2>
+        <p>Windows Phone 7.5 and higher are supported.</p>
+        <h2>Installation</h2>
+        <p>Install the <strong>MusicPimp</strong>
+            <a href="@Home.winPhoneAppUri">app</a> to your Windows Phone device.</p>
+        <h2>Usage</h2>
+        <ol>
+            <li>Add music endpoints to your app. Any PC on which MusicPimp is installed works as a music endpoint.</li>
+            <li>Set the PC as the music source or use it for music playback in the app.</li>
+        </ol>
+        <h3>HTTPS</h3>
+        <p>You may wish to connect to your music server over HTTPS. HTTPS is currently supported on Windows Phone
+            provided that the server certificate passes validation and is trusted by your phone. This means that
+            self-signed certificates will most likely not work. However, free certificates available from
+            <a href="https://www.startssl.com/">StartSSL</a> have been verified to work. Commercial certificates
+            are likely to work as well.</p>
+        <h3>Miscellaneous</h3>
+        <p>MusicPimp for Windows Phone also supports the <a href="http://www.subsonic.org">Subsonic</a>
+            media streamer as a music server.</p>
+    }
 }

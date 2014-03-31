@@ -8,6 +8,7 @@ GET        /docs/deb             controllers.Home.deb
 GET        /docs/rpm             controllers.Home.rpm
 GET        /docs/wp              controllers.Home.wp
 GET        /docs/api             controllers.Home.api
+GET        /docs/alarms          controllers.Home.alarms
 GET        /forum                controllers.Home.forum
 GET        /about                controllers.Home.about
 GET        /success              controllers.Home.success
