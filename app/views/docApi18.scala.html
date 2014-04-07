@@ -20,7 +20,6 @@
                 clients should be explicit about which version of the format they accept. The following formats are
                 currently valid:</p>
             <ul>
-                @*<li>application/vnd.musicpimp.v24+json</li>*@
                 <li>application/vnd.musicpimp.v18+json</li>
                 <li>application/vnd.musicpimp.v17+json</li>
                 <li>application/vnd.musicpimp+json</li>
@@ -50,7 +49,7 @@
                 <strong>Accept-Encoding</strong> HTTP header of the request contains <code>gzip</code>.</p>
             <h3>Success and Failure</h3>
             <p>A successful HTTP status code indicates that the request was processed successfully. The response
-                of a failed request will have an HTTP status code indicating failure.</p>
+                of a failed request will have a HTTP status code indicating failure.</p>
             <p>In addition to the information you get from the status code, failed API requests may contain
                 a JSON response content indicating the reason your request went titsup.
                 Example: <code>{"reason":"Invalid parameter."}</code></p>
@@ -195,7 +194,7 @@
             "size":2573904
         }
     ],
-    "playlist_index":0
+    "index":0
 }</pre>
             <h4>Upload library track <small>POST to /playback/stream</small></h4>
             <p>Instruct the MusicPimp server to perform a <strong>multipart/form-data</strong> upload
