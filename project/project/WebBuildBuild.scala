@@ -8,16 +8,17 @@ import sbt.Keys._
 object WebBuildBuild extends Build {
   // "build.sbt" goes here
   override lazy val settings = super.settings ++ Seq(
-    scalaVersion := "2.10.3",
-    scalacOptions ++= Seq("-unchecked", "-deprecation")
+    scalaVersion := "2.10.4",
+    scalacOptions ++= Seq("-unchecked", "-deprecation"),
+    resolvers += "typesafe" at "http://repo.typesafe.com/typesafe/releases/"
   ) ++ sbtPlugins
 
   def sbtPlugins = Seq(
-    "com.typesafe.play" % "sbt-plugin" % "2.2.2",
+    "com.typesafe.play" % "sbt-plugin" % "2.2.3",
     "com.github.malliina" %% "sbt-paas-deployer" % "1.0.0",
-//    "com.github.mpeltonen" % "sbt-idea" % "1.5.1",
+    "com.github.malliina" %% "sbt-utils" % "0.0.3",
     "com.eed3si9n" % "sbt-buildinfo" % "0.3.0",
-    "com.timushev.sbt" % "sbt-updates" % "0.1.2",
+    "com.timushev.sbt" % "sbt-updates" % "0.1.6",
     "net.virtual-void" % "sbt-dependency-graph" % "0.7.4"
   ) map addSbtPlugin
 
