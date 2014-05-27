@@ -9,12 +9,11 @@ object PimpBuild extends Build {
   lazy val pimpWeb = SbtUtils.testableProject("pimpweb").settings(pimpSettings: _*)
 
   lazy val commonSettings = Seq(
-    version := "1.3.3",
+    version := "1.3.4",
     scalaVersion := "2.11.0",
     libraryDependencies ++= deps,
     retrieveManaged := false,
-    fork in Test := true,
-    resolvers += "Sonatype snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/"
+    fork in Test := true
   )
   lazy val pimpSettings = commonSettings ++
     herokuSettings ++
