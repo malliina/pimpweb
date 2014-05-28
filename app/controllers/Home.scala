@@ -13,7 +13,7 @@ import java.net.URI
  */
 object Home extends Controller with Log {
   val downloadBaseUrl = "http://files.musicpimp.org/files/"
-  val version = "2.4.0"
+  val version = "2.4.1"
   val msiFileName = s"musicpimp-$version.msi"
   val debFileName = s"musicpimp-$version.deb"
   val rpmFileName = s"musicpimp-$version-0.noarch.rpm"
