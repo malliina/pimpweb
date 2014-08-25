@@ -18,8 +18,7 @@ object PimpBuild extends Build {
   lazy val pimpSettings = commonSettings ++
     herokuSettings ++
     buildMetaSettings ++
-    net.virtualvoid.sbt.graph.Plugin.graphSettings // ++
-//    play.Project.playScalaSettings
+    net.virtualvoid.sbt.graph.Plugin.graphSettings
 
   def herokuSettings = HerokuPlugin.settings ++ Seq(
     HerokuKeys.heroku := Paths.get( """C:\Program Files (x86)\Heroku\bin\heroku.bat""")
