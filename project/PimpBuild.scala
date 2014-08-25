@@ -6,7 +6,7 @@ import com.mle.sbt.cloud._
 import sbtbuildinfo.Plugin._
 
 object PimpBuild extends Build {
-  lazy val pimpWeb = SbtUtils.testableProject("pimpweb").settings(pimpSettings: _*)
+  lazy val pimpWeb = SbtUtils.testableProject("pimpweb").enablePlugins(play.PlayScala).settings(pimpSettings: _*)
 
   lazy val commonSettings = Seq(
     version := "1.3.5",
@@ -18,8 +18,8 @@ object PimpBuild extends Build {
   lazy val pimpSettings = commonSettings ++
     herokuSettings ++
     buildMetaSettings ++
-    net.virtualvoid.sbt.graph.Plugin.graphSettings ++
-    play.Project.playScalaSettings
+    net.virtualvoid.sbt.graph.Plugin.graphSettings // ++
+//    play.Project.playScalaSettings
 
   def herokuSettings = HerokuPlugin.settings ++ Seq(
     HerokuKeys.heroku := Paths.get( """C:\Program Files (x86)\Heroku\bin\heroku.bat""")

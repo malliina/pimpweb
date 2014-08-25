@@ -3,7 +3,7 @@ package controllers
 import com.mle.util.Log
 import play.api.mvc.{Action, Controller}
 import views.html
-import play.api.templates.Html
+import play.twirl.api.Html
 import play.api.libs.json.Json
 import com.mle.azure.{AzureStorageCredentialReader, StorageClient}
 import java.net.URI
