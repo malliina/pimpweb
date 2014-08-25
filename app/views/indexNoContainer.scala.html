@@ -1,28 +1,30 @@
 @(tabName: String)(content: Html)
-@plainMain("MusicPimp") {
-    @util.div("navbar navbar-default"){
-        @util.div("container"){
-            @util.div("navbar-header"){
-                <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="@routes.Home.index()">MusicPimp</a>
-            }
-            @util.div("navbar-collapse collapse"){
-                <ul class="nav navbar-nav">
-                    <li class="@("active".when(tabName == "home"))"><a href="@routes.Home.index()"><i class="glyphicon glyphicon-home"></i> Home</a></li>
-                    <li class="@("active".when(tabName == "downloads"))"><a href="@routes.Home.downloads()"><i class="glyphicon glyphicon-download-alt"></i> Downloads</a></li>
-                    <li class="@("active".when(tabName == "documentation"))"><a href="@routes.Home.win()"><i class="glyphicon glyphicon-list-alt"></i> Documentation</a></li>
-                    <li class="@("active".when(tabName == "forum"))"><a href="@routes.Home.forum()"><i class="glyphicon glyphicon-comment"></i> Forum</a></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="@("active".when(tabName == "api"))"><a href="@routes.Home.api()"><i class="glyphicon glyphicon-edit"></i> Develop</a></li>
-                    <li class="@("active".when(tabName == "about"))"><a href="@routes.Home.about()"> <i class="glyphicon glyphicon-globe"></i> About</a></li>
-                </ul>
+    @import views.html.bs.navItem
+    @import views.html.util.div
+    @plainMain("MusicPimp") {
+        @div("navbar navbar-default") {
+            @div("container") {
+                @div("navbar-header") {
+                    <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="@routes.Home.index()">MusicPimp</a>
+                }
+                @div("navbar-collapse collapse") {
+                    <ul class="nav navbar-nav">
+                        @navItem("Home", "home", tabName, routes.Home.index(), "home")
+                        @navItem("Downloads", "downloads", tabName, routes.Home.downloads(), "download-alt")
+                        @navItem("Documentation", "documentation", tabName, routes.Home.win(), "list-alt")
+                        @navItem("Forum", "forum", tabName, routes.Home.forum(), "comment")
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        @navItem("Develop", "api", tabName, routes.Home.api(), "edit")
+                        @navItem("About", "about", tabName, routes.Home.about(), "globe")
+                    </ul>
+                }
             }
         }
+        @content
     }
-    @content
-}

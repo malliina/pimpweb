@@ -9,8 +9,8 @@ object PimpBuild extends Build {
   lazy val pimpWeb = SbtUtils.testableProject("pimpweb").settings(pimpSettings: _*)
 
   lazy val commonSettings = Seq(
-    version := "1.3.4",
-    scalaVersion := "2.11.0",
+    version := "1.3.5",
+    scalaVersion := "2.11.2",
     libraryDependencies ++= deps,
     retrieveManaged := false,
     fork in Test := true
@@ -37,7 +37,7 @@ object PimpBuild extends Build {
   lazy val deps = Seq(
     myGroup %% "util" % utilVersion,
     myGroup %% "util-azure" % utilVersion,
-    myGroup %% "play-base" % "0.0.4",
+    myGroup %% "play-base" % "0.1.0",
     "com.newrelic.agent.java" % "newrelic-agent" % "2.15.1" % "provided"
   )
 }

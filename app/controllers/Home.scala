@@ -7,11 +7,12 @@ import play.api.templates.Html
 import play.api.libs.json.Json
 import com.mle.azure.{AzureStorageCredentialReader, StorageClient}
 import java.net.URI
+import com.mle.play.controllers.BaseController
 
 /**
  * @author Michael
  */
-object Home extends Controller with Log {
+object Home extends Controller with BaseController with Log {
   val downloadBaseUrl = "http://files.musicpimp.org/files/"
   val version = "2.4.1"
   val msiFileName = s"musicpimp-$version.msi"
@@ -34,7 +35,7 @@ object Home extends Controller with Log {
 
   private def toUrl(fileName: String) = downloadBaseUrl + fileName
 
-  def ping = Action(Ok.withHeaders(CACHE_CONTROL -> "no-cache"))
+  def ping = Action(NoCache(Ok))
 
   def index = GoTo(html.index())
 
