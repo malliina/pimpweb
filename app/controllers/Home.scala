@@ -1,22 +1,23 @@
 package controllers
 
-import com.mle.util.Log
-import play.api.mvc.{Action, Controller}
-import views.html
-import play.twirl.api.Html
-import play.api.libs.json.Json
-import com.mle.azure.{AzureStorageCredentialReader, StorageClient}
 import java.net.URI
+
+import com.mle.azure.{AzureStorageCredentialReader, StorageClient}
 import com.mle.play.controllers.BaseController
+import com.mle.util.Log
+import play.api.libs.json.Json
+import play.api.mvc.{Action, Controller}
+import play.twirl.api.Html
+import views.html
 
 /**
  * @author Michael
  */
 object Home extends Controller with BaseController with Log {
   val downloadBaseUrl = "http://files.musicpimp.org/files/"
-  val version = "2.4.1"
+  val version = "2.5.0"
   val msiFileName = s"musicpimp-$version.msi"
-  val debFileName = s"musicpimp-$version.deb"
+  val debFileName = s"musicpimp_${version}_all.deb"
   val rpmFileName = s"musicpimp-$version-0.noarch.rpm"
   val msiUrl = toUrl(msiFileName)
   val debUrl = toUrl(debFileName)

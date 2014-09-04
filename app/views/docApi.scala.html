@@ -116,15 +116,38 @@
         }
     ]
 }</pre>
-            <h4>Get subfolder<small> GET /folders/my_folder_id_here </small> </h4>
+            <h4>Get subfolder <small>GET /folders/my_folder_id_here </small> </h4>
             <p> Returns the contents of the specified music library folder.</p>
             <p> <span class="label label-info">Note</span> First request the contents of the root folder
                 in order to get a list of subfolders for further browsing.</p>
-            <h4>Get track<small> GET /tracks/my_track_id</small> </h4>
+            <h4>Get track <small>GET /tracks/my_track_id</small> </h4>
             <p>Retrieves the file with the specified ID. Supply this to a media player that accepts a URI as media source, for example.</p>
             <h4>Get track, with Accept-Ranges<small> GET /downloads/my_track_id</small> </h4>
             <p>The same as above except that the HTTP response contains the string <code>bytes</code>
                 in the <strong>Accept-Ranges</strong> header.</p>
+            <h4>Search <small>GET /search?term=tillbaka+till+samtiden&limit=100</small></h4>
+            <p>Search for a track, album or artist. Specify your search query in the <strong>term</strong> query
+            parameter, and optionally set the maximum number of returned results in the <strong>limit</strong> query
+            parameter.</p>
+            <p>Example response:</p>
+            <pre>[
+    {
+        "id":"Kent%5C2007+-+Tillbaka+Till+Samtiden%5C01_kent-elefanter.mp3",
+        "title":"Elefanter",
+        "artist":"Kent",
+        "album":"Tillbaka Till Samtiden",
+        "duration":321,
+        "size":7639850
+    },
+    {
+        "id":"Kent%5C2007+-+Tillbaka+Till+Samtiden%5C02_kent-berlin.mp3",
+        "title":"Berlin",
+        "artist":"Kent",
+        "album":"Tillbaka Till Samtiden",
+        "duration":276,
+        "size":7143257
+    }
+]</pre>
             <h3>Remote playback control</h3>
             <p>Control a remote playback device using WebSockets or HTTP POST calls. Two types of remote playback devices
                 are supported:</p>

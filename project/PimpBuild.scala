@@ -9,7 +9,7 @@ object PimpBuild extends Build {
   lazy val pimpWeb = SbtUtils.testableProject("pimpweb").enablePlugins(play.PlayScala).settings(pimpSettings: _*)
 
   lazy val commonSettings = Seq(
-    version := "1.3.5",
+    version := "1.3.6",
     scalaVersion := "2.11.2",
     libraryDependencies ++= deps,
     retrieveManaged := false,
