@@ -14,7 +14,8 @@ object PimpBuild extends Build {
     scalaVersion := "2.11.2",
     libraryDependencies ++= deps,
     retrieveManaged := false,
-    fork in Test := true
+    fork in Test := true,
+    resolvers += "Sonatype releases" at "https://oss.sonatype.org/content/repositories/releases/"
   )
   lazy val pimpSettings = commonSettings ++
     herokuSettings ++
@@ -34,8 +35,7 @@ object PimpBuild extends Build {
   val mleGroup = "com.github.malliina"
 
   lazy val deps = Seq(
-    mleGroup %% "util" % "1.4.2",
-    mleGroup %% "util-azure" % "1.3.1",
+    mleGroup %% "util-azure" % "1.4.2",
     mleGroup %% "play-base" % "0.1.0",
     "com.newrelic.agent.java" % "newrelic-agent" % "2.15.1" % "provided"
   )
