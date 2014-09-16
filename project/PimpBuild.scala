@@ -1,15 +1,16 @@
-import com.mle.sbtutils.SbtUtils
 import java.nio.file.Paths
-import sbt._
-import sbt.Keys._
+
 import com.mle.sbt.cloud._
+import com.mle.sbtplay.PlayProjects
+import sbt.Keys._
+import sbt._
 import sbtbuildinfo.Plugin._
 
 object PimpBuild extends Build {
-  lazy val pimpWeb = SbtUtils.testableProject("pimpweb").enablePlugins(play.PlayScala).settings(pimpSettings: _*)
+  lazy val pimpWeb = PlayProjects.playProject("pimpweb").settings(pimpSettings: _*)
 
   lazy val commonSettings = Seq(
-    version := "1.3.6",
+    version := "1.3.7",
     scalaVersion := "2.11.2",
     libraryDependencies ++= deps,
     retrieveManaged := false,
@@ -30,13 +31,12 @@ object PimpBuild extends Build {
     buildInfoPackage := "com.mle.pimpweb"
   )
 
-  val utilVersion = "1.3.1"
-  val myGroup = "com.github.malliina"
+  val mleGroup = "com.github.malliina"
 
   lazy val deps = Seq(
-    myGroup %% "util" % utilVersion,
-    myGroup %% "util-azure" % utilVersion,
-    myGroup %% "play-base" % "0.1.0",
+    mleGroup %% "util" % "1.4.2",
+    mleGroup %% "util-azure" % "1.3.1",
+    mleGroup %% "play-base" % "0.1.0",
     "com.newrelic.agent.java" % "newrelic-agent" % "2.15.1" % "provided"
   )
 }
