@@ -7,10 +7,10 @@ import sbt._
 import sbtbuildinfo.Plugin._
 
 object PimpBuild extends Build {
-  lazy val pimpWeb = PlayProjects.playProject("pimpweb").settings(pimpSettings: _*)
+  lazy val pimpWeb = PlayProjects.plainPlayProject("pimpweb").settings(pimpSettings: _*)
 
   lazy val commonSettings = Seq(
-    version := "1.3.7",
+    version := "1.3.8",
     scalaVersion := "2.11.2",
     libraryDependencies ++= deps,
     retrieveManaged := false,

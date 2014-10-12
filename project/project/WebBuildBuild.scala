@@ -14,9 +14,9 @@ object WebBuildBuild extends Build {
   ) ++ sbtPlugins
 
   def sbtPlugins = Seq(
-    "com.typesafe.play" % "sbt-plugin" % "2.3.4",
+    "com.typesafe.play" % "sbt-plugin" % "2.3.5",
     "com.github.malliina" %% "sbt-paas-deployer" % "1.0.0",
-    "com.github.malliina" %% "sbt-play" % "0.0.4",
+    "com.github.malliina" %% "sbt-play" % "0.1.1",
     "com.eed3si9n" % "sbt-buildinfo" % "0.3.0",
     "com.timushev.sbt" % "sbt-updates" % "0.1.6",
     "net.virtual-void" % "sbt-dependency-graph" % "0.7.4"
