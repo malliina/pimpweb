@@ -15,7 +15,7 @@ import views.html
  */
 object Home extends Controller with BaseController with Log {
   val downloadBaseUrl = "http://files.musicpimp.org/files/"
-  val version = "2.6.8"
+  val version = "2.7.1"
   val msiFileName = s"musicpimp-$version.msi"
   val debFileName = s"musicpimp_${version}_all.deb"
   val rpmFileName = s"musicpimp-$version-0.noarch.rpm"
