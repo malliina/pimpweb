@@ -4,6 +4,7 @@ GET        /downloads            controllers.Home.downloads
 GET        /previous             controllers.Home.previous
 GET        /docs                 controllers.Home.win
 GET        /docs/win             controllers.Home.win
+GET        /docs/mac             controllers.Home.mac
 GET        /docs/deb             controllers.Home.deb
 GET        /docs/rpm             controllers.Home.rpm
 GET        /docs/wp              controllers.Home.wp

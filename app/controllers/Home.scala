@@ -14,14 +14,17 @@ import views.html
  * @author Michael
  */
 object Home extends Controller with BaseController with Log {
+
+  case class Download(fileName: String) {
+    val url = toUrl(fileName)
+  }
+
   val downloadBaseUrl = "http://files.musicpimp.org/files/"
   val version = "2.7.1"
-  val msiFileName = s"musicpimp-$version.msi"
-  val debFileName = s"musicpimp_${version}_all.deb"
-  val rpmFileName = s"musicpimp-$version-0.noarch.rpm"
-  val msiUrl = toUrl(msiFileName)
-  val debUrl = toUrl(debFileName)
-  val rpmUrl = toUrl(rpmFileName)
+  val msiDownload = Download(s"musicpimp-$version.msi")
+  val debDownload = Download(s"musicpimp_${version}_all.deb")
+  val rpmDownload = Download(s"musicpimp-$version-0.noarch.rpm")
+  val dmgDownload = Download(s"musicpimp-2.7.3.dmg")
   val linuxConfFile = "/opt/musicpimp/musicpimp.conf"
   val windowsConfFile = """C:\Program Files (x86)\MusicPimp\musicpimp.conf"""
   val winPhoneAppUri = "http://www.windowsphone.com/s?appid=84cd9030-4a5c-4a03-b0ab-4d59c2fa7d42"
@@ -47,6 +50,8 @@ object Home extends Controller with BaseController with Log {
   def documentation = GoTo(html.docWin())
 
   def win = GoTo(html.docWin())
+
+  def mac = GoTo(html.docMac())
 
   def deb = GoTo(html.docDeb())
 
@@ -78,7 +83,7 @@ object Home extends Controller with BaseController with Log {
     (downloadables filterNot isLatest).toSeq.reverse
 
   private def isLatest(fileName: String) =
-    fileName == msiFileName || fileName == debFileName || fileName == rpmFileName
+    fileName == msiDownload.fileName || fileName == debDownload.fileName || fileName == rpmDownload.fileName || fileName == dmgDownload.fileName
 
   private def downloadables: Iterable[String] = {
     AzureStorageCredentialReader.loadOpt.map(creds => {

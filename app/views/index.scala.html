@@ -10,11 +10,11 @@
     </div>
     <div class="container">
         @bs.rowColumn("col-md-10") {
-            <h2>Get it <a class="btn btn-primary" href="@Home.msiUrl"><i class="glyphicon glyphicon-download"></i>
+            <h2>Get it <a class="btn btn-primary" href="@Home.msiDownload.url"><i class="glyphicon glyphicon-download"></i>
                 Download for Windows</a></h2>
             <p class="lead"><a href="@routes.Home.downloads()">Download</a>
-                the free server for <a href="@Home.msiUrl">Windows</a>
-                or <a href="@Home.debUrl">Linux</a>. Get the <strong>MusicPimp</strong> apps
+                the free server for <a href="@Home.msiDownload.url">Windows</a>
+                or <a href="@Home.debDownload.url">Linux</a>. Get the <strong>MusicPimp</strong> apps
                 for <a href="@Home.androidAppUri">Android</a> and <a href="@Home.amazonAppUri">Kindle Fire</a>,
                 <a href="@Home.winPhoneAppUri">Windows Phone</a> and <a href="@Home.winStoreAppUri">Windows 8</a>.</p>
         }

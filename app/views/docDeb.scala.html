@@ -2,16 +2,16 @@
 
 @docuBase("deb", Home.linuxConfFile)(debInstall)(debUninstall)
 
-    @debInstall = {
+@debInstall = {
     @bs.headerRow("DEB", "col-md-12")
     @bs.rowColumn("col-md-12") {
         @linuxReqs()
         <h2>Installation</h2>
-        <p>Download <a href="@Home.debUrl">@Home.debFileName</a> and execute:
-            <code>dpkg -i @Home.debFileName</code> </p>
+        <p>Download <a href="@Home.debDownload.url">@Home.debDownload.fileName</a> and execute:
+            <code>dpkg -i @Home.deb</code> </p>
     }
-    }
+}
 
-    @debUninstall = {
+@debUninstall = {
         <p><code>apt-get purge musicpimp</code></p>
-    }
+}
