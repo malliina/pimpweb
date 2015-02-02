@@ -10,7 +10,7 @@ object PimpBuild extends Build {
   lazy val pimpWeb = PlayProjects.plainPlayProject("pimpweb").settings(pimpSettings: _*)
 
   lazy val commonSettings = Seq(
-    version := "1.3.11",
+    version := "1.3.12",
     scalaVersion := "2.11.4",
     libraryDependencies ++= deps,
     retrieveManaged := false,
