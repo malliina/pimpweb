@@ -11,6 +11,8 @@ import play.twirl.api.Html
 import views.html
 
 /**
+ * Home controller.
+ *
  * @author Michael
  */
 object Home extends Controller with BaseController with Log {
