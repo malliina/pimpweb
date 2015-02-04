@@ -13,7 +13,7 @@ import views.html
 /**
  * Home controller.
  *
- * Goddammit.
+ * MORE STUFF HERE.
  *
  * @author Michael
  */
