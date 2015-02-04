@@ -13,6 +13,8 @@ import views.html
 /**
  * Home controller.
  *
+ * Goddammit.
+ *
  * @author Michael
  */
 object Home extends Controller with BaseController with Log {
