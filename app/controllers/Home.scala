@@ -22,6 +22,7 @@ object Home extends Controller with BaseController with Log {
   }
 
   val downloadBaseUrl = "http://files.musicpimp.org/files/"
+  // The latest MusicPimp server version
   val version = "2.7.1"
   val msiDownload = Download(s"musicpimp-$version.msi")
   val debDownload = Download(s"musicpimp_${version}_all.deb")
