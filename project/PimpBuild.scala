@@ -12,15 +12,15 @@ object PimpBuild extends Build {
   lazy val pimpWeb = PlayProjects.plainPlayProject("pimpweb").enablePlugins(BuildInfoPlugin).settings(pimpSettings: _*)
 
   lazy val commonSettings = Seq(
-    version := "1.4.1",
+    version := "1.4.2",
     scalaVersion := "2.11.6",
     libraryDependencies ++= deps,
     retrieveManaged := false,
     fork in Test := true,
-    resolvers ++= Seq(
+    resolvers := Seq(
       sbt.Resolver.jcenterRepo,
       "Sonatype releases" at "https://oss.sonatype.org/content/repositories/releases/",
-      "Bintray malliina" at "http://dl.bintray.com/malliina/maven")
+      "Bintray malliina" at "http://dl.bintray.com/malliina/maven") ++ resolvers.value
   )
   lazy val pimpSettings = commonSettings ++ herokuSettings ++ buildMetaSettings
 
@@ -37,7 +37,7 @@ object PimpBuild extends Build {
 
   lazy val deps = Seq(
     mleGroup %% "util-azure" % "1.8.1",
-    mleGroup %% "play-base" % "0.4.1",
+    mleGroup %% "play-base" % "0.4.2",
     "com.newrelic.agent.java" % "newrelic-agent" % "2.15.1" % "provided"
   )
 }
