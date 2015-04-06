@@ -4,13 +4,15 @@ import com.mle.sbt.cloud._
 import com.mle.sbtplay.PlayProjects
 import sbt.Keys._
 import sbt._
-import sbtbuildinfo.Plugin._
+import sbtbuildinfo.BuildInfoPlugin.BuildInfoKey
+import sbtbuildinfo.BuildInfoKeys.{buildInfoKeys, buildInfoPackage}
+import sbtbuildinfo.BuildInfoPlugin
 
 object PimpBuild extends Build {
-  lazy val pimpWeb = PlayProjects.plainPlayProject("pimpweb").settings(pimpSettings: _*)
+  lazy val pimpWeb = PlayProjects.plainPlayProject("pimpweb").enablePlugins(BuildInfoPlugin).settings(pimpSettings: _*)
 
   lazy val commonSettings = Seq(
-    version := "1.3.12",
+    version := "1.4.0",
     scalaVersion := "2.11.6",
     libraryDependencies ++= deps,
     retrieveManaged := false,
@@ -19,15 +21,13 @@ object PimpBuild extends Build {
   )
   lazy val pimpSettings = commonSettings ++
     herokuSettings ++
-    buildMetaSettings ++
-    net.virtualvoid.sbt.graph.Plugin.graphSettings
+    buildMetaSettings
 
   def herokuSettings = HerokuPlugin.settings ++ Seq(
     HerokuKeys.heroku := Paths.get( """C:\Program Files (x86)\Heroku\bin\heroku.bat""")
   )
 
-  def buildMetaSettings = buildInfoSettings ++ Seq(
-    sourceGenerators in Compile <+= buildInfo,
+  def buildMetaSettings = Seq(
     buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion),
     buildInfoPackage := "com.mle.pimpweb"
   )
