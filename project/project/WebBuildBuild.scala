@@ -14,15 +14,12 @@ object WebBuildBuild extends Build {
   ) ++ sbtPlugins
 
   def sbtPlugins = Seq(
-    "com.typesafe.play" % "sbt-plugin" % "2.3.6",
+    "com.typesafe.play" % "sbt-plugin" % "2.3.8",
     "com.github.malliina" %% "sbt-paas-deployer" % "1.0.0",
     "com.github.malliina" %% "sbt-play" % "0.1.1",
-    "com.eed3si9n" % "sbt-buildinfo" % "0.3.0",
-    "com.timushev.sbt" % "sbt-updates" % "0.1.6",
-    "net.virtual-void" % "sbt-dependency-graph" % "0.7.4"
+    "com.eed3si9n" % "sbt-buildinfo" % "0.3.0"
   ) map addSbtPlugin
 
   override lazy val projects = Seq(root)
   lazy val root = Project("plugins", file("."))
 }
-

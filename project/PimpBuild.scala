@@ -11,7 +11,7 @@ object PimpBuild extends Build {
 
   lazy val commonSettings = Seq(
     version := "1.3.12",
-    scalaVersion := "2.11.4",
+    scalaVersion := "2.11.6",
     libraryDependencies ++= deps,
     retrieveManaged := false,
     fork in Test := true,
@@ -35,8 +35,8 @@ object PimpBuild extends Build {
   val mleGroup = "com.github.malliina"
 
   lazy val deps = Seq(
-    mleGroup %% "util-azure" % "1.5.0",
-    mleGroup %% "play-base" % "0.1.2",
+    mleGroup %% "util-azure" % "1.8.0",
+    mleGroup %% "play-base" % "0.4.0",
     "com.newrelic.agent.java" % "newrelic-agent" % "2.15.1" % "provided"
   )
 }
