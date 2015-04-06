@@ -18,8 +18,8 @@ object PimpBuild extends Build {
     retrieveManaged := false,
     fork in Test := true,
     resolvers ++= Seq(
-      "Sonatype releases" at "https://oss.sonatype.org/content/repositories/releases/",
       sbt.Resolver.jcenterRepo,
+      "Sonatype releases" at "https://oss.sonatype.org/content/repositories/releases/",
       "Bintray malliina" at "http://dl.bintray.com/malliina/maven")
   )
   lazy val pimpSettings = commonSettings ++ herokuSettings ++ buildMetaSettings
