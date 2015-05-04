@@ -26,7 +26,7 @@ object Home extends Controller with BaseController with Log {
   val msiDownload = Download(s"musicpimp-$version.msi")
   val debDownload = Download(s"musicpimp_${version}_all.deb")
   val rpmDownload = Download(s"musicpimp-$version-0.noarch.rpm")
-  val dmgDownload = Download(s"musicpimp-2.7.3.dmg")
+  val dmgDownload = Download(s"musicpimp-2.8.2.dmg")
   val linuxConfFile = "/opt/musicpimp/musicpimp.conf"
   val windowsConfFile = """C:\Program Files (x86)\MusicPimp\musicpimp.conf"""
   val winPhoneAppUri = "http://www.windowsphone.com/s?appid=84cd9030-4a5c-4a03-b0ab-4d59c2fa7d42"
