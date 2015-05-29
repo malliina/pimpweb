@@ -97,6 +97,6 @@ object Home extends Controller with BaseController with Log {
 
   private def fileName(uri: URI) = {
     val uriString = uri.toString
-    uriString.substring((uriString lastIndexOf '/') + 1, uriString.size)
+    uriString.substring((uriString lastIndexOf '/') + 1, uriString.length)
   }
 }
