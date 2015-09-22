@@ -22,10 +22,10 @@ object Home extends Controller with BaseController with Log {
   }
 
   val downloadBaseUrl = "http://files.musicpimp.org/files/"
-  val version = "2.8.2"
+  val version = "2.9.1"
   val msiDownload = Download(s"musicpimp-$version.msi")
   val debDownload = Download(s"musicpimp_${version}_all.deb")
-  val rpmDownload = Download(s"musicpimp-$version-0.noarch.rpm")
+  val rpmDownload = Download(s"musicpimp-$version-1.noarch.rpm")
   val dmgDownload = Download(s"musicpimp-2.8.2.dmg")
   val linuxConfFile = "/opt/musicpimp/musicpimp.conf"
   val windowsConfFile = """C:\Program Files (x86)\MusicPimp\musicpimp.conf"""

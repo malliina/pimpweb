@@ -14,8 +14,12 @@ object PimpBuild extends Build {
     .enablePlugins(BuildInfoPlugin, play.sbt.PlayScala).settings(pimpSettings: _*)
 
   lazy val commonSettings = Seq(
-    version := "1.4.3",
-    scalaVersion := "2.11.6",
+    version := "1.4.4",
+    scalaVersion := "2.11.7",
+    resolvers ++= Seq(
+      Resolver.jcenterRepo,
+      Resolver.bintrayRepo("malliina", "maven")
+    ),
     libraryDependencies ++= deps,
     retrieveManaged := false,
     fork in Test := true
@@ -35,7 +39,7 @@ object PimpBuild extends Build {
 
   lazy val deps = Seq(
     mleGroup %% "util-azure" % "1.9.0",
-    mleGroup %% "play-base" % "0.5.0",
+    mleGroup %% "play-base" % "2.3.0",
     "com.newrelic.agent.java" % "newrelic-agent" % "2.15.1" % "provided"
   )
 }
