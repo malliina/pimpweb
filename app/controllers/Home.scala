@@ -2,9 +2,9 @@ package controllers
 
 import java.net.URI
 
-import com.mle.azure.{AzureStorageCredentialReader, StorageClient}
-import com.mle.play.controllers.BaseController
-import com.mle.util.Log
+import com.malliina.azure.{AzureStorageCredentialReader, StorageClient}
+import com.malliina.play.controllers.BaseController
+import com.malliina.util.Log
 import play.api.libs.json.Json
 import play.api.mvc.{Action, Controller}
 import play.twirl.api.Html
@@ -33,6 +33,7 @@ object Home extends Controller with BaseController with Log {
   val winStoreAppUri = "http://apps.microsoft.com/windows/en-us/app/musicpimp/73b9a42c-e38a-4edf-ac7e-00672230f7b6"
   val androidAppUri = "https://play.google.com/store/apps/details?id=org.musicpimp"
   val amazonAppUri = "http://www.amazon.com/gp/product/B00GVHTEJY/ref=mas_pm_musicpimp"
+  val iosAppUri = "https://geo.itunes.apple.com/fi/app/musicpimp/id1074372634?mt=8"
 
   val serverWebSocketResource = "/ws/playback"
   val serverPlaybackResource = "/playback"

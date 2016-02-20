@@ -1,8 +1,8 @@
 import java.nio.file.Paths
 
-import com.mle.sbt.cloud._
-import com.mle.sbtplay.PlayProjects
-import com.mle.sbtutils.SbtProjects
+//import com.malliina.sbt.cloud._
+import com.malliina.sbtplay.PlayProject
+import com.malliina.sbtutils.SbtProjects
 import sbt.Keys._
 import sbt._
 import sbtbuildinfo.BuildInfoPlugin.BuildInfoKey
@@ -14,7 +14,7 @@ object PimpBuild extends Build {
     .enablePlugins(BuildInfoPlugin, play.sbt.PlayScala).settings(pimpSettings: _*)
 
   lazy val commonSettings = Seq(
-    version := "1.4.4",
+    version := "1.5.0",
     scalaVersion := "2.11.7",
     resolvers ++= Seq(
       Resolver.jcenterRepo,
@@ -24,22 +24,22 @@ object PimpBuild extends Build {
     retrieveManaged := false,
     fork in Test := true
   )
-  lazy val pimpSettings = commonSettings ++ herokuSettings ++ buildMetaSettings
+  lazy val pimpSettings = commonSettings ++ buildMetaSettings
 
-  def herokuSettings = HerokuPlugin.settings ++ Seq(
-    HerokuKeys.heroku := Paths.get( """C:\Program Files (x86)\Heroku\bin\heroku.bat""")
-  )
+//  def herokuSettings = HerokuPlugin.settings ++ Seq(
+//    HerokuKeys.heroku := Paths.get( """C:\Program Files (x86)\Heroku\bin\heroku.bat""")
+//  )
 
   def buildMetaSettings = Seq(
     buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion),
     buildInfoPackage := "com.mle.pimpweb"
   )
 
-  val mleGroup = "com.github.malliina"
+  val mleGroup = "com.malliina"
 
   lazy val deps = Seq(
-    mleGroup %% "util-azure" % "1.9.0",
-    mleGroup %% "play-base" % "2.3.0",
+    mleGroup %% "util-azure" % "2.1.0",
+    mleGroup %% "play-base" % "2.5.0",
     "com.newrelic.agent.java" % "newrelic-agent" % "2.15.1" % "provided"
   )
 }
