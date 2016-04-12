@@ -10,11 +10,6 @@ import play.api.mvc.{Action, Controller}
 import play.twirl.api.Html
 import views.html
 
-/**
- * Home controller.
- *
- * @author Michael
- */
 object Home extends Controller with BaseController with Log {
 
   case class Download(fileName: String) {
@@ -22,7 +17,7 @@ object Home extends Controller with BaseController with Log {
   }
 
   val downloadBaseUrl = "http://files.musicpimp.org/files/"
-  val version = "2.9.7"
+  val version = "3.0.0"
   val msiDownload = Download(s"musicpimp-$version.msi")
   val debDownload = Download(s"musicpimp_${version}_all.deb")
   val rpmDownload = Download(s"musicpimp-$version-1.noarch.rpm")
