@@ -60,9 +60,7 @@ class Home extends Controller with BaseController {
 
   def wp = GoTo(html.docWinPhone())
 
-  def api = GoTo(html.docApi())
-
-  def api2 = GoTo {
+  def api = GoTo {
     html.docApi2(
       doc("Requests"),
       doc("Responses"),
