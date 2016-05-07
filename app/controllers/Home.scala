@@ -3,14 +3,14 @@ package controllers
 import java.net.URI
 
 import com.malliina.azure.{AzureStorageCredentialReader, StorageClient}
+import com.malliina.file.FileUtilities
 import com.malliina.play.controllers.BaseController
-import com.malliina.util.Log
 import play.api.libs.json.Json
 import play.api.mvc.{Action, Controller}
-import play.twirl.api.Html
+import play.twirl.api.{Html, HtmlFormat}
 import views.html
 
-object Home extends Controller with BaseController with Log {
+object Home {
 
   case class Download(fileName: String) {
     val url = toUrl(fileName)
@@ -22,6 +22,7 @@ object Home extends Controller with BaseController with Log {
   val debDownload = Download(s"musicpimp_${version}_all.deb")
   val rpmDownload = Download(s"musicpimp-$version-1.noarch.rpm")
   val dmgDownload = Download(s"musicpimp-2.8.2.dmg")
+  val latestDownloads = Seq(msiDownload, debDownload, rpmDownload, dmgDownload)
   val linuxConfFile = "/opt/musicpimp/musicpimp.conf"
   val windowsConfFile = """C:\Program Files (x86)\MusicPimp\musicpimp.conf"""
   val winPhoneAppUri = "http://www.windowsphone.com/s?appid=84cd9030-4a5c-4a03-b0ab-4d59c2fa7d42"
@@ -36,7 +37,9 @@ object Home extends Controller with BaseController with Log {
   val webPlayPostResource = "/webplay"
 
   private def toUrl(fileName: String) = downloadBaseUrl + fileName
+}
 
+class Home extends Controller with BaseController {
   def ping = Action(NoCache(Ok))
 
   def index = GoTo(html.index())
@@ -58,6 +61,20 @@ object Home extends Controller with BaseController with Log {
   def wp = GoTo(html.docWinPhone())
 
   def api = GoTo(html.docApi())
+
+  def api2 = GoTo {
+    html.docApi2(
+      doc("Requests"),
+      doc("Responses"),
+      doc("ClientMethods"),
+      doc("ServerEvents"),
+      doc("CodeSamples"))
+  }
+
+  def doc(res: String): Html = {
+    val str = FileUtilities.readerFrom(s"docs/$res.md")(_.mkString(FileUtilities.lineSep))
+    Docs.fromString(str) getOrElse HtmlFormat.empty
+  }
 
   def alarms = GoTo(html.alarms())
 
@@ -81,14 +98,15 @@ object Home extends Controller with BaseController with Log {
     (downloadables filterNot isLatest).toSeq.reverse
 
   private def isLatest(fileName: String) =
-    fileName == msiDownload.fileName || fileName == debDownload.fileName || fileName == rpmDownload.fileName || fileName == dmgDownload.fileName
+    Home.latestDownloads.exists(_.fileName == fileName)
 
   private def downloadables: Iterable[String] = {
-    AzureStorageCredentialReader.loadOpt.map(creds => {
+    val maybeFiles = AzureStorageCredentialReader.loadOpt.map { creds =>
       val client = new StorageClient(creds.accountName, creds.accountKey)
       val uriStrings = client uris "files"
       uriStrings map fileName filter (_.startsWith("musicpimp"))
-    }).getOrElse(Seq.empty)
+    }
+    maybeFiles getOrElse Nil
   }
 
   private def fileName(uri: URI) = {

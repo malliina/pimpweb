@@ -1,10 +1,6 @@
 import sbt._
 import sbt.Keys._
 
-/**
- *
- * @author mle
- */
 object WebBuildBuild extends Build {
   // "build.sbt" goes here
   override lazy val settings = super.settings ++ Seq(
@@ -17,8 +13,8 @@ object WebBuildBuild extends Build {
   ) ++ sbtPlugins
 
   def sbtPlugins = Seq(
-    "com.typesafe.play" % "sbt-plugin" % "2.4.6",
-    "com.malliina" %% "sbt-play" % "0.6.0",
+    "com.typesafe.play" % "sbt-plugin" % "2.5.3",
+    "com.malliina" %% "sbt-play" % "0.7.2",
     "com.eed3si9n" % "sbt-buildinfo" % "0.5.0"
   ) map addSbtPlugin
 

@@ -1,0 +1,27 @@
+@(requests: Html, responses: Html, clientMethods: Html, serverEvents: Html, codeSamples: Html)
+
+@indexMain("api") {
+    @bs.headerRow("Develop", "col-md-12")
+    @bs.rowColumn("col-md-9") {
+        <p class="lead">Develop apps for MusicPimp using the JSON API.</p>
+    }
+    @bs.row {
+        @util.div("col-md-6") {
+            @requests
+        }
+        @util.div("col-md-6") {
+            @responses
+        }
+    }
+    @bs.row {
+        @util.div("col-md-6") {
+            @clientMethods
+        }
+        @util.div("col-md-6") {
+            @serverEvents
+        }
+    }
+    @bs.rowColumn("col-md-8") {
+        @codeSamples
+    }
+}
