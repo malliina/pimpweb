@@ -17,7 +17,7 @@ object Home {
   }
 
   val downloadBaseUrl = "https://files.musicpimp.org/files/"
-  val version = "3.0.0"
+  val version = "3.0.3"
   val msiDownload = Download(s"musicpimp-$version.msi")
   val debDownload = Download(s"musicpimp_${version}_all.deb")
   val rpmDownload = Download(s"musicpimp-$version-1.noarch.rpm")
