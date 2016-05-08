@@ -23,7 +23,7 @@ object Home {
   val rpmDownload = Download(s"musicpimp-$version-1.noarch.rpm")
   val dmgDownload = Download(s"musicpimp-2.8.2.dmg")
   val latestDownloads = Seq(msiDownload, debDownload, rpmDownload, dmgDownload)
-  val linuxConfFile = "/opt/musicpimp/musicpimp.conf"
+  val linuxConfFile = "/etc/musicpimp/application.ini"
   val windowsConfFile = """C:\Program Files (x86)\MusicPimp\musicpimp.conf"""
   val winPhoneAppUri = "https://www.windowsphone.com/s?appid=84cd9030-4a5c-4a03-b0ab-4d59c2fa7d42"
   val winStoreAppUri = "http://apps.microsoft.com/windows/en-us/app/musicpimp/73b9a42c-e38a-4edf-ac7e-00672230f7b6"
