@@ -109,6 +109,76 @@ Example response:
             "size":7143257
         }
     ]
+    
+#### Get most popular tracks
+
+    GET /player/popular
+    
+ Returns an array (in key *populars*) of the most played tracks along with the playback count
+ (in key *playbackCount*) of each track.
+ 
+    {
+        "populars": [
+            {
+                "track": {
+                    "id": "Kent%5C2007+-+Tillbaka+Till+Samtiden%5C01_kent-elefanter.mp3",
+                    "title": "Elefanter",
+                    "artist": "Kent",
+                    "album": "Tillbaka Till Samtiden",
+                    "duration": 321,
+                    "size": 7639850
+                },
+                "playbackCount": 42
+            },
+            {
+                "track": {
+                    "id": "Kent%5C2007+-+Tillbaka+Till+Samtiden%5C02_kent-berlin.mp3",
+                    "title": "Berlin",
+                    "artist": "Kent",
+                    "album": "Tillbaka Till Samtiden",
+                    "duration": 276,
+                    "size": 7143257
+                },
+                "playbackCount": 41
+            }
+        ]
+    }
+
+#### Get most recently played tracks
+
+    GET /player/recent
+    
+Returns an array (in key *recents*) of the most recently played tracks, 
+starting from the most recently played track, along with a timestamp 
+(in key *when*, given in unix time in milliseconds) when playback started. 
+Example response:
+
+    {
+        "recents": [
+            {
+                "track": {
+                    "id": "Kent%5C2007+-+Tillbaka+Till+Samtiden%5C01_kent-elefanter.mp3",
+                    "title": "Elefanter",
+                    "artist": "Kent",
+                    "album": "Tillbaka Till Samtiden",
+                    "duration": 321,
+                    "size": 7639850
+                },
+                "when": 1462812430364
+            },
+            {
+                "track": {
+                    "id": "Kent%5C2007+-+Tillbaka+Till+Samtiden%5C02_kent-berlin.mp3",
+                    "title": "Berlin",
+                    "artist": "Kent",
+                    "album": "Tillbaka Till Samtiden",
+                    "duration": 276,
+                    "size": 7143257
+                },
+                "when": 1462812422540
+            }
+        ]
+    }
 
 ### Remote playback control
 
