@@ -9,7 +9,9 @@ HTTP requests are made using URLs like
 Library folders contain audio tracks and subfolders. Use the following methods 
 to browse and retrieve items from the library.
    
-#### Get root folder <small>GET /folders</small>
+#### Get root folder
+
+    GET /folders
 
 Returns the contents of the root folder of the music library.
 
@@ -66,24 +68,32 @@ Example response:
         ]
     }
 
-#### Get subfolder <small>GET /folders/my_folder_id_here </small>
+#### Get subfolder
+
+    GET /folders/my_folder_id_here
 
 Returns the contents of the specified music library folder.
 
 <span class="label label-info">Note</span> First request the contents of the root folder 
 in order to get a list of subfolders for further browsing.
 
-#### Get track <small>GET /tracks/my_track_id</small>
+#### Get track
+
+    GET /tracks/my_track_id
 
 Retrieves the file with the specified ID. Supply this to a media player that accepts a 
 URI as media source, for example.
 
-#### Get track, with Accept-Ranges<small> GET /downloads/my_track_id</small>
+#### Get track, with Accept-Ranges
+
+    GET /downloads/my_track_id
 
 The same as above except that the HTTP response contains the string `bytes` 
 in the **Accept-Ranges** header.
 
-#### Search <small>GET /search?term=tillbaka+till+samtiden&limit=100</small>
+#### Search
+
+    GET /search?term=tillbaka+till+samtiden&limit=100
 
 Search for a track, album or artist. Specify your search query in the **term** query
 parameter, and optionally set the maximum number of returned results in the **limit** query
@@ -93,20 +103,20 @@ Example response:
 
     [
         {
-            "id":"Kent%5C2007+-+Tillbaka+Till+Samtiden%5C01_kent-elefanter.mp3",
-            "title":"Elefanter",
-            "artist":"Kent",
-            "album":"Tillbaka Till Samtiden",
-            "duration":321,
-            "size":7639850
+            "id": "Kent%5C2007+-+Tillbaka+Till+Samtiden%5C01_kent-elefanter.mp3",
+            "title": "Elefanter",
+            "artist": "Kent",
+            "album": "Tillbaka Till Samtiden",
+            "duration": 321,
+            "size": 7639850
         },
         {
-            "id":"Kent%5C2007+-+Tillbaka+Till+Samtiden%5C02_kent-berlin.mp3",
-            "title":"Berlin",
-            "artist":"Kent",
-            "album":"Tillbaka Till Samtiden",
-            "duration":276,
-            "size":7143257
+            "id": "Kent%5C2007+-+Tillbaka+Till+Samtiden%5C02_kent-berlin.mp3",
+            "title": "Berlin",
+            "artist": "Kent",
+            "album": "Tillbaka Till Samtiden",
+            "duration": 276,
+            "size": 7143257
         }
     ]
     
@@ -115,7 +125,7 @@ Example response:
     GET /player/popular
     
  Returns an array (in key *populars*) of the most played tracks along with the playback count
- (in key *playbackCount*) of each track.
+ (in key *playbackCount*) of each track:
  
     {
         "populars": [
@@ -150,8 +160,7 @@ Example response:
     
 Returns an array (in key *recents*) of the most recently played tracks, 
 starting from the most recently played track, along with a timestamp 
-(in key *when*, given in unix time in milliseconds) when playback started. 
-Example response:
+(in key *when*, given in unix time in milliseconds) when playback started:
 
     {
         "recents": [
@@ -179,7 +188,133 @@ Example response:
             }
         ]
     }
+    
+### Alarms
 
+Schedule tracks for playback on your MusicPimp server. Use this as an  
+alarm clock, for example.
+
+#### Get alarms
+
+    GET /alarms
+    
+Returns an array of alarms configured on the MusicPimp server:
+
+    [
+        {
+            "id": "d7e506f0-9c05-4253-8fff-13ef37b8b38c",
+            "job": {
+                "track": "Chicane%5C17-chicane_ft_moya_brennan-saltwater.mp3"
+            },
+            "when": {
+                "hour": 6,
+                "minute": 40,
+                "days": [
+                    "fri",
+                    "wed",
+                    "mon",
+                    "thu",
+                    "tue"
+                ]
+            },
+            "enabled": true
+        }
+    ]
+    
+#### Control alarms
+
+    POST /alarms
+    
+To control alarms, HTTP POST a request body with JSON to the */alarms* endpoint. Each JSON body
+must at least contain a *cmd* key and may contain other key-value pairs, as documented below.
+
+Save changes to an existing alarm:
+
+    { 
+        "cmd": "save", 
+        "ap": {
+            "id": "d7e506f0-9c05-4253-8fff-13ef37b8b38c",
+            "job": {
+                "track": "Chicane%5C17-chicane_ft_moya_brennan-saltwater.mp3"
+            },
+            "when": {
+                "hour": 6,
+                "minute": 40,
+                "days": [
+                    "fri",
+                    "wed",
+                    "mon",
+                    "thu",
+                    "tue"
+                ]
+            },
+            "enabled": true
+        }
+    }
+    
+To create a new alarm, POST a payload like above, but set the alarm *id* to *null*:
+
+    "id": null
+    
+MusicPimp will generate a suitable ID for the alarm.
+    
+Delete an alarm:
+ 
+    { "cmd": "delete", "id": "alarm_id_here" }
+    
+Start alarm playback: 
+
+    { "cmd": "start", "id": "alarm_id_here" }
+    
+Stop alarm playback:
+
+    { "cmd": "stop" }
+    
+You may opt-in to receive push notifications to your mobile device(s) when
+scheduled playback starts. You may use such a notification to stop playback.
+
+To opt-in, you must register your device for push notifications with MusicPimp:
+
+Register a Microsoft Push Notification Service (MPNS) device:
+
+    { "cmd": "push_add", "url": "mpns_device_url_here", "silent": true, "tag": "tag_identifier" }
+    
+Unregister an MPNS device:
+
+    { "cmd": "push_remove", "url": "mpns_device_url_here" }
+    
+or
+
+    { "cmd": "push_remove", "tag": "tag_identifier" }
+    
+Register an Android device using Google Cloud Messaging (GCM):
+
+    { "cmd": "gcm_add", "id": "device_token", "tag": "tag_identifier" }
+    
+Unregister a GCM device:
+
+    { "cmd": "gcm_remove", "id": "tag_identifier" }
+    
+Register an Android device using Amazon Device Messaging (ADM):
+
+    { "cmd": "adm_add", "id": "device_token", "tag": "tag_identifier" }
+
+Unregister an ADM device:
+
+    { "cmd": "adm_remove", "id": "tag_identifier" }
+    
+Register an Apple Push Notification service (APNs) device:
+
+    { "cmd": "apns_add", "id": "device_token", "tag": "tag_identifier" }
+
+Unregister an APNs device:
+
+    { "cmd": "apns_remove", "id": "tag_identifier" }
+    
+Supply a unique and static *tag* ID with your registrations. This is used to
+identify your device (as device tokens may change) and is included in the payload
+of every push notification so that devices can identify the source MusicPimp server.
+    
 ### Remote playback control
 
 Control a remote playback device using WebSockets or HTTP POST calls. 
@@ -243,44 +378,46 @@ Turn mute on or off (true/false):
 
     {"cmd": "mute", "value": true}
             
-#### Status <small>GET /playback</small>
+#### Status
+
+    GET /playback
             
 Returns a server player status message.
             
 Example response:
             
     {
-        "track":{
-            "id":"Paola+-+Interstellar+Love.mp3",
-            "title":"Interstellar Love",
-            "artist":"Paola",
-            "album":"Stockcity Girl",
-            "duration":201,
-            "size":4840094
+        "track": {
+            "id": "Paola+-+Interstellar+Love.mp3",
+            "title": "Interstellar Love",
+            "artist": "Paola",
+            "album": "Stockcity Girl",
+            "duration": 201,
+            "size": 4840094
         },
-        "state":"Started",
-        "position":14,
-        "volume":40,
-        "mute":false,
-        "playlist":[
+        "state": "Started",
+        "position": 14,
+        "volume": 40,
+        "mute": false,
+        "playlist": [
             {
-                "id":"Paola+-+Interstellar+Love.mp3",
-                "title":"Interstellar Love",
-                "artist":"Paola",
-                "album":"Stockcity Girl",
-                "duration":201,
-                "size":4840094
+                "id": "Paola+-+Interstellar+Love.mp3",
+                "title": "Interstellar Love",
+                "artist": "Paola",
+                "album": "Stockcity Girl",
+                "duration": 201,
+                "size": 4840094
             },
             {
-                "id":"cheap+trick+-+hello+there.mp3",
-                "title":"Hello There",
-                "artist":"Cheap Trick",
-                "album":"The Essential Cheap Trick",
-                "duration":100,
-                "size":2573904
+                "id": "cheap+trick+-+hello+there.mp3",
+                "title": "Hello There",
+                "artist": "Cheap Trick",
+                "album": "The Essential Cheap Trick",
+                "duration": 100,
+                "size": 2573904
             }
         ],
-        "playlist_index":0
+        "playlist_index": 0
     }
 
 #### Upload library track <small>POST to /playback/stream</small>
@@ -324,14 +461,18 @@ Start playback of the track at the specified playlist index:
     
 ### Miscellaneous
 
-#### Ping <small>GET /ping</small>
+#### Ping
+
+    GET /ping
 
 Pings the server. Returns a 200 OK HTTP response on success.
 
 <span class="label label-info">Note</span> Ping is the only API call that 
 does not require authentication.
     
-#### Authenticated ping <small>GET /pingauth</small>
+#### Authenticated ping
+
+    GET /pingauth
 
 Pings the server and validates the supplied credentials. Responds with 200 OK 
 and the server version as JSON content if the credentials are valid, and with
