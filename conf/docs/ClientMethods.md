@@ -340,6 +340,16 @@ Start playback of the track with the given ID using the following HTTP request b
 <span class="label label-info">Note</span> Browse the music [library](#library) 
 to obtain IDs of available tracks. If the track you wish to play is not
 located on the MusicPimp server, see the next item instead.
+
+#### Play all
+
+Reset the playlist with the given tracks and start playback from the first track:
+
+    {
+        "cmd": "play_items", 
+        "folders": [ "folder_id1", "folder_id2" ], 
+        "tracks": [ "track_id1", "track_id2" ]
+    }
             
 #### Play uploaded file <small>POST to /playback/uploads</small>
 
@@ -359,6 +369,24 @@ Stop playback:
 Resume playback: 
 
     {"cmd": "resume"}
+    
+#### Next
+
+Start playback of the next track in the playlist:
+
+    {"cmd": "next"}
+
+#### Previous
+
+Start playback of the previous track in the playlist:
+
+    {"cmd": "prev"}
+
+#### Skip <small>HTTP POST or WebSocket</small>
+
+Start playback of the track at the specified playlist index:
+
+    {"cmd": "skip", "value": 3}
             
 #### Seek <small>HTTP POST or WebSocket</small>
             
@@ -443,6 +471,28 @@ Add the track with the specified ID to the playlist:
 
     {"cmd": "add", "track": "my_track_id"}
     
+#### Add all
+
+Add multiple items to the playlist:
+
+    {
+        "cmd": "add_items", 
+        "folders": [ "folder_id1", "folder_id2" ], 
+        "tracks": [ "track_id1", "track_id2" ]
+    }
+    
+#### Reset playlist
+
+Reset the playlist to the given *tracks* and set the index to *index*:
+    
+    {
+        "cmd": "reset_playlist",
+        "tracks": [ "track_id1", "track_id2" ],
+        "index": 0
+    }
+    
+Resetting the playlist does not start or stop playback.    
+
 #### Add uploaded file <small>POST to /playlist/uploads</small>
 
 Add the file uploaded as multipart/form-data to the playlist.
@@ -453,12 +503,134 @@ Remove the track at the specified playlist index from the playlist:
 
     {"cmd": "remove", "value": 3}
     
-#### Skip <small>HTTP POST or WebSocket</small>
+#### Insert track
 
-Start playback of the track at the specified playlist index:
+Insert the given track at the specified index in the playlist:
 
-    {"cmd": "skip", "value": 3}
+    {"cmd": "insert", "track": "my_track_id", "index": 42}
     
+#### Move track in playlist
+
+Move the track at index *from* in the playlist to index *to*:
+
+    {"cmd": "move", "from": 42, "to": 43}
+    
+#### Get saved playlists
+
+Saved playlists are user-specific.
+    
+    GET /playlists
+    
+Returns an array of saved playlists for the logged in user:    
+
+    {
+        "playlists": [
+            {
+                "id": 42,
+                "name": "The best playlist ever",
+                "tracks":[
+                    {
+                        "id":"00+-+Preludio+Obsesivo.mp3",
+                        "title":"Preludio Obsesivo",
+                        "artist":"Rata Blanca",
+                        "album":"Rata Blanca",
+                        "duration":222,
+                        "size":3108553
+                    },
+                    {
+                        "id":"00+-+Turn+Me+On.mp3",
+                        "title":"Turn Me On",
+                        "artist":"Kevin Lyttle",
+                        "album":"Summer In The City - Latin Party",
+                        "duration":175,
+                        "size":4225234
+                    },
+                    {
+                        "id":"A+Ha+-+Take+On+Me.mp3",
+                        "title":"Take On Me [October 1985]",
+                        "artist":"A-Ha",
+                        "album":"The Definitive Singles Collection 1984-2004",
+                        "duration":227,
+                        "size":5470208
+                    }
+                ]
+            }
+        ]
+    }
+    
+#### Get one saved playlist
+
+Get a playlist by ID:
+
+    GET /playlists/42
+    
+Example response:
+
+    {
+        "playlist": {
+            "id": 42,
+            "name": "The best playlist ever",
+            "tracks":[
+                {
+                    "id":"00+-+Preludio+Obsesivo.mp3",
+                    "title":"Preludio Obsesivo",
+                    "artist":"Rata Blanca",
+                    "album":"Rata Blanca",
+                    "duration":222,
+                    "size":3108553
+                },
+                {
+                    "id":"00+-+Turn+Me+On.mp3",
+                    "title":"Turn Me On",
+                    "artist":"Kevin Lyttle",
+                    "album":"Summer In The City - Latin Party",
+                    "duration":175,
+                    "size":4225234
+                },
+                {
+                    "id":"A+Ha+-+Take+On+Me.mp3",
+                    "title":"Take On Me [October 1985]",
+                    "artist":"A-Ha",
+                    "album":"The Definitive Singles Collection 1984-2004",
+                    "duration":227,
+                    "size":5470208
+                }
+            ]
+        }
+    }
+    
+#### Create or update a saved playlist
+    
+    POST /playlists
+    
+Saves the playlist supplied in the JSON body of the request:    
+
+    {
+        "playlist": {
+            "id": 42,
+            "name": "My updated playlist",
+            "tracks": [ "track_id1", "track_id2" ]
+        }
+    }
+       
+To create a new playlist, set the ID to *null* in the above JSON body:
+
+    "id": null
+    
+Returns the ID of the saved playlist in a JSON object:
+
+    {
+        "id": 42
+    }
+    
+#### Delete a saved playlist
+
+Delete a playlist with a given ID:
+
+    POST /playlists/delete/42
+    
+Returns HTTP 202 Accepted if deletion succeeds.
+
 ### Miscellaneous
 
 #### Ping
