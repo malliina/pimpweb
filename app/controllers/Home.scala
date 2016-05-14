@@ -64,7 +64,7 @@ class Home extends Controller with BaseController {
     html.docApi2(
       doc("Requests"),
       doc("Responses"),
-      doc("ClientMethods"),
+      doc("HttpEndpoints"),
       doc("ServerEvents"),
       doc("CodeSamples"))
   }

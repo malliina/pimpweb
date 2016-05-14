@@ -1,4 +1,4 @@
-## Requests
+## Requests <div id="requests" class="area"></div>
 
 Clients may interact with the MusicPimp server using HTTP requests and/or 
 [WebSocket](http://en.wikipedia.org/wiki/WebSockets) connections.

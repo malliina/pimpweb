@@ -1,4 +1,4 @@
-## Server-side events
+## Server-side events <div id="server" class="area"></div>
 
 You can subscribe to server-side playback updates. This is useful when you want to display 
 a player in your app even though playback happens on another device.

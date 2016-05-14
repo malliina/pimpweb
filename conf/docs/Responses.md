@@ -1,4 +1,4 @@
-## Responses
+## Responses <div id="responses" class="area"></div>
 
 The MusicPimp server responds to requests in either **JSON** (application/json)
 or **HTML** (text/html), depending on what the client has requested.

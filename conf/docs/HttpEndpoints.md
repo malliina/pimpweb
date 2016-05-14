@@ -1,10 +1,10 @@
-## Client-side methods
+## HTTP endpoints <div id="endpoints" class="area"></div>
 
 HTTP requests are made using URLs like
 
     http://my_server_ip:8456/playback
     
-### Library <a name="library"></a>
+### Library <div name="library" id="library"></a>
 
 Library folders contain audio tracks and subfolders. Use the following methods 
 to browse and retrieve items from the library.
@@ -463,7 +463,7 @@ of a track in its library to a remote destination.
 The credentials will be put into the **Authorization** header of the upload request
 as if the destination required HTTP Basic authentication.
 
-### Playlist
+### Playlist <a name="playlist" id="playlist"></a>
 
 #### Add <small>HTTP POST or WebSocket</small>
 

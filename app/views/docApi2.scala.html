@@ -1,4 +1,4 @@
-@(requests: Html, responses: Html, clientMethods: Html, serverEvents: Html, codeSamples: Html)
+@(requests: Html, responses: Html, httpEndpoints: Html, serverEvents: Html, codeSamples: Html)
 
 @indexMain("api") {
     @bs.headerRow("Develop", "col-md-12")
@@ -6,22 +6,31 @@
         <p class="lead">Develop apps for MusicPimp using the JSON API.</p>
     }
     @bs.row {
-        @util.div("col-md-6") {
+        @util.div("col-md-8") {
             @requests
-        }
-        @util.div("col-md-6") {
             @responses
-        }
-    }
-    @bs.row {
-        @util.div("col-md-6") {
-            @clientMethods
-        }
-        @util.div("col-md-6") {
+            @httpEndpoints
             @serverEvents
+            @codeSamples
         }
-    }
-    @bs.rowColumn("col-md-8") {
-        @codeSamples
+        <nav class="col-md-3 bs-docs-sidebar" id="sidenav">
+            <ul class="nav nav-stacked affix" id="sidebar">
+                <li>
+                    <a href="#requests">Requests</a>
+                </li>
+                <li>
+                    <a href="#responses">Responses</a>
+                </li>
+                <li>
+                    <a href="#endpoints">HTTP endpoints</a>
+                </li>
+                <li>
+                    <a href="#server">Server events</a>
+                </li>
+                <li>
+                    <a href="#code">Code samples</a>
+                </li>
+            </ul>
+        </nav>
     }
 }

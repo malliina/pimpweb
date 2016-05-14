@@ -13,8 +13,9 @@
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css">
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+        <script src="@routes.Assets.at("js/docs.js")"></script>
     </head>
-    <body>
+    <body data-spy="scroll" data-target="#sidenav" data-offset="200">
         <div id="wrap">
             @content
             <div id="push"></div>
