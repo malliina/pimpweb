@@ -6,14 +6,21 @@
         <title>@title</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="shortcut icon" href="@routes.Assets.at("img/guitar-18x16.png")" />
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
-        <link rel="stylesheet" href="@routes.Assets.at("css/custom.css")">
-        <link rel="stylesheet" href="@routes.Assets.at("css/footer.css")">
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css">
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-        <script src="@routes.Assets.at("js/docs.js")"></script>
+        @util.css(
+            "//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css",
+            "//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css",
+            "//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css"
+        )
+        @util.routedCss(
+            routes.Assets.at("css/custom.css"),
+            routes.Assets.at("css/sidebar.css"),
+            routes.Assets.at("css/footer.css")
+        )
+        @util.script(
+            "//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js",
+            "//netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"
+        )
+        @util.routedScript(routes.Assets.at("js/docs.js"))
     </head>
     <body data-spy="scroll" data-target="#sidenav" data-offset="200">
         <div id="wrap">
@@ -22,7 +29,7 @@
         </div>
         <div id="footer">
             @util.div("container"){
-                <p class="muted credit pull-right">Developed by <a href="http://mskogberg.info">Michael Skogberg</a>.</p>
+                <p class="muted credit pull-right">Developed by <a href="https://mskogberg.info">Michael Skogberg</a>.</p>
             }
         </div>
     </body>

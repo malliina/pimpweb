@@ -4,7 +4,7 @@ HTTP requests are made using URLs like
 
     http://my_server_ip:8456/playback
     
-### Library <div name="library" id="library"></a>
+### Library <div id="library" class="sub-area"></a>
 
 Library folders contain audio tracks and subfolders. Use the following methods 
 to browse and retrieve items from the library.
@@ -188,134 +188,8 @@ starting from the most recently played track, along with a timestamp
             }
         ]
     }
-    
-### Alarms
 
-Schedule tracks for playback on your MusicPimp server. Use this as an  
-alarm clock, for example.
-
-#### Get alarms
-
-    GET /alarms
-    
-Returns an array of alarms configured on the MusicPimp server:
-
-    [
-        {
-            "id": "d7e506f0-9c05-4253-8fff-13ef37b8b38c",
-            "job": {
-                "track": "Chicane%5C17-chicane_ft_moya_brennan-saltwater.mp3"
-            },
-            "when": {
-                "hour": 6,
-                "minute": 40,
-                "days": [
-                    "fri",
-                    "wed",
-                    "mon",
-                    "thu",
-                    "tue"
-                ]
-            },
-            "enabled": true
-        }
-    ]
-    
-#### Control alarms
-
-    POST /alarms
-    
-To control alarms, HTTP POST a request body with JSON to the */alarms* endpoint. Each JSON body
-must at least contain a *cmd* key and may contain other key-value pairs, as documented below.
-
-Save changes to an existing alarm:
-
-    { 
-        "cmd": "save", 
-        "ap": {
-            "id": "d7e506f0-9c05-4253-8fff-13ef37b8b38c",
-            "job": {
-                "track": "Chicane%5C17-chicane_ft_moya_brennan-saltwater.mp3"
-            },
-            "when": {
-                "hour": 6,
-                "minute": 40,
-                "days": [
-                    "fri",
-                    "wed",
-                    "mon",
-                    "thu",
-                    "tue"
-                ]
-            },
-            "enabled": true
-        }
-    }
-    
-To create a new alarm, POST a payload like above, but set the alarm *id* to *null*:
-
-    "id": null
-    
-MusicPimp will generate a suitable ID for the alarm.
-    
-Delete an alarm:
- 
-    { "cmd": "delete", "id": "alarm_id_here" }
-    
-Start alarm playback: 
-
-    { "cmd": "start", "id": "alarm_id_here" }
-    
-Stop alarm playback:
-
-    { "cmd": "stop" }
-    
-You may opt-in to receive push notifications to your mobile device(s) when
-scheduled playback starts. You may use such a notification to stop playback.
-
-To opt-in, you must register your device for push notifications with MusicPimp:
-
-Register a Microsoft Push Notification Service (MPNS) device:
-
-    { "cmd": "push_add", "url": "mpns_device_url_here", "silent": true, "tag": "tag_identifier" }
-    
-Unregister an MPNS device:
-
-    { "cmd": "push_remove", "url": "mpns_device_url_here" }
-    
-or
-
-    { "cmd": "push_remove", "tag": "tag_identifier" }
-    
-Register an Android device using Google Cloud Messaging (GCM):
-
-    { "cmd": "gcm_add", "id": "device_token", "tag": "tag_identifier" }
-    
-Unregister a GCM device:
-
-    { "cmd": "gcm_remove", "id": "tag_identifier" }
-    
-Register an Android device using Amazon Device Messaging (ADM):
-
-    { "cmd": "adm_add", "id": "device_token", "tag": "tag_identifier" }
-
-Unregister an ADM device:
-
-    { "cmd": "adm_remove", "id": "tag_identifier" }
-    
-Register an Apple Push Notification service (APNs) device:
-
-    { "cmd": "apns_add", "id": "device_token", "tag": "tag_identifier" }
-
-Unregister an APNs device:
-
-    { "cmd": "apns_remove", "id": "tag_identifier" }
-    
-Supply a unique and static *tag* ID with your registrations. This is used to
-identify your device (as device tokens may change) and is included in the payload
-of every push notification so that devices can identify the source MusicPimp server.
-    
-### Remote playback control
+### Player <div id="player" class="sub-area"></a>
 
 Control a remote playback device using WebSockets or HTTP POST calls. 
 Two types of remote playback devices are supported:
@@ -463,7 +337,7 @@ of a track in its library to a remote destination.
 The credentials will be put into the **Authorization** header of the upload request
 as if the destination required HTTP Basic authentication.
 
-### Playlist <a name="playlist" id="playlist"></a>
+### Playlist <div id="playlist" class="sub-area"></a>
 
 #### Add <small>HTTP POST or WebSocket</small>
 
@@ -631,7 +505,133 @@ Delete a playlist with a given ID:
     
 Returns HTTP 202 Accepted if deletion succeeds.
 
-### Miscellaneous
+### Alarms <div id="alarms" class="sub-area"></a>
+
+Schedule tracks for playback on your MusicPimp server. Use this as an
+alarm clock, for example.
+
+#### Get alarms
+
+    GET /alarms
+
+Returns an array of alarms configured on the MusicPimp server:
+
+    [
+        {
+            "id": "d7e506f0-9c05-4253-8fff-13ef37b8b38c",
+            "job": {
+                "track": "Chicane%5C17-chicane_ft_moya_brennan-saltwater.mp3"
+            },
+            "when": {
+                "hour": 6,
+                "minute": 40,
+                "days": [
+                    "fri",
+                    "wed",
+                    "mon",
+                    "thu",
+                    "tue"
+                ]
+            },
+            "enabled": true
+        }
+    ]
+
+#### Control alarms
+
+    POST /alarms
+
+To control alarms, HTTP POST a request body with JSON to the */alarms* endpoint. Each JSON body
+must at least contain a *cmd* key and may contain other key-value pairs, as documented below.
+
+Save changes to an existing alarm:
+
+    {
+        "cmd": "save",
+        "ap": {
+            "id": "d7e506f0-9c05-4253-8fff-13ef37b8b38c",
+            "job": {
+                "track": "Chicane%5C17-chicane_ft_moya_brennan-saltwater.mp3"
+            },
+            "when": {
+                "hour": 6,
+                "minute": 40,
+                "days": [
+                    "fri",
+                    "wed",
+                    "mon",
+                    "thu",
+                    "tue"
+                ]
+            },
+            "enabled": true
+        }
+    }
+
+To create a new alarm, POST a payload like above, but set the alarm *id* to *null*:
+
+    "id": null
+
+MusicPimp will generate a suitable ID for the alarm.
+
+Delete an alarm:
+
+    { "cmd": "delete", "id": "alarm_id_here" }
+
+Start alarm playback:
+
+    { "cmd": "start", "id": "alarm_id_here" }
+
+Stop alarm playback:
+
+    { "cmd": "stop" }
+
+You may opt-in to receive push notifications to your mobile device(s) when
+scheduled playback starts. You may use such a notification to stop playback.
+
+To opt-in, you must register your device for push notifications with MusicPimp:
+
+Register a Microsoft Push Notification Service (MPNS) device:
+
+    { "cmd": "push_add", "url": "mpns_device_url_here", "silent": true, "tag": "tag_identifier" }
+
+Unregister an MPNS device:
+
+    { "cmd": "push_remove", "url": "mpns_device_url_here" }
+
+or
+
+    { "cmd": "push_remove", "tag": "tag_identifier" }
+
+Register an Android device using Google Cloud Messaging (GCM):
+
+    { "cmd": "gcm_add", "id": "device_token", "tag": "tag_identifier" }
+
+Unregister a GCM device:
+
+    { "cmd": "gcm_remove", "id": "tag_identifier" }
+
+Register an Android device using Amazon Device Messaging (ADM):
+
+    { "cmd": "adm_add", "id": "device_token", "tag": "tag_identifier" }
+
+Unregister an ADM device:
+
+    { "cmd": "adm_remove", "id": "tag_identifier" }
+
+Register an Apple Push Notification service (APNs) device:
+
+    { "cmd": "apns_add", "id": "device_token", "tag": "tag_identifier" }
+
+Unregister an APNs device:
+
+    { "cmd": "apns_remove", "id": "tag_identifier" }
+
+Supply a unique and static *tag* ID with your registrations. This is used to
+identify your device (as device tokens may change) and is included in the payload
+of every push notification so that devices can identify the source MusicPimp server.
+
+### Miscellaneous <div id="misc" class="sub-area"></a>
 
 #### Ping
 
