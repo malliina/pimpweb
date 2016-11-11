@@ -1,8 +1,4 @@
-import java.nio.file.Paths
-
-//import com.malliina.sbt.cloud._
 import com.malliina.sbtplay.PlayProject
-import com.malliina.sbtutils.SbtProjects
 import sbt.Keys._
 import sbt._
 import sbtbuildinfo.BuildInfoPlugin.BuildInfoKey
@@ -15,8 +11,8 @@ object PimpBuild extends Build {
     .settings(pimpSettings: _*)
 
   lazy val commonSettings = Seq(
-    version := "1.6.0",
-    scalaVersion := "2.11.7",
+    version := "1.6.1",
+    scalaVersion := "2.11.8",
     resolvers ++= Seq(
       Resolver.jcenterRepo,
       Resolver.bintrayRepo("malliina", "maven")

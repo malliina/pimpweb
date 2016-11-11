@@ -1,4 +1,4 @@
-@(requests: Html, responses: Html, httpEndpoints: Html, serverEvents: Html, codeSamples: Html)
+@(requests: Html, responses: Html, httpEndpoints: Html, serverEvents: Html)
 
 @indexMain("api") {
     @bs.headerRow("Develop", "col-md-12")
@@ -11,7 +11,6 @@
             @responses
             @httpEndpoints
             @serverEvents
-            @codeSamples
         }
         <nav class="col-md-3 bs-docs-sidebar" id="sidenav">
             <ul class="nav nav-stacked affix" id="sidebar">
@@ -33,9 +32,6 @@
                 </li>
                 <li>
                     <a href="#server">Server events</a>
-                </li>
-                <li>
-                    <a href="#code">Code samples</a>
                 </li>
             </ul>
         </nav>

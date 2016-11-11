@@ -17,11 +17,11 @@ object Home {
   }
 
   val downloadBaseUrl = "https://files.musicpimp.org/files/"
-  val version = "3.0.3"
+  val version = "3.3.0"
   val msiDownload = Download(s"musicpimp-$version.msi")
   val debDownload = Download(s"musicpimp_${version}_all.deb")
   val rpmDownload = Download(s"musicpimp-$version-1.noarch.rpm")
-  val dmgDownload = Download(s"musicpimp-2.8.2.dmg")
+  val dmgDownload = Download(s"musicpimp-$version.dmg")
   val latestDownloads = Seq(msiDownload, debDownload, rpmDownload, dmgDownload)
   val linuxConfFile = "/etc/musicpimp/application.ini"
   val windowsConfFile = """C:\Program Files (x86)\MusicPimp\musicpimp.conf"""
@@ -65,8 +65,9 @@ class Home extends Controller with BaseController {
       doc("Requests"),
       doc("Responses"),
       doc("HttpEndpoints"),
-      doc("ServerEvents"),
-      doc("CodeSamples"))
+      doc("ServerEvents")
+//      doc("CodeSamples")
+    )
   }
 
   def doc(res: String): Html = {
