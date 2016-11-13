@@ -4,16 +4,16 @@
 @()
 
 @indexNoContainer("home") {
-    <div class="jumbotron">
-        <div class="container">
+    @div("jumbotron") {
+        @div("container") {
             <h1>MusicPimp <small class="pull-right">No ads. No social media. Pure music.</small></h1>
             <p class="lead">
                 Control your music libraries with your phone. Play the music on your phone, home stereo system, in your car or stream it anywhere.</p>
-        </div>
-    </div>
-    <div class="container">
-        @bs.rowColumn("col-md-12") {
-            <h2>Get it</h2>
+        }
+    }
+    @div("container") {
+        @rowColumn("col-md-12") {
+            @tag("h2")("Get it")
             <a class="btn btn-primary centered" href="@Home.msiDownload.url"><i class="glyphicon glyphicon-download"></i>
                 Download for Windows</a>
             <p class="lead"><a href="@routes.Home.downloads()">Download</a>
@@ -23,7 +23,7 @@
                 <a href="@Home.androidAppUri">Android</a> and <a href="@Home.amazonAppUri">Kindle Fire</a>,
                 <a href="@Home.winPhoneAppUri">Windows Phone</a> and <a href="@Home.winStoreAppUri">Windows 8</a>.</p>
         }
-        @bs.row {
+        @row {
             @div("col-md-4") {
                 <a href="@Home.iosAppUri" class="visible-lg visible-md pull-right badge-ios"></a>
             }
@@ -65,7 +65,7 @@
                 <p class="lead">Build cool apps using the JSON <a href="@routes.Home.api()">API</a>.</p>
             }
         }
-    </div>
+    }
 }
 
     @badgeFromAssets(link: String, altText: String, img: String, classes: String = "") = {
