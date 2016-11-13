@@ -25,7 +25,7 @@ body {
 .badge-ios {
     display: inline-block;
     overflow: hidden;
-    background: url(https://linkmaker.itunes.apple.com/images/badges/en-us/badge_appstore-lrg.svg) no-repeat center;
+    background: url("/assets/img/badge_appstore-lrg.svg") no-repeat center;
     background-size: contain;
     width: 248px;
     height: 60px;

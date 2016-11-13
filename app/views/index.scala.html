@@ -1,4 +1,5 @@
 @import util.div
+@import bs.{row, rowColumn}
 
 @()
 
@@ -36,38 +37,32 @@
             }
         }
         <hr>
-        @bs.row {
-            @util.div("col-md-4 col-md-offset-2") {
+        @row {
+            @div("col-md-4 col-md-offset-2") {
                 <h2>MusicBeamer</h2>
                 <p class="lead">Stream tracks from your music library to any PC using <strong>MusicBeamer</strong>
                     at <a href="https://beam.musicpimp.org">https://beam.musicpimp.org</a>.</p>
             }
-            @util.div("col-md-4") {
+            @div("col-md-4") {
                 <img src="@pic("upload-alt-blue-128.png")" class="pull-left visible-lg visible-md"/>
             }
         }
         <hr>
-        @bs.row {
+        @row {
             @feature("PC to Phone", "pc-phone.png", "Make the music library on a PC available for playback on your phone.")
             @feature("Phone to PC", "phone-pc.png", "Play the music stored on your phone on speakers connected to a PC.")
             @feature("PC to Phone to PC", "pc-phone-pc.png", "Play music from your PC on another PC. Control playback with your phone.")
         }
         <hr>
-        @bs.rowColumn("col-md-4 col-md-offset-4") {
-            <h2>Getting Started</h2>
-            <p class="lead">Get started in minutes. Check the <a href="@routes.Home.win()">documentation</a>
-                for instructions.</p>
-        }
-        <hr>
-        @bs.row {
-            @util.div("col-md-4") {
-                <h2>Develop</h2>
-                <p>Build cool apps using the JSON <a href="@routes.Home.api()">API</a>.</p>
+        @row {
+            @div("col-md-4 col-md-offset-2") {
+                <h2>Getting Started</h2>
+                <p class="lead">Get started in minutes. Check the <a href="@routes.Home.win()">documentation</a>
+                    for instructions.</p>
             }
-            @util.div("col-md-4 col-md-offset-4") {
-                <h2>Donate</h2>
-                <p>Support a good cause. Donate any amount you like to the development team.</p>
-                @paypalButton()
+            @div("col-md-4") {
+                <h2>Develop</h2>
+                <p class="lead">Build cool apps using the JSON <a href="@routes.Home.api()">API</a>.</p>
             }
         }
     </div>
@@ -82,7 +77,7 @@
         </a>
     }
     @feature(title: String, img: String, leadText: String) = {
-    @util.div("col-md-4") {
+    @div("col-md-4") {
         <h2>@title</h2>
         @picPara(img)
         <p class="lead">@leadText</p>
