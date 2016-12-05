@@ -1,36 +1,39 @@
+@import bs.rowColumn
+@import util.div
+
 @(previous: Seq[String])
 
 @indexMain("downloads") {
     @bs.headerRow("Downloads", "col-md-10")
-    @bs.rowColumn("col-md-10") {
+    @rowColumn("col-md-10") {
         <p class="lead">Download the server. It's free. No nonsense.</p>
     }
     @bs.row {
-        @util.div("col-md-4") {
+        @div("col-md-4") {
             <h2><i class="icon-windows"></i> Windows</h2>
             <p class="lead">Download for Windows</p>
             @link(Home.msiDownload, "primary btn-lg")
             <p>Released on 11 November 2016</p>
         }
-        @util.div("col-md-4") {
+        @div("col-md-4") {
             <h2><i class="icon-linux"></i> Linux</h2>
             @link(Home.debDownload)
             <p>DEB packages are tested on Ubuntu.</p>
             @link(Home.rpmDownload)
             <p>RPM packages are tested on Fedora.</p>
         }
-        @util.div("col-md-4") {
+        @div("col-md-4") {
             <h2><i class="icon-apple"></i> Mac</h2>
             @link(Home.dmgDownload)
             <p>OSX packages are tested on OSX Yosemite.</p>
         }
     }
-    @bs.rowColumn("col-md-10") {
+    @rowColumn("col-md-10") {
         <h2>What next?</h2>
         <p>Install the software and navigate to <a href="http://localhost:8456/">http://localhost:8456/</a>
             . For more information, check the <a href="@routes.Home.win()">documentation</a>.</p>
     }
-    @bs.rowColumn("col-md-6") {
+    @rowColumn("col-md-6") {
         <h3>Previous versions</h3>
         <ul>
         @previous.map { prev =>
@@ -40,5 +43,5 @@
     }
 }
 @link(dl: Home.Download, btnName:String = "default") = {
-    <a class="btn btn-@btnName" href="@dl.url"><i class="glyphicon glyphicon-download"></i> @dl.fileName</a> </p>
+    <p><a class="btn btn-@btnName" href="@dl.url"><i class="glyphicon glyphicon-download"></i> @dl.fileName</a> </p>
 }
