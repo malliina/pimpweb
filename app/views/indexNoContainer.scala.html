@@ -1,30 +1,33 @@
+@import routes.Home
+@import views.html.bs.navItem
+@import views.html.util.div
+
 @(tabName: String)(content: Html)
-    @import views.html.bs.navItem
-    @import views.html.util.div
-    @plainMain("MusicPimp") {
-        @div("navbar navbar-default") {
-            @div("container") {
-                @div("navbar-header") {
-                    <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="@routes.Home.index()">MusicPimp</a>
-                }
-                @div("navbar-collapse collapse") {
-                    <ul class="nav navbar-nav">
-                        @navItem("Home", "home", tabName, routes.Home.index(), "home")
-                        @navItem("Downloads", "downloads", tabName, routes.Home.downloads(), "download-alt")
-                        @navItem("Documentation", "documentation", tabName, routes.Home.win(), "list-alt")
-                        @navItem("Forum", "forum", tabName, routes.Home.forum(), "comment")
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        @navItem("Develop", "api", tabName, routes.Home.api(), "edit")
-                        @navItem("About", "about", tabName, routes.Home.about(), "globe")
-                    </ul>
-                }
+
+@plainMain("MusicPimp") {
+    @div("navbar navbar-default") {
+        @div("container") {
+            @div("navbar-header") {
+                <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="@Home.index()">MusicPimp</a>
+            }
+            @div("navbar-collapse collapse") {
+                <ul class="nav navbar-nav">
+                    @navItem("Home", "home", tabName, Home.index(), "home")
+                    @navItem("Downloads", "downloads", tabName, Home.downloads(), "download-alt")
+                    @navItem("Documentation", "documentation", tabName, Home.win(), "list-alt")
+                    @navItem("Forum", "forum", tabName, Home.forum(), "comment")
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    @navItem("Develop", "api", tabName, Home.api(), "edit")
+                    @navItem("About", "about", tabName, Home.about(), "globe")
+                </ul>
             }
         }
-        @content
     }
+    @content
+}
