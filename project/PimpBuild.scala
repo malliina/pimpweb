@@ -11,7 +11,7 @@ object PimpBuild {
     .settings(pimpSettings: _*)
 
   lazy val commonSettings = Seq(
-    version := "1.6.1",
+    version := "1.6.2",
     scalaVersion := "2.11.8",
     resolvers ++= Seq(
       Resolver.jcenterRepo,
@@ -35,6 +35,7 @@ object PimpBuild {
     malliinaGroup %% "util-azure" % "2.1.0",
     malliinaGroup %% "play-base" % "2.8.0",
     "org.pegdown" % "pegdown" % "1.6.0",
-    "com.newrelic.agent.java" % "newrelic-agent" % "2.15.1" % "provided"
+    "com.newrelic.agent.java" % "newrelic-agent" % "2.15.1" % "provided",
+    "com.lihaoyi" %% "scalatags" % "0.6.2"
   )
 }

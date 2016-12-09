@@ -4,7 +4,9 @@ import java.net.URI
 
 import com.malliina.azure.{AzureStorageCredentialReader, StorageClient}
 import com.malliina.file.FileUtilities
+import com.malliina.pimpweb.tags.Tags
 import com.malliina.play.controllers.BaseController
+import play.api.http.Writeable
 import play.api.libs.json.Json
 import play.api.mvc.{Action, Controller}
 import play.twirl.api.{Html, HtmlFormat}
@@ -79,7 +81,7 @@ class Home extends Controller with BaseController {
 
   def forum = GoTo(html.forum())
 
-  def about = GoTo(html.about())
+  def about = GoTo(Tags.about)
 
   def complete = GoTo(html.success())
 
@@ -91,7 +93,7 @@ class Home extends Controller with BaseController {
 
   def privacyPolicy = GoTo(html.privacyPolicyStore())
 
-  private def GoTo(page: Html) = Action(Ok(page))
+  private def GoTo[C: Writeable](page: C) = Action(Ok(page))
 
   private def previousDownloadables =
     (downloadables filterNot isLatest).toSeq.reverse
