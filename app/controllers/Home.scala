@@ -3,13 +3,11 @@ package controllers
 import java.net.URI
 
 import com.malliina.azure.{AzureStorageCredentialReader, StorageClient}
-import com.malliina.file.FileUtilities
 import com.malliina.pimpweb.tags.Tags
 import com.malliina.play.controllers.BaseController
 import play.api.http.Writeable
 import play.api.libs.json.Json
 import play.api.mvc.{Action, Controller}
-import play.twirl.api.{Html, HtmlFormat}
 import views.html
 
 object Home {
@@ -62,20 +60,7 @@ class Home extends Controller with BaseController {
 
   def wp = GoTo(html.docWinPhone())
 
-  def api = GoTo {
-    html.docApi2(
-      doc("Requests"),
-      doc("Responses"),
-      doc("HttpEndpoints"),
-      doc("ServerEvents")
-//      doc("CodeSamples")
-    )
-  }
-
-  def doc(res: String): Html = {
-    val str = FileUtilities.readerFrom(s"docs/$res.md")(_.mkString(FileUtilities.lineSep))
-    Docs.fromString(str) getOrElse HtmlFormat.empty
-  }
+  def api = GoTo(Tags.api)
 
   def alarms = GoTo(html.alarms())
 

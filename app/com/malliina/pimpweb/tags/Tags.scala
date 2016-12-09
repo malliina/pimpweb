@@ -1,5 +1,7 @@
 package com.malliina.pimpweb.tags
 
+import com.malliina.file.FileUtilities
+import controllers.Docs
 import controllers.routes.Assets.at
 import controllers.routes.Home
 import play.api.mvc.Call
@@ -11,16 +13,52 @@ object Tags {
   implicit val callAttr = new GenericAttr[Call]
   val titleTag = tag("title")
 
-  val about = indexMain("about")(
-    div(`class` := "row")(
-      div(`class` := "col-md-12")(
-        div(`class` := "page-header")(
-          h1("About")
+  val api = docApi(
+    markdown("Requests"),
+    markdown("Responses"),
+    markdown("HttpEndpoints"),
+    markdown("ServerEvents")
+  )
+
+  def docApi(requests: Modifier, responses: Modifier, httpEndpoints: Modifier, serverEvents: Modifier) =
+    indexMain("api")(
+      headerRow("Develop"),
+      row(
+        divClass("col-md-9")(
+          pClass("lead")("Develop apps for MusicPimp using the JSON API.")
+        )
+      ),
+      row(
+        divClass("col-md-8")(
+          requests,
+          responses,
+          httpEndpoints,
+          serverEvents
+        ),
+        tag("nav")(`class` := "col-md-3 bs-docs-sidebar", id := "sidenav")(
+          ul(`class` := "nav nav-stacked affix", id := "sidebar")(
+            liHref("#requests", "Requests"),
+            liHref("#responses", "Responses"),
+            li(
+              aHref("#endpoints", "HTTP endpoints"),
+              ul(`class` := "nav nav-stacked")(
+                liHref("#library", "Library"),
+                liHref("#player", "Player"),
+                liHref("#playlist", "Playlist"),
+                liHref("#alarms", "Alarms"),
+                liHref("#misc", "Miscellaneous")
+              )
+            ),
+            liHref("#server", "Server events")
+          )
         )
       )
-    ),
-    div(`class` := "row")(
-      div(`class` := "col-md-6")(
+    )
+
+  val about = indexMain("about")(
+    headerRow("About"),
+    divClass("row")(
+      divClass("col-md-6")(
         p("Developed by ", a(href := "https://mskogberg.info")("Michael Skogberg"), "."),
         p(img(src := at("img/handsome.png"), `class` := "img-responsive img-thumbnail")),
         p("Should you have any questions, don't hesitate to:",
@@ -28,9 +66,10 @@ object Tags {
             li("contact ", a(href := "mailto:info@musicpimp.org")("info@musicpimp.org")),
             li("post in the ", a(href := Home.forum())("forum ", i(`class` := "glyphicon glyphicon-comment"))),
             li("open an issue on ", a(href := "https://github.com/malliina/musicpimp/issues")("GitHub"))
-          ))
+          )
+        )
       ),
-      div(`class` := "col-md-6")(
+      divClass("col-md-6")(
         p("This site uses icons by ", a(href := "http://glyphicons.com/")("Glyphicons"), " and ", a(href := "http://fontawesome.io/")("Font Awesome"), "."),
         p(a(href := "https://www.jetbrains.com/idea/")(img(src := at("img/logo_Jetbrains_3.png"), `class` := "img-responsive")))
       )
@@ -38,7 +77,7 @@ object Tags {
   )
 
   def indexMain(tabName: String)(inner: Modifier*) = indexNoContainer(tabName)(
-    div(`class` := "container")(inner)
+    divClass("container")(inner)
   )
 
   def indexNoContainer(tabName: String)(inner: Modifier*) = {
@@ -48,17 +87,17 @@ object Tags {
     }
 
     plainMain("MusicPimp")(
-      div(`class` := "navbar navbar-default")(
-        div(`class` := "container")(
-          div(`class` := "navbar-header")(
+      divClass("navbar navbar-default")(
+        divClass("container")(
+          divClass("navbar-header")(
             button(`class` := "navbar-toggle", attr("data-toggle") := "collapse", attr("data-target") := ".navbar-collapse")(
-              span(`class` := "icon-bar"),
-              span(`class` := "icon-bar"),
-              span(`class` := "icon-bar")
+              spanClass("icon-bar"),
+              spanClass("icon-bar"),
+              spanClass("icon-bar")
             ),
             a(`class` := "navbar-brand", href := Home.index())("MusicPimp")
           ),
-          div(`class` := "navbar-collapse collapse")(
+          divClass("navbar-collapse collapse")(
             ul(`class` := "nav navbar-nav")(
               navItem("Home", "home", Home.index(), "home"),
               navItem("Downloads", "downloads", Home.downloads(), "download-alt"),
@@ -98,15 +137,41 @@ object Tags {
           div(id := "push")
         ),
         div(id := "footer")(
-          div(`class` := "container")(
-            p(`class` := "muted credit pull-right")("Developed by ", a(href := "https://mskogberg.info")("Michael Skogberg"))
+          divClass("container")(
+            pClass("muted credit pull-right")("Developed by ", a(href := "https://mskogberg.info")("Michael Skogberg"))
           )
         )
       )
     )
   )
 
+  def headerRow(header: String) =
+    row(
+      divClass("col-md-12")(
+        divClass("page-header")(
+          h1(header)
+        )
+      )
+    )
+
+  def row = divClass("row")
+
+  def divClass(clazz: String) = div(`class` := clazz)
+
+  def spanClass(clazz: String) = span(`class` := "clazz")
+
+  def pClass(clazz: String) = p(`class` := clazz)
+
+  def liHref(url: String, text: String) = li(aHref(url, text))
+
+  def aHref(url: String, text: String) = a(href := url)(text)
+
   def js[V: AttrValue](url: V) = script(src := url)
 
   def css[V: AttrValue](url: V) = link(rel := "stylesheet", href := url)
+
+  def markdown(docName: String): Modifier = Docs.toHtml(markdownAsString(docName)).map(RawFrag.apply)
+
+  def markdownAsString(docName: String) =
+    FileUtilities.readerFrom(s"docs/$docName.md")(_.mkString(FileUtilities.lineSep))
 }

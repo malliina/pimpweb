@@ -14,10 +14,12 @@ trait Docs {
     fromString(fileAsString)
   }
 
-  def fromString(markdownSource: String): Option[Html] = {
+  def fromString(markdownSource: String): Option[Html] =
+    toHtml(markdownSource).map(HtmlFormat.raw)
+
+  def toHtml(markdownSource: String): Option[String] = {
     // local scope as PegDownProcessor is not thread-safe
     val pdp = new PegDownProcessor()
-    val out = Option(pdp.markdownToHtml(markdownSource))
-    out.map(HtmlFormat.raw)
+    Option(pdp.markdownToHtml(markdownSource))
   }
 }
