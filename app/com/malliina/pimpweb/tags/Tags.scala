@@ -1,17 +1,30 @@
 package com.malliina.pimpweb.tags
 
 import com.malliina.file.FileUtilities
+import com.malliina.pimpweb.tags.Bootstrap._
 import controllers.routes.Assets.at
 import controllers.routes.{Home => HomeRoute}
 import controllers.{Docs, Home}
+import models.PrivacyPolicy
 import play.api.mvc.Call
 
-import scalatags.Text.{GenericAttr, TypedTag}
 import scalatags.Text.all._
+import scalatags.Text.{GenericAttr, TypedTag}
 
 object Tags {
   implicit val callAttr = new GenericAttr[Call]
   val titleTag = tag("title")
+  val nav = tag("nav")
+
+  val privacyPolicy = indexMain("about")(
+    headerRow("Privacy Policy", ColMd6),
+    rowColumn(ColMd6)(
+      p(PrivacyPolicy.text),
+      p(PrivacyPolicy.purpose),
+      p(PrivacyPolicy.roaming),
+      p(PrivacyPolicy.network)
+    )
+  )
 
   def downloads(previous: Seq[String]) = indexMain("downloads")(
     headerRow("Downloads"),
@@ -22,7 +35,7 @@ object Tags {
       div4(
         h2(iClass("icon-windows"), " Windows"),
         leadPara("Download for Windows"),
-        downloadLink(Home.msiDownload, "primary btn-lg"),
+        downloadLink(Home.msiDownload, s"primary $Btn-lg"),
         p("Released on 11 November 2016")
       ),
       div4(
@@ -43,7 +56,7 @@ object Tags {
       p("Install the software and navigate to ", aHref("http://localhost:8456/"),
         ". For more information, check the ", aHref(HomeRoute.win(), "documentation"), ".")
     ),
-    rowColumn("col-md-6")(
+    rowColumn(ColMd6)(
       h3("Previous versions"),
       ul(
         previous map { prev =>
@@ -54,16 +67,16 @@ object Tags {
   )
 
   val index = indexNoContainer("home")(
-    divClass("jumbotron")(
-      divClass("container")(
-        h1("MusicPimp", small(`class` := "pull-right")("No ads. No social media. Pure music.")),
+    divClass(Jumbotron)(
+      divClass(Container)(
+        h1("MusicPimp", small(`class` := PullRight)("No ads. No social media. Pure music.")),
         leadPara("Control your music libraries with your phone. Play the music on your phone, home stereo system, in your car or stream it anywhere.")
       )
     ),
     divClass("container")(
       fullRow(
         h2("Get it"),
-        a(`class` := "btn btn-primary centered", href := Home.msiDownload.url)(i(`class` := "glyphicon glyphicon-download"), " Download for Windows"),
+        a(`class` := s"$BtnPrimary centered", href := Home.msiDownload.url)(glyphIcon("download"), " Download for Windows"),
         leadPara(
           aHref(HomeRoute.downloads(), "Download"),
           " the free server for ", aHref(Home.msiDownload.url, "Windows"),
@@ -78,20 +91,20 @@ object Tags {
       ),
       row(
         div4(
-          a(href := Home.iosAppUri, `class` := "visible-lg visible-md pull-right badge-ios")
+          a(href := Home.iosAppUri, `class` := s"$VisibleLg $VisibleMd $PullRight badge-ios")
         ),
         div4(
           badgeFromAssets(Home.androidAppUri, "Android app on Google Play", "en_app_rgb_wo_60.png"),
           badgeFromAssets(Home.amazonAppUri, "Android app on Amazon AppStore", "amazon-apps-kindle-us-gray.png")
         ),
         div4(
-          badgeFromAssets(Home.winPhoneAppUri, "Windows Phone app", "badge_winphone2.png", "pull-left"),
-          badgeFromAssets(Home.winStoreAppUri, "Windows Store app", "badge_winstore.png", "pull-left")
+          badgeFromAssets(Home.winPhoneAppUri, "Windows Phone app", "badge_winphone2.png", PullLeft),
+          badgeFromAssets(Home.winStoreAppUri, "Windows Store app", "badge_winstore.png", PullLeft)
         )
       ),
       hr,
       row(
-        divClass("col-md-4 col-md-offset-2")(
+        divClass(s"$ColMd4 $ColMdOffset2")(
           h2("MusicBeamer"),
           leadPara(
             "Stream tracks from your music library to any PC using ",
@@ -99,7 +112,7 @@ object Tags {
           )
         ),
         div4(
-          img(src := at("img/upload-alt-blue-128.png"), `class` := "pull-left visible-lg visible-md")
+          img(src := at("img/upload-alt-blue-128.png"), `class` := s"$PullLeft $VisibleLg $VisibleMd")
         )
       ),
       hr,
@@ -110,7 +123,7 @@ object Tags {
       ),
       hr,
       row(
-        divClass("col-md-4 col-md-offset-2")(
+        divClass(s"$ColMd4 $ColMdOffset2")(
           h2("Getting Started"),
           leadPara(
             "Get started in minutes. Check the ",
@@ -118,7 +131,7 @@ object Tags {
             " for instructions."
           )
         ),
-        divClass("col-md-4")(
+        divClass(ColMd4)(
           h2("Develop"),
           leadPara("Build cool apps using the JSON ", aHref(HomeRoute.api(), "API"), ".")
         )
@@ -126,22 +139,9 @@ object Tags {
     )
   )
 
-  def badgeFromAssets(link: String, altText: String, file: String, classes: String = "") =
-    badge(link, altText, at(s"img/$file").toString, classes)
-
-  def badge(link: String, altText: String, imgUrl: String, classes: String) =
-    a(href := link, `class` := s"visible-lg visible-md badge $classes")(img(alt := altText, src := imgUrl, `class` := "badge-image"))
-
-  def feature(featureTitle: String, imgFile: String, leadText: String) =
-    div4(
-      h2(featureTitle),
-      p(img(src := at(s"img/$imgFile"))),
-      leadPara(leadText)
-    )
-
   val forum = indexMain("forum")(
-    rowColumn("col-md-6")(
-      divClass("page-header")(
+    rowColumn(ColMd6)(
+      divClass(PageHeader)(
         h1(
           "Forum ",
           small(
@@ -167,24 +167,24 @@ object Tags {
     indexMain("api")(
       headerRow("Develop"),
       row(
-        divClass("col-md-9")(
+        divClass(ColMd9)(
           leadPara("Develop apps for MusicPimp using the JSON API.")
         )
       ),
       row(
-        divClass("col-md-8")(
+        divClass(ColMd8)(
           requests,
           responses,
           httpEndpoints,
           serverEvents
         ),
-        tag("nav")(`class` := "col-md-3 bs-docs-sidebar", id := "sidenav")(
-          ul(`class` := "nav nav-stacked affix", id := "sidebar")(
+        nav(`class` := s"$ColMd3 bs-docs-sidebar", id := "sidenav")(
+          ul(`class` := s"$NavStacked affix", id := "sidebar")(
             liHref("#requests", "Requests"),
             liHref("#responses", "Responses"),
             li(
               aHref("#endpoints", "HTTP endpoints"),
-              ul(`class` := "nav nav-stacked")(
+              ulClass(NavStacked)(
                 liHref("#library", "Library"),
                 liHref("#player", "Player"),
                 liHref("#playlist", "Playlist"),
@@ -201,18 +201,18 @@ object Tags {
   val about = indexMain("about")(
     headerRow("About"),
     divClass("row")(
-      divClass("col-md-6")(
+      divClass(ColMd6)(
         p("Developed by ", aHref("https://mskogberg.info", "Michael Skogberg"), "."),
         p(img(src := at("img/handsome.png"), `class` := "img-responsive img-thumbnail")),
         p("Should you have any questions, don't hesitate to:",
           ul(
             li("contact ", aHref("mailto:info@musicpimp.org", "info@musicpimp.org")),
-            li("post in the ", a(href := HomeRoute.forum())("forum ", i(`class` := "glyphicon glyphicon-comment"))),
+            li("post in the ", a(href := HomeRoute.forum())("forum ", glyphIcon("comment"))),
             li("open an issue on ", aHref("https://github.com/malliina/musicpimp/issues", "GitHub"))
           )
         )
       ),
-      divClass("col-md-6")(
+      divClass(ColMd6)(
         p("This site uses icons by ", aHref("http://glyphicons.com/", "Glyphicons"), " and ", aHref("http://fontawesome.io/", "Font Awesome"), "."),
         p(a(href := "https://www.jetbrains.com/idea/")(img(src := at("img/logo_Jetbrains_3.png"), `class` := "img-responsive")))
       )
@@ -220,7 +220,7 @@ object Tags {
   )
 
   def indexMain(tabName: String)(inner: Modifier*) = indexNoContainer(tabName)(
-    divClass("container")(inner)
+    divClass(Container)(inner)
   )
 
   def indexNoContainer(tabName: String)(inner: Modifier*) = {
@@ -230,24 +230,24 @@ object Tags {
     }
 
     plainMain("MusicPimp")(
-      divClass("navbar navbar-default")(
-        divClass("container")(
-          divClass("navbar-header")(
-            button(`class` := "navbar-toggle", attr("data-toggle") := "collapse", attr("data-target") := ".navbar-collapse")(
+      divClass(s"$Navbar $NavbarDefault")(
+        divClass(Container)(
+          divClass(NavbarHeader)(
+            button(`class` := NavbarToggle, attr("data-toggle") := Collapse, attr("data-target") := s".$NavbarCollapse")(
               spanClass("icon-bar"),
               spanClass("icon-bar"),
               spanClass("icon-bar")
             ),
-            a(`class` := "navbar-brand", href := HomeRoute.index())("MusicPimp")
+            a(`class` := NavbarBrand, href := HomeRoute.index())("MusicPimp")
           ),
-          divClass("navbar-collapse collapse")(
-            ul(`class` := "nav navbar-nav")(
+          divClass(s"$NavbarCollapse $Collapse")(
+            ulClass(s"$Nav $NavbarNav")(
               navItem("Home", "home", HomeRoute.index(), "home"),
               navItem("Downloads", "downloads", HomeRoute.downloads(), "download-alt"),
               navItem("Documentation", "documentation", HomeRoute.win(), "list-alt"),
               navItem("Forum", "forum", HomeRoute.forum(), "comment")
             ),
-            ul(`class` := "nav navbar-nav navbar-right")(
+            ulClass(s"$Nav $NavbarNav $NavbarRight")(
               navItem("Develop", "api", HomeRoute.api(), "edit"),
               navItem("About", "about", HomeRoute.about(), "globe")
             )
@@ -280,7 +280,7 @@ object Tags {
           div(id := "push")
         ),
         div(id := "footer")(
-          divClass("container")(
+          divClass(Container)(
             pClass("muted credit pull-right")("Developed by ", a(href := "https://mskogberg.info")("Michael Skogberg"), ".")
           )
         )
@@ -288,37 +288,33 @@ object Tags {
     )
   )
 
-  def downloadLink(dl: Home.Download, btnName: String = "default") =
-    p(a(`class` := s"btn btn-$btnName", href := dl.url)(glyphIcon("download"), s" ${dl.fileName}"))
+  def badgeFromAssets(link: String, altText: String, file: String, classes: String = "") =
+    badge(link, altText, at(s"img/$file").toString, classes)
 
-  def headerRow(header: String) =
-    row(
-      divClass("col-md-12")(
-        divClass("page-header")(
-          h1(header)
-        )
-      )
+  def badge(link: String, altText: String, imgUrl: String, classes: String) =
+    a(href := link, `class` := s"$VisibleLg $VisibleMd badge $classes")(img(alt := altText, src := imgUrl, `class` := "badge-image"))
+
+  def feature(featureTitle: String, imgFile: String, leadText: String) =
+    div4(
+      h2(featureTitle),
+      p(img(src := at(s"img/$imgFile"))),
+      leadPara(leadText)
     )
 
-  def fullRow(inner: Modifier*) = rowColumn("col-md-12")(inner)
-
-  def rowColumn(clazz: String)(inner: Modifier*) = row(div(`class` := clazz)(inner))
-
-  def row = divClass("row")
-
-  def div4 = divClass("col-md-4")
+  def downloadLink(dl: Home.Download, btnName: String = "default") =
+    p(a(`class` := s"$Btn $Btn-$btnName", href := dl.url)(glyphIcon("download"), s" ${dl.fileName}"))
 
   def divClass(clazz: String) = div(`class` := clazz)
 
   def spanClass(clazz: String) = span(`class` := clazz)
-
-  def glyphIcon(glyphName: String) = iClass(s"glyphicon glyphicon-$glyphName")
 
   def iClass(clazz: String) = i(`class` := clazz)
 
   def leadPara = pClass("lead")
 
   def pClass(clazz: String) = p(`class` := clazz)
+
+  def ulClass(clazz: String) = ul(`class` := clazz)
 
   def liHref(url: String, text: String) = li(aHref(url, text))
 

@@ -76,7 +76,7 @@ class Home extends Controller with BaseController {
 
   def cancel = Action(Redirect(routes.Home.incomplete()))
 
-  def privacyPolicy = GoTo(html.privacyPolicyStore())
+  def privacyPolicy = GoTo(Tags.privacyPolicy)
 
   private def GoTo[C: Writeable](page: C) = Action(Ok(page))
 
