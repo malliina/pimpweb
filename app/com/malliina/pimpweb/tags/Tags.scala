@@ -16,6 +16,135 @@ object Tags {
   val titleTag = tag("title")
   val nav = tag("nav")
 
+  val linuxReqs: Modifier = Seq(
+    h2("System Requirements"),
+    ul(
+      li("Java 8. Oracle Java is recommended."),
+      li("A modern browser.")
+    )
+  )
+
+  val rpmInstall = Seq(
+    headerRow("RPM"),
+    fullRow(
+      linuxReqs,
+      h2("Installation"),
+      p("Download ", aHref(Home.rpmDownload.url, Home.rpmDownload.fileName), " and execute: ", code(s"rpm -ivh ${Home.rpmDownload.fileName}"))
+    )
+  )
+
+  val rpmUninstall = p(code("rpm -e musicpimp"))
+
+  val docRpm = docuBase("rpm", Home.linuxConfFile, rpmInstall, rpmUninstall)
+
+  val debInstall: Modifier = Seq(
+    headerRow("DEB"),
+    fullRow(
+      linuxReqs,
+      h2("Installation"),
+      p("Download ", aHref(Home.debDownload.url, Home.debDownload.fileName), " and execute: ", code(s"dpkg -i ${Home.debDownload.fileName}"))
+    )
+  )
+
+  val debUninstall = p(code("apt-get purge musicpimp"))
+
+  val docDeb = docuBase("deb", Home.linuxConfFile, debInstall, debUninstall)
+
+  val docMac = docPlain("mac")(
+    headerRow("Mac"),
+    fullRow(
+      h2("Installation"),
+      p("Download ", aHref(Home.dmgDownload.url, Home.dmgDownload.fileName), ", open and install. MusicPimp installs" +
+        " itself as a launchd system daemon. Use ", strong("launchctl"), " to adjust that behavior if needed.")
+    )
+  )
+
+  val winInstall: Modifier = Seq(
+    headerRow("Windows"),
+    fullRow(
+      h2("System Requirements"),
+      ul(
+        li(aHref("http://java.com/en/download/index.jsp", "Java 8"), "."),
+        li("A modern browser, such as ", aHref("http://windows.microsoft.com/en-us/internet-explorer/ie-10-worldwide-languages", "Internet Explorer 10"),
+          " or a recent version of ", aHref("http://getfirefox.com", "Firefox"), " or ", aHref("http://www.google.com/chrome", "Chrome"), "."),
+        li(aHref("http://www.microsoft.com/net/download", ".NET Framework"), " 3.5 or higher.")
+      ),
+      h2("Installation"),
+      p("Download and run ", aHref(Home.msiDownload.url, Home.msiDownload.fileName), ".")
+    )
+  )
+
+  val winUninstall = p("Uninstall MusicPimp using the Add/Remove Programs section in the Control Panel.")
+
+  val docWin = docuBase("win", Home.windowsConfFile, winInstall, winUninstall)
+
+  def docuBase(os: String, confPath: String, installation: Modifier, uninstallation: Modifier) =
+    docPlain(os)(
+      fullRow(
+        installation,
+        h2("Usage"),
+        ol(
+          li("Navigate to ", aHref("http://localhost:8456/"), " and login."),
+          li("Select tab ", strong("Manage"), " and specify folders containing MP3s under ", strong("Music Folders"), ":",
+            p(img(src := at("img/usage-folders2.png"), `class` := "img-responsive img-thumbnail"))),
+          li("Open the ", strong("MusicPimp"), " app on your mobile device and add your PC as a music endpoint:",
+            p(img(src := at("img/usage-wp8.png"), `class` := "img-responsive img-thumbnail"))),
+          li("Enjoy your music.")
+        ),
+        h2("Supported Audio Formats"),
+        p("MusicPimp supports MP3 playback."),
+        h2("Connectivity"),
+        p("Music is streamed over WLAN, mobile networks or Bluetooth."),
+        h2("Advanced Configuration"),
+        p("Advanced settings can be configured in ", code("musicpimp.conf"),
+          " in your installation directory. The path is typically ", code(confPath), ". Reasonable defaults are provided."),
+        h4("HTTPS"),
+        p("To enable HTTPS, specify the following parameters in ", code("musicpimp.conf"), ":"),
+        table(`class` := "table table-hover")(
+          thead,
+          tr(th("Key"), th("Value")),
+          tbody(
+            tr(td("https.port"), td("The HTTPS port to use")),
+            tr(td("https.keyStore"), td("The path to the keystore")),
+            tr(td("https.keyStorePassword"), td("The keystore password")),
+            tr(td("https.keyStoreType"), td("Optionally, the keystore type. Defaults to JKS."))
+          )
+        ),
+        p("A keystore with a self-signed certificate is included in the MusicPimp software distributions in the folder ",
+          code("config/security/test-cert.jks"), " under the installation directory. The keystore passphrase is ", strong("musicpimp"), "."),
+        p(spanClass("label label-info")("Note"), " In order to successfully connect to the MusicPimp (or Subsonic) server " +
+          "over HTTPS using Windows Phone, your server certificate must be trusted by your phone. " +
+          "This means self-signed certificates are unlikely to work."),
+        h2("Logging"),
+        p("MusicPimp writes a log to the directory given by the ", code("log.dir"), " system property. At midnight, the " +
+          "log from the previous day is archived to a separate file and a new file is written for the following day. " +
+          "The active log file is also archived if it reaches 100 MB in size (during the same day.) " +
+          "Logs older than 30 days are finally deleted."),
+        h2("Uninstallation"),
+        uninstallation
+      )
+    )
+
+  def docPlain(os: String)(inner: Modifier*) = {
+    def docLink(text: String, clicked: Call, osId: String) = {
+      val suffix = if (osId == os) " active" else ""
+      button(`type` := "button", `class` := s"$BtnPrimary$suffix", onclick := s"location.href='$clicked'")(text)
+    }
+
+    indexMain("documentation")(
+      headerRow("Documentation", ColMd6),
+      rowColumn(ColMd6)(
+        div(`class` := BtnGroup, attr("src-toggle") := "buttons-radio")(
+          docLink("Windows", HomeRoute.win(), "win"),
+          docLink("Mac", HomeRoute.mac(), "mac"),
+          docLink("DEB", HomeRoute.deb(), "deb"),
+          docLink("RPM", HomeRoute.rpm(), "rpm")
+        )
+      ),
+      rowColumn(ColMd6)(inner)
+    )
+  }
+
   val privacyPolicy = indexMain("about")(
     headerRow("Privacy Policy", ColMd6),
     rowColumn(ColMd6)(

@@ -48,15 +48,15 @@ class Home extends Controller with BaseController {
 
   def previous = Action(Ok(Json.toJson(previousDownloadables)))
 
-  def documentation = GoTo(html.docWin())
+  def documentation = win
 
-  def win = GoTo(html.docWin())
+  def win = GoTo(Tags.docWin)
 
-  def mac = GoTo(html.docMac())
+  def mac = GoTo(Tags.docMac)
 
-  def deb = GoTo(html.docDeb())
+  def deb = GoTo(Tags.docDeb)
 
-  def rpm = GoTo(html.docRpm())
+  def rpm = GoTo(Tags.docRpm)
 
   def wp = GoTo(html.docWinPhone())
 

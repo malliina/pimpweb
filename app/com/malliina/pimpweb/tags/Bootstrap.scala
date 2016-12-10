@@ -11,6 +11,7 @@ object Bootstrap extends Bootstrap
   */
 trait Bootstrap {
   val Btn = "btn"
+  val BtnGroup = s"$Btn-group"
   val BtnPrimary = s"$Btn $Btn-primary"
   val Container = "container"
   val Jumbotron = "jumbotron"
