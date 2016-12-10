@@ -1,17 +1,19 @@
 package com.malliina.pimpweb.tags
 
 import com.malliina.file.FileUtilities
-import com.malliina.pimpweb.tags.Bootstrap._
+import com.malliina.tags.Bootstrap._
+import com.malliina.tags.TagPage
+import com.malliina.tags.Tags._
 import controllers.routes.Assets.at
 import controllers.routes.{Home => HomeRoute}
 import controllers.{Docs, Home}
 import models.PrivacyPolicy
 import play.api.mvc.Call
 
+import scalatags.Text.GenericAttr
 import scalatags.Text.all._
-import scalatags.Text.{GenericAttr, TypedTag}
 
-object Tags {
+object PimpTags {
   implicit val callAttr = new GenericAttr[Call]
   val titleTag = tag("title")
   val nav = tag("nav")
@@ -329,7 +331,7 @@ object Tags {
 
   val about = indexMain("about")(
     headerRow("About"),
-    divClass("row")(
+    row(
       divClass(ColMd6)(
         p("Developed by ", aHref("https://mskogberg.info", "Michael Skogberg"), "."),
         p(img(src := at("img/handsome.png"), `class` := "img-responsive img-thumbnail")),
@@ -393,12 +395,12 @@ object Tags {
         titleTag(pageTitle),
         meta(name := "viewport", content := "width=device-width, initial-scale=1.0"),
         link(rel := "shortcut icon", href := at("img/pimp-28.png")),
-        css("//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"),
-        css("//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css"),
-        css("//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css"),
-        css(at("css/custom.css")),
-        css(at("css/sidebar.css")),
-        css(at("css/footer.css")),
+        cssLink("//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"),
+        cssLink("//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css"),
+        cssLink("//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css"),
+        cssLink(at("css/custom.css")),
+        cssLink(at("css/sidebar.css")),
+        cssLink(at("css/footer.css")),
         js("//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"),
         js("//netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"),
         js(at("js/docs.js"))
@@ -410,7 +412,7 @@ object Tags {
         ),
         div(id := "footer")(
           divClass(Container)(
-            pClass("muted credit pull-right")("Developed by ", a(href := "https://mskogberg.info")("Michael Skogberg"), ".")
+            pClass(s"muted credit $PullRight")("Developed by ", a(href := "https://mskogberg.info")("Michael Skogberg"), ".")
           )
         )
       )
@@ -432,28 +434,6 @@ object Tags {
 
   def downloadLink(dl: Home.Download, btnName: String = "default") =
     p(a(`class` := s"$Btn $Btn-$btnName", href := dl.url)(glyphIcon("download"), s" ${dl.fileName}"))
-
-  def divClass(clazz: String) = div(`class` := clazz)
-
-  def spanClass(clazz: String) = span(`class` := clazz)
-
-  def iClass(clazz: String) = i(`class` := clazz)
-
-  def leadPara = pClass("lead")
-
-  def pClass(clazz: String) = p(`class` := clazz)
-
-  def ulClass(clazz: String) = ul(`class` := clazz)
-
-  def liHref(url: String, text: String) = li(aHref(url, text))
-
-  def aHref(url: String): TypedTag[String] = aHref(url, url)
-
-  def aHref[V: AttrValue](url: V, text: String): TypedTag[String] = a(href := url)(text)
-
-  def js[V: AttrValue](url: V) = script(src := url)
-
-  def css[V: AttrValue](url: V) = link(rel := "stylesheet", href := url)
 
   def markdown(docName: String): Modifier = Docs.toHtml(markdownAsString(docName)).map(RawFrag.apply)
 

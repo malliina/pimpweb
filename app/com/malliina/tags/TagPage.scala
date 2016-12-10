@@ -1,4 +1,4 @@
-package com.malliina.pimpweb.tags
+package com.malliina.tags
 
 import java.nio.charset.StandardCharsets
 

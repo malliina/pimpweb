@@ -1,6 +1,6 @@
-package com.malliina.pimpweb.tags
+package com.malliina.tags
 
-import com.malliina.pimpweb.tags.Tags._
+import com.malliina.tags.Tags._
 
 import scalatags.Text.all._
 

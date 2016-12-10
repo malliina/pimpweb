@@ -3,7 +3,7 @@ package controllers
 import java.net.URI
 
 import com.malliina.azure.{AzureStorageCredentialReader, StorageClient}
-import com.malliina.pimpweb.tags.Tags
+import com.malliina.pimpweb.tags.PimpTags
 import com.malliina.play.controllers.BaseController
 import play.api.http.Writeable
 import play.api.libs.json.Json
@@ -42,31 +42,31 @@ object Home {
 class Home extends Controller with BaseController {
   def ping = Action(NoCache(Ok))
 
-  def index = GoTo(Tags.index)
+  def index = GoTo(PimpTags.index)
 
-  def downloads = GoTo(Tags.downloads(previousDownloadables))
+  def downloads = GoTo(PimpTags.downloads(previousDownloadables))
 
   def previous = Action(Ok(Json.toJson(previousDownloadables)))
 
   def documentation = win
 
-  def win = GoTo(Tags.docWin)
+  def win = GoTo(PimpTags.docWin)
 
-  def mac = GoTo(Tags.docMac)
+  def mac = GoTo(PimpTags.docMac)
 
-  def deb = GoTo(Tags.docDeb)
+  def deb = GoTo(PimpTags.docDeb)
 
-  def rpm = GoTo(Tags.docRpm)
+  def rpm = GoTo(PimpTags.docRpm)
 
   def wp = GoTo(html.docWinPhone())
 
-  def api = GoTo(Tags.api)
+  def api = GoTo(PimpTags.api)
 
   def alarms = GoTo(html.alarms())
 
-  def forum = GoTo(Tags.forum)
+  def forum = GoTo(PimpTags.forum)
 
-  def about = GoTo(Tags.about)
+  def about = GoTo(PimpTags.about)
 
   def complete = GoTo(html.success())
 
@@ -76,7 +76,7 @@ class Home extends Controller with BaseController {
 
   def cancel = Action(Redirect(routes.Home.incomplete()))
 
-  def privacyPolicy = GoTo(Tags.privacyPolicy)
+  def privacyPolicy = GoTo(PimpTags.privacyPolicy)
 
   private def GoTo[C: Writeable](page: C) = Action(Ok(page))
 
