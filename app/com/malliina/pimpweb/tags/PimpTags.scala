@@ -345,7 +345,7 @@ object PimpTags {
       ),
       divClass(ColMd6)(
         p("This site uses icons by ", aHref("http://glyphicons.com/", "Glyphicons"), " and ", aHref("http://fontawesome.io/", "Font Awesome"), "."),
-        p(a(href := "https://www.jetbrains.com/idea/")(img(src := at("img/logo_Jetbrains_3.png"), `class` := "img-responsive")))
+        p(a(href := "https://www.jetbrains.com/idea/")(img(src := at("img/logo_JetBrains_3.png"), `class` := "img-responsive")))
       )
     )
   )
