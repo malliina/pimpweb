@@ -42,9 +42,9 @@ object Home {
 class Home extends Controller with BaseController {
   def ping = Action(NoCache(Ok))
 
-  def index = GoTo(html.index())
+  def index = GoTo(Tags.index)
 
-  def downloads = GoTo(html.downloads(previousDownloadables))
+  def downloads = GoTo(Tags.downloads(previousDownloadables))
 
   def previous = Action(Ok(Json.toJson(previousDownloadables)))
 
@@ -64,7 +64,7 @@ class Home extends Controller with BaseController {
 
   def alarms = GoTo(html.alarms())
 
-  def forum = GoTo(html.forum())
+  def forum = GoTo(Tags.forum)
 
   def about = GoTo(Tags.about)
 
