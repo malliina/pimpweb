@@ -157,7 +157,7 @@ object PimpTags {
     )
   )
 
-  def downloads(previous: Seq[String]) = indexMain("downloads")(
+  def downloads(releaseDate: String, previous: Seq[String]) = indexMain("downloads")(
     headerRow("Downloads"),
     fullRow(
       leadPara("Download the server. It's free. No nonsense.")
@@ -167,7 +167,7 @@ object PimpTags {
         h2(iClass("icon-windows"), " Windows"),
         leadPara("Download for Windows"),
         downloadLink(Home.msiDownload, s"primary $Btn-lg"),
-        p("Released on 11 November 2016")
+        p(s"Released on $releaseDate")
       ),
       div4(
         h2(iClass("icon-linux"), " Linux"),

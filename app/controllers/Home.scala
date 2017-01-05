@@ -17,11 +17,13 @@ object Home {
   }
 
   val downloadBaseUrl = "https://files.musicpimp.org/files/"
-  val version = "3.3.0"
+  val version = "3.5.1"
+  val macVersion = "3.3.0"
   val msiDownload = Download(s"musicpimp-$version.msi")
   val debDownload = Download(s"musicpimp_${version}_all.deb")
   val rpmDownload = Download(s"musicpimp-$version-1.noarch.rpm")
-  val dmgDownload = Download(s"musicpimp-$version.dmg")
+  val dmgDownload = Download(s"musicpimp-$macVersion.dmg")
+  val releaseDate = "5 January 2017"
   val latestDownloads = Seq(msiDownload, debDownload, rpmDownload, dmgDownload)
   val linuxConfFile = "/etc/musicpimp/application.ini"
   val windowsConfFile = """C:\Program Files (x86)\MusicPimp\musicpimp.conf"""
@@ -44,7 +46,7 @@ class Home extends Controller with BaseController {
 
   def index = GoTo(PimpTags.index)
 
-  def downloads = GoTo(PimpTags.downloads(previousDownloadables))
+  def downloads = GoTo(PimpTags.downloads(Home.releaseDate, previousDownloadables))
 
   def previous = Action(Ok(Json.toJson(previousDownloadables)))
 
