@@ -15,7 +15,7 @@ object PimpBuild {
     .settings(pimpSettings: _*)
 
   lazy val commonSettings = Seq(
-    version := "1.7.0",
+    version := "1.7.1",
     scalaVersion := "2.11.8",
     resolvers ++= Seq(
       Resolver.jcenterRepo,
@@ -29,8 +29,7 @@ object PimpBuild {
   val deps = Seq(
     malliinaGroup %% "util-azure" % "2.1.0",
     malliinaGroup %% "play-base" % "3.3.3",
-    "org.pegdown" % "pegdown" % "1.6.0",
-    "com.lihaoyi" %% "scalatags" % "0.6.2"
+    "org.pegdown" % "pegdown" % "1.6.0"
   )
 
   lazy val pimpSettings = commonSettings ++ buildMetaSettings ++ linuxSettings
