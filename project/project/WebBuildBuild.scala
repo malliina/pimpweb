@@ -8,7 +8,8 @@ object WebBuildBuild {
     scalacOptions ++= Seq("-unchecked", "-deprecation"),
     resolvers ++= Seq(
       "typesafe" at "http://repo.typesafe.com/typesafe/releases/",
-      Resolver.url("malliina bintray sbt", url("https://dl.bintray.com/malliina/sbt-plugins"))(Resolver.ivyStylePatterns)
+      Resolver.url("malliina bintray sbt", url("https://dl.bintray.com/malliina/sbt-plugins"))(Resolver.ivyStylePatterns),
+      Resolver.bintrayRepo("malliina", "maven")
     )
   ) ++ sbtPlugins
 
