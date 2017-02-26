@@ -125,17 +125,9 @@
             <p>The same as above except that the HTTP response contains the string <code>bytes</code>
                 in the <strong>Accept-Ranges</strong> header.</p>
             <h3>Remote playback control</h3>
-            <p>Control a remote playback device using WebSockets or HTTP POST calls. Two types of remote playback devices
-                are supported:</p>
-            <ul>
-                <li>the MusicPimp server</li>
-                <li>clients connected to the MusicPimp server, such as a web browser</li>
-            </ul>
+            <p>Control playback on the MusicPimp server using WebSockets or HTTP POST calls.</p>
             <p>To use the MusicPimp server as the playback device, open a WebSocket connection to
                 <code>@Home.serverWebSocketResource</code> or HTTP POST to <code>@Home.serverPlaybackResource</code>
-                .
-                To control the playback devices of clients connected to the MusicPimp server, open a WebSocket connection to
-                <code>@Home.webPlayWebSocketResource</code> or HTTP POST to <code>@Home.webPlayPostResource</code>
                 .
                 The available commands are described below.</p>
             <h4>Play track <small>HTTP POST or WebSocket</small></h4>

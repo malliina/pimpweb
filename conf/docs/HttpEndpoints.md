@@ -191,17 +191,10 @@ starting from the most recently played track, along with a timestamp
 
 ### Player <div id="player" class="sub-area"></a>
 
-Control a remote playback device using WebSockets or HTTP POST calls. 
-Two types of remote playback devices are supported:
-
-- the MusicPimp server
-- clients connected to the MusicPimp server, such as a web browser
+Control playback on the MusicPimp server using WebSockets or HTTP POST calls. 
 
 To use the MusicPimp server as the playback device, open a WebSocket connection to
 `/ws/playback` or HTTP POST to `/playback`.
-
-To control the playback devices of clients connected to the MusicPimp server, open a WebSocket 
-connection to `/ws/webplay` or HTTP POST to `/webplay`.
 
 The available commands are described below.
 
@@ -228,9 +221,6 @@ Reset the playlist with the given tracks and start playback from the first track
 #### Play uploaded file <small>POST to /playback/uploads</small>
 
 Starts playback of the file uploaded as *multipart/form-data*.
-
-<span class="label label-warning">Note</span> Uploaded playback is at the moment 
-only supported when the playback device is the MusicPimp server.
 
 #### Stop playback <small>HTTP POST or WebSocket</small>
 
