@@ -1,21 +1,22 @@
-import com.malliina.sbt.unix.LinuxKeys._
+import com.malliina.sbt.unix.LinuxKeys.{httpPort, httpsPort}
 import com.malliina.sbt.unix.LinuxPlugin
 import com.malliina.sbtplay.PlayProject
-import com.typesafe.sbt.SbtNativePackager.{Linux, Universal}
+import com.typesafe.sbt.SbtNativePackager.{Debian, Linux, Universal}
 import com.typesafe.sbt.packager
+import com.typesafe.sbt.packager.Keys.serverLoading
+import com.typesafe.sbt.packager.archetypes.{JavaServerAppPackaging, ServerLoader}
 import sbt.Keys._
 import sbt._
 import sbtbuildinfo.BuildInfoKeys.{buildInfoKeys, buildInfoPackage}
-import sbtbuildinfo.BuildInfoPlugin
-import sbtbuildinfo.BuildInfoPlugin.BuildInfoKey
+import sbtbuildinfo.{BuildInfoKey, BuildInfoPlugin}
 
 object PimpBuild {
   lazy val pimpWeb = PlayProject.default("pimpweb")
-    .enablePlugins(BuildInfoPlugin)
+    .enablePlugins(JavaServerAppPackaging, BuildInfoPlugin)
     .settings(pimpSettings: _*)
 
   lazy val commonSettings = Seq(
-    version := "1.7.1",
+    version := "1.8.0",
     scalaVersion := "2.11.8",
     resolvers ++= Seq(
       Resolver.jcenterRepo,
@@ -41,15 +42,14 @@ object PimpBuild {
 
   def linuxSettings = {
     LinuxPlugin.playSettings ++ Seq(
-      httpPort in Linux := Option("disabled"),
-      httpsPort in Linux := Option("8462"),
+      httpPort in Linux := Option("8462"),
+      httpsPort in Linux := Option("disabled"),
       packager.Keys.maintainer := "Michael Skogberg <malliina123@gmail.com>",
-      javaOptions in Universal ++= {
-        Seq(
+      javaOptions in Universal ++= Seq(
           "-Dfile.encoding=UTF-8",
           "-Dsun.jnu.encoding=UTF-8"
-        )
-      }
+        ),
+      serverLoading in Debian := ServerLoader.Systemd
     )
   }
 }

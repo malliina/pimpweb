@@ -1,5 +1,6 @@
 package com.malliina.app
 
+import com.malliina.play.app.DefaultApp
 import controllers.Assets
 import controllers.Home
 import play.api.ApplicationLoader.Context
@@ -7,13 +8,7 @@ import play.api._
 import play.api.routing.Router
 import router.Routes
 
-class AppLoader extends ApplicationLoader {
-  override def load(context: Context): Application = {
-    LoggerConfigurator(context.environment.classLoader)
-      .foreach(_.configure(context.environment))
-    new AppComponents(context).application
-  }
-}
+class AppLoader extends DefaultApp(ctx => new AppComponents(ctx))
 
 class AppComponents(context: Context) extends BuiltInComponentsFromContext(context) {
   lazy val assets = new Assets(httpErrorHandler)
