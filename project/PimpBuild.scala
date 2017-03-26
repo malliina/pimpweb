@@ -16,22 +16,21 @@ object PimpBuild {
     .settings(pimpSettings: _*)
 
   lazy val commonSettings = Seq(
-    version := "1.8.0",
+    version := "1.8.1",
     scalaVersion := "2.11.8",
     resolvers ++= Seq(
       Resolver.jcenterRepo,
       Resolver.bintrayRepo("malliina", "maven")
     ),
-    libraryDependencies ++= deps
+    libraryDependencies ++= Seq(
+      malliinaGroup %% "util-azure" % "2.1.0",
+      malliinaGroup %% "play-base" % "3.3.3",
+      "org.pegdown" % "pegdown" % "1.6.0",
+      "com.amazonaws" % "aws-java-sdk" % "1.11.75"
+    )
   )
 
   val malliinaGroup = "com.malliina"
-
-  val deps = Seq(
-    malliinaGroup %% "util-azure" % "2.1.0",
-    malliinaGroup %% "play-base" % "3.3.3",
-    "org.pegdown" % "pegdown" % "1.6.0"
-  )
 
   lazy val pimpSettings = commonSettings ++ buildMetaSettings ++ linuxSettings
 

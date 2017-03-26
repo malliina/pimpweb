@@ -1,8 +1,6 @@
 package controllers
 
-import java.net.URI
-
-import com.malliina.azure.{AzureStorageCredentialReader, StorageClient}
+import com.malliina.pimpweb.FileStore
 import com.malliina.pimpweb.tags.PimpTags
 import com.malliina.play.controllers.BaseController
 import play.api.http.Writeable
@@ -16,8 +14,8 @@ object Home {
     val url = toUrl(fileName)
   }
 
-  val downloadBaseUrl = "https://files.musicpimp.org/files/"
-  val version = "3.5.3"
+  val downloadBaseUrl = "https://files.musicpimp.org/"
+  val version = "3.6.3"
   val macVersion = "3.3.0"
   val msiDownload = Download(s"musicpimp-$version.msi")
   val debDownload = Download(s"musicpimp_${version}_all.deb")
@@ -41,7 +39,7 @@ object Home {
   private def toUrl(fileName: String) = downloadBaseUrl + fileName
 }
 
-class Home extends Controller with BaseController {
+class Home(fileStore: FileStore) extends Controller with BaseController {
   def ping = Action(NoCache(Ok))
 
   def index = GoTo(PimpTags.index)
@@ -83,22 +81,8 @@ class Home extends Controller with BaseController {
   private def GoTo[C: Writeable](page: C) = Action(Ok(page))
 
   private def previousDownloadables =
-    (downloadables filterNot isLatest).toSeq.reverse
+    (fileStore.filenames filterNot isLatest).reverse
 
   private def isLatest(fileName: String) =
     Home.latestDownloads.exists(_.fileName == fileName)
-
-  private def downloadables: Iterable[String] = {
-    val maybeFiles = AzureStorageCredentialReader.loadOpt.map { creds =>
-      val client = new StorageClient(creds.accountName, creds.accountKey)
-      val uriStrings = client uris "files"
-      uriStrings map fileName filter (_.startsWith("musicpimp"))
-    }
-    maybeFiles getOrElse Nil
-  }
-
-  private def fileName(uri: URI) = {
-    val uriString = uri.toString
-    uriString.substring((uriString lastIndexOf '/') + 1, uriString.length)
-  }
 }

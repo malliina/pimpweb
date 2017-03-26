@@ -1,8 +1,8 @@
 package com.malliina.app
 
+import com.malliina.pimpweb.S3FileStore
 import com.malliina.play.app.DefaultApp
-import controllers.Assets
-import controllers.Home
+import controllers.{Assets, Home}
 import play.api.ApplicationLoader.Context
 import play.api._
 import play.api.routing.Router
@@ -12,5 +12,6 @@ class AppLoader extends DefaultApp(ctx => new AppComponents(ctx))
 
 class AppComponents(context: Context) extends BuiltInComponentsFromContext(context) {
   lazy val assets = new Assets(httpErrorHandler)
-  override val router: Router = new Routes(httpErrorHandler, new Home, assets)
+  val home = new Home(S3FileStore)
+  override val router: Router = new Routes(httpErrorHandler, home, assets)
 }
