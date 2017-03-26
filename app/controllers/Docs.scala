@@ -6,6 +6,8 @@ import com.malliina.file.FileUtilities
 import org.pegdown.PegDownProcessor
 import play.twirl.api.{Html, HtmlFormat}
 
+import scala.concurrent.duration.DurationInt
+
 object Docs extends Docs
 
 trait Docs {
@@ -19,7 +21,7 @@ trait Docs {
 
   def toHtml(markdownSource: String): Option[String] = {
     // local scope as PegDownProcessor is not thread-safe
-    val pdp = new PegDownProcessor()
+    val pdp = new PegDownProcessor(60.seconds.toMillis)
     Option(pdp.markdownToHtml(markdownSource))
   }
 }

@@ -16,7 +16,8 @@ object PimpBuild {
     .settings(pimpSettings: _*)
 
   lazy val commonSettings = Seq(
-    version := "1.8.2",
+    organization := "org.musicpimp",
+    version := "1.8.3",
     scalaVersion := "2.11.8",
     resolvers ++= Seq(
       Resolver.jcenterRepo,
