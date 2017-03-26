@@ -167,7 +167,7 @@ object PimpTags {
         h2(iClass("icon-windows"), " Windows"),
         leadPara("Download for Windows"),
         downloadLink(Home.msiDownload, s"primary $Btn-lg"),
-        p(s"Released on $releaseDate. Valentine's Day Edition!")
+        p(s"Released on $releaseDate.")
       ),
       div4(
         h2(iClass("icon-linux"), " Linux"),

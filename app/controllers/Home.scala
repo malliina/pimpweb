@@ -21,7 +21,7 @@ object Home {
   val debDownload = Download(s"musicpimp_${version}_all.deb")
   val rpmDownload = Download(s"musicpimp-$version-1.noarch.rpm")
   val dmgDownload = Download(s"musicpimp-$macVersion.dmg")
-  val releaseDate = "14 February 2017"
+  val releaseDate = "26 March 2017"
   val latestDownloads = Seq(msiDownload, debDownload, rpmDownload, dmgDownload)
   val linuxConfFile = "/etc/musicpimp/application.ini"
   val windowsConfFile = """C:\Program Files (x86)\MusicPimp\musicpimp.conf"""
