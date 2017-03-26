@@ -13,7 +13,7 @@ import play.api.mvc.Call
 import scalatags.Text.GenericAttr
 import scalatags.Text.all._
 
-object PimpTags {
+object PimpWebHtml {
   implicit val callAttr = new GenericAttr[Call]
   val titleTag = tag("title")
   val nav = tag("nav")

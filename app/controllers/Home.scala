@@ -1,7 +1,7 @@
 package controllers
 
 import com.malliina.pimpweb.FileStore
-import com.malliina.pimpweb.tags.PimpTags
+import com.malliina.pimpweb.tags.PimpWebHtml
 import com.malliina.play.controllers.BaseController
 import play.api.http.Writeable
 import play.api.libs.json.Json
@@ -42,31 +42,31 @@ object Home {
 class Home(fileStore: FileStore) extends Controller with BaseController {
   def ping = Action(NoCache(Ok))
 
-  def index = GoTo(PimpTags.index)
+  def index = GoTo(PimpWebHtml.index)
 
-  def downloads = GoTo(PimpTags.downloads(Home.releaseDate, previousDownloadables))
+  def downloads = GoTo(PimpWebHtml.downloads(Home.releaseDate, previousDownloadables))
 
   def previous = Action(Ok(Json.toJson(previousDownloadables)))
 
   def documentation = win
 
-  def win = GoTo(PimpTags.docWin)
+  def win = GoTo(PimpWebHtml.docWin)
 
-  def mac = GoTo(PimpTags.docMac)
+  def mac = GoTo(PimpWebHtml.docMac)
 
-  def deb = GoTo(PimpTags.docDeb)
+  def deb = GoTo(PimpWebHtml.docDeb)
 
-  def rpm = GoTo(PimpTags.docRpm)
+  def rpm = GoTo(PimpWebHtml.docRpm)
 
   def wp = GoTo(html.docWinPhone())
 
-  def api = GoTo(PimpTags.api)
+  def api = GoTo(PimpWebHtml.api)
 
   def alarms = GoTo(html.alarms())
 
-  def forum = GoTo(PimpTags.forum)
+  def forum = GoTo(PimpWebHtml.forum)
 
-  def about = GoTo(PimpTags.about)
+  def about = GoTo(PimpWebHtml.about)
 
   def complete = GoTo(html.success())
 
@@ -76,7 +76,7 @@ class Home(fileStore: FileStore) extends Controller with BaseController {
 
   def cancel = Action(Redirect(routes.Home.incomplete()))
 
-  def privacyPolicy = GoTo(PimpTags.privacyPolicy)
+  def privacyPolicy = GoTo(PimpWebHtml.privacyPolicy)
 
   private def GoTo[C: Writeable](page: C) = Action(Ok(page))
 
