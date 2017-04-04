@@ -15,13 +15,15 @@ import sbtbuildinfo.BuildInfoKeys.{buildInfoKeys, buildInfoPackage}
 import sbtbuildinfo.{BuildInfoKey, BuildInfoPlugin}
 
 object PimpBuild {
+  val malliinaGroup = "com.malliina"
+
   lazy val pimpWeb = PlayProject.default("pimpweb")
     .enablePlugins(JavaServerAppPackaging, BuildInfoPlugin)
     .settings(pimpSettings: _*)
 
   lazy val commonSettings = Seq(
     organization := "org.musicpimp",
-    version := "1.8.7",
+    version := "1.8.8",
     scalaVersion := "2.11.8",
     resolvers ++= Seq(
       Resolver.jcenterRepo,
@@ -30,14 +32,12 @@ object PimpBuild {
     pipelineStages := Seq(digest, gzip),
     libraryDependencies ++= Seq(
       malliinaGroup %% "util-azure" % "2.1.0",
-      malliinaGroup %% "play-base" % "3.3.3",
+      malliinaGroup %% "util-play" % "3.6.7",
       "org.pegdown" % "pegdown" % "1.6.0",
       "com.amazonaws" % "aws-java-sdk-s3" % "1.11.113",
       PlayImport.filters
     )
   )
-
-  val malliinaGroup = "com.malliina"
 
   lazy val pimpSettings = commonSettings ++ buildMetaSettings ++ linuxSettings
 

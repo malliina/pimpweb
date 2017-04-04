@@ -1,12 +1,11 @@
 package controllers
 
-import com.malliina.pimpweb.{BuildInfo, FileStore}
 import com.malliina.pimpweb.tags.PimpWebHtml
-import com.malliina.play.controllers.BaseController
+import com.malliina.pimpweb.{BuildInfo, FileStore}
+import com.malliina.play.controllers.Caching
 import play.api.http.Writeable
 import play.api.libs.json.Json
 import play.api.mvc.{Action, Controller}
-import views.html
 
 object Home {
 
@@ -39,8 +38,8 @@ object Home {
   private def toUrl(fileName: String) = downloadBaseUrl + fileName
 }
 
-class Home(fileStore: FileStore) extends Controller with BaseController {
-  def ping = Action(NoCache(Ok(Json.obj("version" -> BuildInfo.version))))
+class Home(fileStore: FileStore) extends Controller {
+  def ping = Action(Caching.NoCache(Ok(Json.obj("version" -> BuildInfo.version))))
 
   def index = GoTo(PimpWebHtml.index)
 
@@ -58,19 +57,19 @@ class Home(fileStore: FileStore) extends Controller with BaseController {
 
   def rpm = GoTo(PimpWebHtml.docRpm)
 
-  def wp = GoTo(html.docWinPhone())
+  def wp = GoTo(PimpWebHtml.docWinPhone)
 
   def api = GoTo(PimpWebHtml.api)
 
-  def alarms = GoTo(html.alarms())
+  def alarms = GoTo(PimpWebHtml.alarms)
 
   def forum = GoTo(PimpWebHtml.forum)
 
   def about = GoTo(PimpWebHtml.about)
 
-  def complete = GoTo(html.success())
+  def complete = GoTo(PimpWebHtml.success)
 
-  def incomplete = GoTo(html.cancel())
+  def incomplete = GoTo(PimpWebHtml.cancel)
 
   def success = Action(Redirect(routes.Home.complete()))
 

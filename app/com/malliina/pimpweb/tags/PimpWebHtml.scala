@@ -147,6 +147,31 @@ object PimpWebHtml {
     )
   }
 
+  val docWinPhone = docPlain("wp")(
+    headerRow("Windows Phone"),
+    fullRow(
+      h2("System Requirements"),
+      p("Windows Phone 7.5 and higher are supported."),
+      h2("Installation"),
+      p("Install the ", strong("MusicPimp"), " ", aHref(Home.winPhoneAppUri, "app"), " to your Windows Phone device."),
+      h2("Usage"),
+      ol(
+        li("Add music endpoints to your app. Any PC on which MusicPimp is installed works as a music endpoint."),
+        li("Set the PC as the music source or use it for music playback in the app.")
+      ),
+      h3("HTTPS"),
+      p("You may wish to connect to your music server over HTTPS. HTTPS is " +
+        "currently supported on Windows Phone provided that the server " +
+        "certificate passes validation and is trusted by your phone. This " +
+        "means that self-signed certificates will most likely not work. " +
+        "Commercial certificates are likely to work."),
+      h3("Miscellaneous"),
+      p("MusicPimp for Windows Phone also supports the ",
+        aHref("http://www.subsonic.org", "Subsonic"),
+        " media streamer as a music server.")
+    )
+  )
+
   val privacyPolicy = indexMain("about")(
     headerRow("Privacy Policy", ColMd6),
     rowColumn(ColMd6)(
@@ -155,6 +180,83 @@ object PimpWebHtml {
       p(PrivacyPolicy.roaming),
       p(PrivacyPolicy.network)
     )
+  )
+
+  val alarms = indexMain("alarms")(
+    headerRow("Alarm clock management"),
+    rowColumn(ColMd6)(
+      leadPara("Control the alarm clock on the MusicPimp server using the following API."),
+      h4("Get all alarms ", small("GET /alarms")),
+      p("Get an array of the currently configured alarms."),
+      p("Example response:"),
+      pre(
+        """[
+          |    {
+          |        "id":"f1bf52c6-eb9e-4407-8b8e-91444a78c14c",
+          |        "job":{
+          |            "track":{
+          |                "id":"Paola+-+Interstellar+Love.mp3",
+          |                "title":"Interstellar Love",
+          |                "artist":"Paola",
+          |                "album":"Stockcity Girl",
+          |                "duration":201,
+          |                "size":4840094
+          |            }
+          |        },
+          |        "when":{
+          |            "hour":8,
+          |            "minute":13,
+          |            "days":["mon","tue","wed","thu","fri","sat","sun"]
+          |        },
+          |        "enabled":true
+          |    }
+          |]
+        """.stripMargin),
+      h4("Get alarm ", small("GET /alarms/alarm_id_here")),
+      p("Get an alarm with a given ID."),
+      h4("Remove alarm ", small("HTTP POST to /alarms")),
+      p("Remove an alarm:"),
+      code("""{"cmd": "delete", "id": "alarm_id_here"}"""),
+      h4("Add or update an alarm ", small("HTTP POST to /alarms")),
+      p("Add a new alarm or update an existing one. When updating, " +
+        "include the ID of the alarm you update. If no ID is provided, " +
+        "the interpretation is that you add a new alarm; the server will " +
+        "generate a new ID."),
+      pre(
+        """{
+          |    "cmd":"save",
+          |    "ap":{
+          |        "id":"f1bf52c6-eb9e-4407-8b8e-91444a78c14c",
+          |        "job":{
+          |            "track":"Paola+-+Interstellar+Love.mp3"
+          |        },
+          |        "when":{
+          |            "hour":16,
+          |            "minute":24,
+          |            "days":["sun","mon","tue","wed","thu","fri","sat"]
+          |        },
+          |        "enabled":true
+          |    }
+          |}
+        """.stripMargin),
+      h4("Start an alarm ", small("HTTP POST to /alarms")),
+      p("Manually start playback of an alarm with a given ID. Useful for testing."),
+      code("""{"cmd": "start", "id": "alarm_id_here"}"""),
+      h4("Stop an alarm ", small("HTTP POST to /alarms")),
+      p("Stop any alarm currently playing."),
+      code("""{"cmd": "stop"}""")
+    )
+  )
+
+  val success = indexMain("success")(
+    leadPara(glyphIcon("thumbs-up"), " Thanks for your donation!"),
+    p("Should you have any questions, don't hesitate to contact ", aHref("mailto:info@musicpimp.org", "info@musicpimp.org")),
+    p("Best regards! Michael Skogberg, MusicPimp")
+  )
+
+  val cancel = indexMain("cancel")(
+    leadPara(glyphIcon("fire"), " The donation procedure was prematurely canceled. ", glyphIcon("fire")),
+    p("Should you have any questions, don't hesitate to contact ", aHref("mailto:info@musicpimp.org", "info@musicpimp.org"))
   )
 
   def downloads(releaseDate: String, previous: Seq[String]) = indexMain("downloads")(
