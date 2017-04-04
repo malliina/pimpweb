@@ -1,6 +1,6 @@
 package controllers
 
-import com.malliina.pimpweb.FileStore
+import com.malliina.pimpweb.{BuildInfo, FileStore}
 import com.malliina.pimpweb.tags.PimpWebHtml
 import com.malliina.play.controllers.BaseController
 import play.api.http.Writeable
@@ -40,7 +40,7 @@ object Home {
 }
 
 class Home(fileStore: FileStore) extends Controller with BaseController {
-  def ping = Action(NoCache(Ok))
+  def ping = Action(NoCache(Ok(Json.obj("version" -> BuildInfo.version))))
 
   def index = GoTo(PimpWebHtml.index)
 
