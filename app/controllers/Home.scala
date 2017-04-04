@@ -14,7 +14,7 @@ object Home {
     val url = toUrl(fileName)
   }
 
-  val downloadBaseUrl = "https://files.musicpimp.org/"
+  val downloadBaseUrl = "https://s3-eu-west-1.amazonaws.com/musicpimp-files/"
   val version = "3.6.3"
   val macVersion = "3.3.0"
   val msiDownload = Download(s"musicpimp-$version.msi")
