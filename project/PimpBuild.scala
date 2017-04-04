@@ -17,7 +17,7 @@ object PimpBuild {
 
   lazy val commonSettings = Seq(
     organization := "org.musicpimp",
-    version := "1.8.6",
+    version := "1.8.7",
     scalaVersion := "2.11.8",
     resolvers ++= Seq(
       Resolver.jcenterRepo,
@@ -27,7 +27,7 @@ object PimpBuild {
       malliinaGroup %% "util-azure" % "2.1.0",
       malliinaGroup %% "play-base" % "3.3.3",
       "org.pegdown" % "pegdown" % "1.6.0",
-      "com.amazonaws" % "aws-java-sdk" % "1.11.75"
+      "com.amazonaws" % "aws-java-sdk-s3" % "1.11.113"
     )
   )
 
