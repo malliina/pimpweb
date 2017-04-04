@@ -17,4 +17,4 @@ GET        /cancel               controllers.Home.cancel
 GET        /complete             controllers.Home.complete
 GET        /incomplete           controllers.Home.incomplete
 GET        /legal/privacy        controllers.Home.privacyPolicy
-GET        /assets/*file         controllers.Assets.at(path = "/public", file)
+GET        /assets/*file         controllers.Assets.versioned(path = "/public", file: Asset)

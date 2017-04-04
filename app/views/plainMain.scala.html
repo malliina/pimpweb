@@ -1,5 +1,5 @@
 @import util.{css, div, routedCss, script, routedScript}
-@import routes.Assets.at
+@import routes.Assets.versioned
 
 @(title: String)(content: Html)
 
@@ -8,22 +8,22 @@
     <head>
         <title>@title</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="shortcut icon" href="@at("img/pimp-28.png")" />
+        <link rel="shortcut icon" href="@versioned("img/pimp-28.png")" />
         @css(
             "//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css",
             "//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css",
             "//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css"
         )
         @routedCss(
-            at("css/custom.css"),
-            at("css/sidebar.css"),
-            at("css/footer.css")
+            versioned("css/custom.css"),
+            versioned("css/sidebar.css"),
+            versioned("css/footer.css")
         )
         @script(
             "//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js",
             "//netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"
         )
-        @routedScript(at("js/docs.js"))
+        @routedScript(versioned("js/docs.js"))
     </head>
     <body data-spy="scroll" data-target="#sidenav" data-offset="200">
         <div id="wrap">

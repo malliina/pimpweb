@@ -2,9 +2,13 @@ import com.malliina.sbt.unix.LinuxKeys.{httpPort, httpsPort}
 import com.malliina.sbt.unix.LinuxPlugin
 import com.malliina.sbtplay.PlayProject
 import com.typesafe.sbt.SbtNativePackager.{Debian, Linux, Universal}
+import com.typesafe.sbt.digest.Import.digest
+import com.typesafe.sbt.gzip.Import.gzip
 import com.typesafe.sbt.packager
 import com.typesafe.sbt.packager.Keys.serverLoading
 import com.typesafe.sbt.packager.archetypes.{JavaServerAppPackaging, ServerLoader}
+import com.typesafe.sbt.web.Import.pipelineStages
+import play.sbt.PlayImport
 import sbt.Keys._
 import sbt._
 import sbtbuildinfo.BuildInfoKeys.{buildInfoKeys, buildInfoPackage}
@@ -23,11 +27,13 @@ object PimpBuild {
       Resolver.jcenterRepo,
       Resolver.bintrayRepo("malliina", "maven")
     ),
+    pipelineStages := Seq(digest, gzip),
     libraryDependencies ++= Seq(
       malliinaGroup %% "util-azure" % "2.1.0",
       malliinaGroup %% "play-base" % "3.3.3",
       "org.pegdown" % "pegdown" % "1.6.0",
-      "com.amazonaws" % "aws-java-sdk-s3" % "1.11.113"
+      "com.amazonaws" % "aws-java-sdk-s3" % "1.11.113",
+      PlayImport.filters
     )
   )
 
@@ -46,9 +52,9 @@ object PimpBuild {
       httpsPort in Linux := Option("disabled"),
       packager.Keys.maintainer := "Michael Skogberg <malliina123@gmail.com>",
       javaOptions in Universal ++= Seq(
-          "-Dfile.encoding=UTF-8",
-          "-Dsun.jnu.encoding=UTF-8"
-        ),
+        "-Dfile.encoding=UTF-8",
+        "-Dsun.jnu.encoding=UTF-8"
+      ),
       serverLoading in Debian := ServerLoader.Systemd
     )
   }

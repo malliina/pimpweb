@@ -4,7 +4,7 @@ import com.malliina.file.FileUtilities
 import com.malliina.tags.Bootstrap._
 import com.malliina.tags.TagPage
 import com.malliina.tags.Tags._
-import controllers.routes.Assets.at
+import controllers.routes.Assets.versioned
 import controllers.routes.{Home => HomeRoute}
 import controllers.{Docs, Home}
 import models.PrivacyPolicy
@@ -88,9 +88,9 @@ object PimpWebHtml {
         ol(
           li("Navigate to ", aHref("http://localhost:8456/"), " and login."),
           li("Select tab ", strong("Manage"), " and specify folders containing MP3s under ", strong("Music Folders"), ":",
-            p(img(src := at("img/usage-folders2.png"), `class` := "img-responsive img-thumbnail"))),
+            p(img(src := versioned("img/usage-folders2.png"), `class` := "img-responsive img-thumbnail"))),
           li("Open the ", strong("MusicPimp"), " app on your mobile device and add your PC as a music endpoint:",
-            p(img(src := at("img/usage-wp8.png"), `class` := "img-responsive img-thumbnail"))),
+            p(img(src := versioned("img/usage-wp8.png"), `class` := "img-responsive img-thumbnail"))),
           li("Enjoy your music.")
         ),
         h2("Supported Audio Formats"),
@@ -243,7 +243,7 @@ object PimpWebHtml {
           )
         ),
         div4(
-          img(src := at("img/upload-alt-blue-128.png"), `class` := s"$PullLeft $VisibleLg $VisibleMd")
+          img(src := versioned("img/upload-alt-blue-128.png"), `class` := s"$PullLeft $VisibleLg $VisibleMd")
         )
       ),
       hr,
@@ -334,7 +334,7 @@ object PimpWebHtml {
     row(
       divClass(ColMd6)(
         p("Developed by ", aHref("https://mskogberg.info", "Michael Skogberg"), "."),
-        p(img(src := at("img/handsome.png"), `class` := "img-responsive img-thumbnail")),
+        p(img(src := versioned("img/handsome.png"), `class` := "img-responsive img-thumbnail")),
         p("Should you have any questions, don't hesitate to:",
           ul(
             li("contact ", aHref("mailto:info@musicpimp.org", "info@musicpimp.org")),
@@ -345,7 +345,7 @@ object PimpWebHtml {
       ),
       divClass(ColMd6)(
         p("This site uses icons by ", aHref("http://glyphicons.com/", "Glyphicons"), " and ", aHref("http://fontawesome.io/", "Font Awesome"), "."),
-        p(a(href := "https://www.jetbrains.com/idea/")(img(src := at("img/logo_JetBrains_3.png"), `class` := "img-responsive")))
+        p(a(href := "https://www.jetbrains.com/idea/")(img(src := versioned("img/logo_JetBrains_3.png"), `class` := "img-responsive")))
       )
     )
   )
@@ -394,16 +394,16 @@ object PimpWebHtml {
       head(
         titleTag(pageTitle),
         meta(name := "viewport", content := "width=device-width, initial-scale=1.0"),
-        link(rel := "shortcut icon", href := at("img/pimp-28.png")),
+        link(rel := "shortcut icon", href := versioned("img/pimp-28.png")),
         cssLink("//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"),
         cssLink("//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css"),
         cssLink("//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css"),
-        cssLink(at("css/custom.css")),
-        cssLink(at("css/sidebar.css")),
-        cssLink(at("css/footer.css")),
+        cssLink(versioned("css/custom.css")),
+        cssLink(versioned("css/sidebar.css")),
+        cssLink(versioned("css/footer.css")),
         js("//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"),
         js("//netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"),
-        js(at("js/docs.js"))
+        js(versioned("js/docs.js"))
       ),
       body(attr("data-spy") := "scroll", attr("data-target") := "#sidenav", attr("data-offset") := "200")(
         div(id := "wrap")(
@@ -420,7 +420,7 @@ object PimpWebHtml {
   )
 
   def badgeFromAssets(link: String, altText: String, file: String, classes: String = "") =
-    badge(link, altText, at(s"img/$file").toString, classes)
+    badge(link, altText, versioned(s"img/$file").toString, classes)
 
   def badge(link: String, altText: String, imgUrl: String, classes: String) =
     a(href := link, `class` := s"$VisibleLg $VisibleMd badge $classes")(img(alt := altText, src := imgUrl, `class` := "badge-image"))
@@ -428,7 +428,7 @@ object PimpWebHtml {
   def feature(featureTitle: String, imgFile: String, leadText: String) =
     div4(
       h2(featureTitle),
-      p(img(src := at(s"img/$imgFile"))),
+      p(img(src := versioned(s"img/$imgFile"))),
       leadPara(leadText)
     )
 

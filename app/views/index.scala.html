@@ -69,7 +69,7 @@
 }
 
     @badgeFromAssets(link: String, altText: String, img: String, classes: String = "") = {
-        @badge(link, altText, routes.Assets.at("img/" + img).toString, classes)
+        @badge(link, altText, routes.Assets.versioned("img/" + img).toString, classes)
     }
     @badge(link: String, altText: String, img: String, classes: String) = {
         <a href="@link" class="visible-lg visible-md badge @classes">
@@ -88,5 +88,5 @@
         <p><img src="@pic(file)"/></p>
     }
     @pic(file: String) = {
-    @routes.Assets.at("img/" + file)
+    @routes.Assets.versioned("img/" + file)
     }
