@@ -39,7 +39,7 @@ object Home {
 }
 
 class Home(fileStore: FileStore) extends Controller {
-  def ping = Action(Caching.NoCache(Ok(Json.obj("version" -> BuildInfo.version))))
+  def ping = Action(Caching.NoCache(Ok(Json.obj("name" -> BuildInfo.name, "version" -> BuildInfo.version))))
 
   def index = GoTo(PimpWebHtml.index)
 
