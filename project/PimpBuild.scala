@@ -18,6 +18,8 @@ object PimpBuild {
   lazy val pimpWeb = PlayProject.server("pimpweb")
     .settings(pimpSettings: _*)
 
+  lazy val pimpSettings = commonSettings ++ buildMetaSettings ++ linuxSettings
+
   lazy val commonSettings = Seq(
     organization := "org.musicpimp",
     version := "1.9.1",
@@ -36,18 +38,14 @@ object PimpBuild {
     )
   )
 
-  lazy val pimpSettings = commonSettings ++ buildMetaSettings ++ linuxSettings
-
   def buildMetaSettings = Seq(
     buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion),
     buildInfoPackage := "com.malliina.pimpweb"
   )
 
-  def linuxSettings = {
-    LinuxPlugin.playSettings ++ Seq(
-      httpPort in Linux := Option("8462"),
-      httpsPort in Linux := Option("disabled"),
-      maintainer := "Michael Skogberg <malliina123@gmail.com>"
-    )
-  }
+  def linuxSettings = Seq(
+    httpPort in Linux := Option("8462"),
+    httpsPort in Linux := Option("disabled"),
+    maintainer := "Michael Skogberg <malliina123@gmail.com>"
+  )
 }
