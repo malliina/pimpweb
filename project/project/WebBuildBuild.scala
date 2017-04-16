@@ -14,7 +14,7 @@ object WebBuildBuild {
   ) ++ sbtPlugins
 
   def sbtPlugins = Seq(
-    "com.malliina" %% "sbt-play" % "0.9.5",
+    "com.malliina" %% "sbt-play" % "0.9.7",
     "com.typesafe.sbt" % "sbt-gzip" % "1.0.0",
     "com.typesafe.sbt" % "sbt-digest" % "1.1.1"
   ) map addSbtPlugin

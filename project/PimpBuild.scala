@@ -1,5 +1,4 @@
 import com.malliina.sbt.unix.LinuxKeys.{httpPort, httpsPort}
-import com.malliina.sbt.unix.LinuxPlugin
 import com.malliina.sbtplay.PlayProject
 import com.typesafe.sbt.SbtNativePackager.Linux
 import com.typesafe.sbt.digest.Import.digest
