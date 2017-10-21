@@ -435,8 +435,8 @@ object PimpWebHtml {
     headerRow("About"),
     row(
       divClass(ColMd6)(
-        p("Developed by ", aHref("https://mskogberg.info", "Michael Skogberg"), "."),
-        p(img(src := versioned("img/handsome.png"), `class` := "img-responsive img-thumbnail")),
+        p("Developed by ", aHref("https://github.com/malliina", "Michael Skogberg"), "."),
+        p(img(src := versioned("img/beauty.png"), `class` := "img-responsive img-thumbnail")),
         p("Should you have any questions, don't hesitate to:",
           ul(
             li("contact ", aHref("mailto:info@musicpimp.org", "info@musicpimp.org")),
@@ -537,7 +537,7 @@ object PimpWebHtml {
   def downloadLink(dl: Home.Download, btnName: String = "default") =
     p(a(`class` := s"$Btn $Btn-$btnName", href := dl.url)(glyphIcon("download"), s" ${dl.fileName}"))
 
-  def markdown(docName: String): Modifier = Docs.toHtml(markdownAsString(docName)).map(RawFrag.apply)
+  def markdown(docName: String): Modifier = RawFrag(Docs.toHtml(markdownAsString(docName)))
 
   def markdownAsString(docName: String) =
     FileUtilities.readerFrom(s"docs/$docName.md")(_.mkString(FileUtilities.lineSep))

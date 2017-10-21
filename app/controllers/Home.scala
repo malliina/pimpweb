@@ -5,7 +5,7 @@ import com.malliina.pimpweb.{BuildInfo, FileStore}
 import com.malliina.play.controllers.Caching
 import play.api.http.Writeable
 import play.api.libs.json.Json
-import play.api.mvc.{Action, Controller}
+import play.api.mvc.{AbstractController, ControllerComponents}
 
 object Home {
 
@@ -38,7 +38,7 @@ object Home {
   private def toUrl(fileName: String) = downloadBaseUrl + fileName
 }
 
-class Home(fileStore: FileStore) extends Controller {
+class Home(fileStore: FileStore, comps: ControllerComponents) extends AbstractController(comps) {
   def ping = Action(Caching.NoCache(Ok(Json.obj("name" -> BuildInfo.name, "version" -> BuildInfo.version))))
 
   def index = GoTo(PimpWebHtml.index)

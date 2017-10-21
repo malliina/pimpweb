@@ -1,27 +1,16 @@
 package controllers
-
-import java.nio.file.Path
-
-import com.malliina.file.FileUtilities
-import org.pegdown.PegDownProcessor
-import play.twirl.api.{Html, HtmlFormat}
-
-import scala.concurrent.duration.DurationInt
+import com.vladsch.flexmark.html.HtmlRenderer
+import com.vladsch.flexmark.parser.Parser
+import com.vladsch.flexmark.util.options.MutableDataSet
 
 object Docs extends Docs
 
 trait Docs {
-  def fromFile(file: Path): Option[Html] = {
-    val fileAsString = FileUtilities.fileToString(file)
-    fromString(fileAsString)
-  }
-
-  def fromString(markdownSource: String): Option[Html] =
-    toHtml(markdownSource).map(HtmlFormat.raw)
-
-  def toHtml(markdownSource: String): Option[String] = {
-    // local scope as PegDownProcessor is not thread-safe
-    val pdp = new PegDownProcessor(60.seconds.toMillis)
-    Option(pdp.markdownToHtml(markdownSource))
+  def toHtml(markdownSource: String): String = {
+    val options = new MutableDataSet()
+    val parser = Parser.builder(options).build()
+    val renderer = HtmlRenderer.builder(options).build()
+    val doc = parser.parse(markdownSource)
+    renderer.render(doc)
   }
 }
