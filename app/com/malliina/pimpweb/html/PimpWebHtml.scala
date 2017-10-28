@@ -1,8 +1,8 @@
 package com.malliina.pimpweb.html
 
+import controllers.routes.PimpAssets.versioned
 import com.malliina.file.FileUtilities
 import com.malliina.pimpweb.assets.AppAssets
-import com.malliina.pimpweb.css.LessAssets
 import com.malliina.tags.Bootstrap._
 import com.malliina.tags.TagPage
 import com.malliina.tags.Tags._
@@ -511,7 +511,7 @@ object PimpWebHtml {
         cssLink("//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"),
         cssLink("//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css"),
         cssLink("//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css"),
-        cssLink(LessAssets.css.main),
+        cssLink(versioned("css/main.css")),
         js("//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"),
         js("//netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js")
       ),
