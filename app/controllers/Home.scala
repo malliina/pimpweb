@@ -1,6 +1,6 @@
 package controllers
 
-import com.malliina.pimpweb.tags.PimpWebHtml
+import com.malliina.pimpweb.html.PimpWebHtml
 import com.malliina.pimpweb.{BuildInfo, FileStore}
 import com.malliina.play.controllers.Caching
 import play.api.http.Writeable
@@ -14,13 +14,15 @@ object Home {
   }
 
   val downloadBaseUrl = "https://s3-eu-west-1.amazonaws.com/musicpimp-files/"
-  val version = "3.6.3"
-  val macVersion = "3.3.0"
-  val msiDownload = Download(s"musicpimp-$version.msi")
-  val debDownload = Download(s"musicpimp_${version}_all.deb")
-  val rpmDownload = Download(s"musicpimp-$version-1.noarch.rpm")
+  val winVersion = "3.10.0"
+  val debVersion = "3.10.7"
+  val rpmVersion = "3.6.3"
+  val macVersion = "3.10.0"
+  val msiDownload = Download(s"musicpimp-$winVersion.msi")
+  val debDownload = Download(s"musicpimp_${debVersion}_all.deb")
+  val rpmDownload = Download(s"musicpimp-$rpmVersion-1.noarch.rpm")
   val dmgDownload = Download(s"musicpimp-$macVersion.dmg")
-  val releaseDate = "26 March 2017"
+  val releaseDate = "28 October 2017"
   val latestDownloads = Seq(msiDownload, debDownload, rpmDownload, dmgDownload)
   val linuxConfFile = "/etc/musicpimp/application.ini"
   val windowsConfFile = """C:\Program Files (x86)\MusicPimp\musicpimp.conf"""

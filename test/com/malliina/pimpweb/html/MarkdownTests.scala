@@ -1,4 +1,4 @@
-package com.malliina.pimpweb.tags
+package com.malliina.pimpweb.html
 
 import org.scalatest.FunSuite
 

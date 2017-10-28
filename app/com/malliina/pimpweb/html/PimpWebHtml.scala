@@ -1,4 +1,4 @@
-package com.malliina.pimpweb.tags
+package com.malliina.pimpweb.html
 
 import com.malliina.file.FileUtilities
 import com.malliina.tags.Bootstrap._
@@ -66,10 +66,10 @@ object PimpWebHtml {
     fullRow(
       h2("System Requirements"),
       ul(
-        li(aHref("http://java.com/en/download/index.jsp", "Java 8"), "."),
+        li(aHref("http://java.com/en/download/index.jsp", "Java 8")),
         li("A modern browser, such as ", aHref("http://windows.microsoft.com/en-us/internet-explorer/ie-10-worldwide-languages", "Internet Explorer 10"),
-          " or a recent version of ", aHref("http://getfirefox.com", "Firefox"), " or ", aHref("http://www.google.com/chrome", "Chrome"), "."),
-        li(aHref("http://www.microsoft.com/net/download", ".NET Framework"), " 3.5 or higher.")
+          " or a recent version of ", aHref("http://getfirefox.com", "Firefox"), " or ", aHref("http://www.google.com/chrome", "Chrome")),
+        li(aHref("http://www.microsoft.com/net/download", ".NET Framework"), " 3.5 or higher")
       ),
       h2("Installation"),
       p("Download and run ", aHref(Home.msiDownload.url, Home.msiDownload.fileName), ".")
@@ -143,7 +143,7 @@ object PimpWebHtml {
           docLink("RPM", HomeRoute.rpm(), "rpm")
         )
       ),
-      rowColumn(ColMd6)(inner)
+      rowColumn(ColMd8)(inner)
     )
   }
 
@@ -291,7 +291,7 @@ object PimpWebHtml {
     ),
     rowColumn(ColMd6)(
       h3("Previous versions"),
-      ul(
+      ul(`class` := "pimp-list")(
         previous map { prev =>
           liHref(Home.downloadBaseUrl + prev, prev)
         }
@@ -301,26 +301,35 @@ object PimpWebHtml {
 
   val index = indexNoContainer("home")(
     divClass(Jumbotron)(
-      divClass(Container)(
-        h1("MusicPimp", small(`class` := PullRight)("No ads. No social media. Pure music.")),
+      divClass(s"$Container hero-section")(
+        h1("MusicPimp"),
+        h2("No ads. No social media. Pure music"),
         leadPara("Control your music libraries with your phone. Play the music on your phone, home stereo system, in your car or stream it anywhere.")
       )
     ),
     divClass("container")(
       fullRow(
-        h2("Get it"),
-        a(`class` := s"$BtnPrimary centered", href := Home.msiDownload.url)(glyphIcon("download"), " Download for Windows"),
-        leadPara(
-          aHref(HomeRoute.downloads(), "Download"),
-          " the free server for ", aHref(Home.msiDownload.url, "Windows"),
-          " or ", aHref(Home.debDownload.url, "Linux"),
-          ". Get the ", strong("MusicPimp"),
-          " apps for ", aHref(Home.iosAppUri, "iOS"),
-          ", ", aHref(Home.androidAppUri, "Android"),
-          " and ", aHref(Home.amazonAppUri, "Kindle Fire"),
-          ", ", aHref(Home.winPhoneAppUri, "Windows Phone"),
-          " and ", aHref(Home.winStoreAppUri, "Windows 8"), "."
-        )
+        h2(`class` := "centered", "Get it")
+      ),
+      row(
+        div(`class` := "col-md-8 col-md-offset-2")(
+          ol(`class` := "pimp-list get-it")(
+            li(
+              aHref(HomeRoute.downloads(), "Download"),
+              " the free server for ", aHref(Home.msiDownload.url, "Windows"),
+              ", ", aHref(Home.debDownload.url, "Linux"),
+              " or ", aHref(Home.dmgDownload.url, "MacOS"), ".",
+            ),
+            li(
+              "Get the ", strong("MusicPimp"),
+              " apps for ", aHref(Home.iosAppUri, "iOS"),
+              ", ", aHref(Home.androidAppUri, "Android"),
+              " and ", aHref(Home.amazonAppUri, "Kindle Fire"),
+              ", ", aHref(Home.winPhoneAppUri, "Windows Phone"),
+              " and ", aHref(Home.winStoreAppUri, "Windows 8"), "."
+            )
+          )
+        ),
       ),
       row(
         div4(
@@ -453,7 +462,7 @@ object PimpWebHtml {
   )
 
   def indexMain(tabName: String)(inner: Modifier*) = indexNoContainer(tabName)(
-    divClass(Container)(inner)
+    divClass(s"$Container page-content")(inner)
   )
 
   def indexNoContainer(tabName: String)(inner: Modifier*) = {
@@ -500,12 +509,9 @@ object PimpWebHtml {
         cssLink("//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"),
         cssLink("//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css"),
         cssLink("//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css"),
-        cssLink(versioned("css/custom.css")),
-        cssLink(versioned("css/sidebar.css")),
-        cssLink(versioned("css/footer.css")),
+        cssLink(versioned("css/main.css")),
         js("//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"),
-        js("//netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"),
-        js(versioned("js/docs.js"))
+        js("//netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js")
       ),
       body(attr("data-spy") := "scroll", attr("data-target") := "#sidenav", attr("data-offset") := "200")(
         div(id := "wrap")(

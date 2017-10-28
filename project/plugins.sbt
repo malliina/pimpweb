@@ -10,5 +10,6 @@ resolvers ++= Seq(
 Seq(
   "com.malliina" %% "sbt-play" % "1.2.0",
   "com.typesafe.sbt" % "sbt-gzip" % "1.0.2",
-  "com.typesafe.sbt" % "sbt-digest" % "1.1.4"
+  "com.typesafe.sbt" % "sbt-digest" % "1.1.4",
+  "com.typesafe.sbt" % "sbt-less" % "1.1.2"
 ) map addSbtPlugin
