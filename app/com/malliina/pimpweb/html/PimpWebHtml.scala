@@ -267,7 +267,6 @@ object PimpWebHtml {
     row(
       div4(
         h2(iClass("icon-windows"), " Windows"),
-        leadPara("Download for Windows"),
         downloadLink(Home.msiDownload, s"primary $Btn-lg"),
         p(s"Released on $releaseDate.")
       ),
