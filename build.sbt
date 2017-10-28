@@ -11,12 +11,10 @@ val malliinaGroup = "com.malliina"
 organization := "org.musicpimp"
 version := "1.10.2"
 scalaVersion := "2.12.4"
-resolvers ++= Seq(
-  Resolver.bintrayRepo("malliina", "maven")
-)
+resolvers += Resolver.bintrayRepo("malliina", "maven")
 pipelineStages := Seq(digest, gzip)
 libraryDependencies ++= Seq(
-  malliinaGroup %% "util-play" % "4.3.10",
+  malliinaGroup %% "util-play" % "4.4.0",
   "com.amazonaws" % "aws-java-sdk-s3" % "1.11.221",
   "com.vladsch.flexmark" % "flexmark-html-parser" % "0.27.0",
   filters
@@ -30,6 +28,6 @@ httpsPort in Linux := Option("disabled")
 maintainer := "Michael Skogberg <malliina123@gmail.com>"
 
 fileTreeSources ++= (resourceDirectories in Assets).value.map { dir =>
-  if(dir.name == "main") DirMap(dir, "com.malliina.pimpweb.css.LessAssets", "controllers.PimpAssets.at")
+  if (dir.name == "main") DirMap(dir, "com.malliina.pimpweb.css.LessAssets", "controllers.PimpAssets.at")
   else DirMap(dir, "com.malliina.pimpweb.assets.AppAssets", "controllers.PimpAssets.at")
 }
