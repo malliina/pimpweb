@@ -1,11 +1,11 @@
 package com.malliina.pimpweb.html
 
 import com.malliina.file.FileUtilities
+import com.malliina.pimpweb.assets.AppAssets
+import com.malliina.pimpweb.css.LessAssets
 import com.malliina.tags.Bootstrap._
 import com.malliina.tags.TagPage
 import com.malliina.tags.Tags._
-import controllers.routes.Assets.versioned
-import controllers.routes.{Home => HomeRoute}
 import controllers.{Docs, Home}
 import models.PrivacyPolicy
 import play.api.mvc.Call
@@ -17,6 +17,9 @@ object PimpWebHtml {
   implicit val callAttr = new GenericAttr[Call]
   val titleTag = tag("title")
   val nav = tag("nav")
+
+  val images = AppAssets.img
+  val homeRoute = controllers.routes.Home
 
   val linuxReqs: Modifier = Seq(
     h2("System Requirements"),
@@ -88,9 +91,9 @@ object PimpWebHtml {
         ol(
           li("Navigate to ", aHref("http://localhost:8456/"), " and login."),
           li("Select tab ", strong("Manage"), " and specify folders containing MP3s under ", strong("Music Folders"), ":",
-            p(img(src := versioned("img/usage-folders2.png"), `class` := "img-responsive img-thumbnail"))),
+            p(img(src := images.usage_folders2, `class` := "img-responsive img-thumbnail"))),
           li("Open the ", strong("MusicPimp"), " app on your mobile device and add your PC as a music endpoint:",
-            p(img(src := versioned("img/usage-wp8.png"), `class` := "img-responsive img-thumbnail"))),
+            p(img(src := images.usage_wp8, `class` := "img-responsive img-thumbnail"))),
           li("Enjoy your music.")
         ),
         h2("Supported Audio Formats"),
@@ -137,10 +140,10 @@ object PimpWebHtml {
       headerRow("Documentation", ColMd6),
       rowColumn(ColMd6)(
         div(`class` := BtnGroup, attr("src-toggle") := "buttons-radio")(
-          docLink("Windows", HomeRoute.win(), "win"),
-          docLink("Mac", HomeRoute.mac(), "mac"),
-          docLink("DEB", HomeRoute.deb(), "deb"),
-          docLink("RPM", HomeRoute.rpm(), "rpm")
+          docLink("Windows", homeRoute.win(), "win"),
+          docLink("Mac", homeRoute.mac(), "mac"),
+          docLink("DEB", homeRoute.deb(), "deb"),
+          docLink("RPM", homeRoute.rpm(), "rpm")
         )
       ),
       rowColumn(ColMd8)(inner)
@@ -286,7 +289,7 @@ object PimpWebHtml {
     fullRow(
       h2("What next?"),
       p("Install the software and navigate to ", aHref("http://localhost:8456/"),
-        ". For more information, check the ", aHref(HomeRoute.win(), "documentation"), ".")
+        ". For more information, check the ", aHref(homeRoute.win(), "documentation"), ".")
     ),
     rowColumn(ColMd6)(
       h3("Previous versions"),
@@ -314,7 +317,7 @@ object PimpWebHtml {
         div(`class` := "col-md-8 col-md-offset-2")(
           ol(`class` := "pimp-list get-it")(
             li(
-              aHref(HomeRoute.downloads(), "Download"),
+              aHref(homeRoute.downloads(), "Download"),
               " the free server for ", aHref(Home.msiDownload.url, "Windows"),
               ", ", aHref(Home.debDownload.url, "Linux"),
               " or ", aHref(Home.dmgDownload.url, "MacOS"), ".",
@@ -335,12 +338,12 @@ object PimpWebHtml {
           a(href := Home.iosAppUri, `class` := s"$VisibleLg $VisibleMd $PullRight badge-ios")
         ),
         div4(
-          badgeFromAssets(Home.androidAppUri, "Android app on Google Play", "en_app_rgb_wo_60.png"),
-          badgeFromAssets(Home.amazonAppUri, "Android app on Amazon AppStore", "amazon-apps-kindle-us-gray.png")
+          badgeFromAssets(Home.androidAppUri, "Android app on Google Play", images.en_app_rgb_wo_60),
+          badgeFromAssets(Home.amazonAppUri, "Android app on Amazon AppStore", images.amazon_apps_kindle_us_gray)
         ),
         div4(
-          badgeFromAssets(Home.winPhoneAppUri, "Windows Phone app", "badge_winphone2.png", PullLeft),
-          badgeFromAssets(Home.winStoreAppUri, "Windows Store app", "badge_winstore.png", PullLeft)
+          badgeFromAssets(Home.winPhoneAppUri, "Windows Phone app", images.badge_winphone2, PullLeft),
+          badgeFromAssets(Home.winStoreAppUri, "Windows Store app", images.badge_winstore, PullLeft)
         )
       ),
       hr,
@@ -353,14 +356,14 @@ object PimpWebHtml {
           )
         ),
         div4(
-          img(src := versioned("img/upload-alt-blue-128.png"), `class` := s"$PullLeft $VisibleLg $VisibleMd")
+          img(src := images.upload_alt_blue_128, `class` := s"$PullLeft $VisibleLg $VisibleMd")
         )
       ),
       hr,
       row(
-        feature("PC to Phone", "pc-phone.png", "Make the music library on a PC available for playback on your phone."),
-        feature("Phone to PC", "phone-pc.png", "Play the music stored on your phone on speakers connected to a PC."),
-        feature("PC to Phone to PC", "pc-phone-pc.png", "Play music from your PC on another PC. Control playback with your phone.")
+        feature("PC to Phone", images.pc_phone, "Make the music library on a PC available for playback on your phone."),
+        feature("Phone to PC", images.phone_pc, "Play the music stored on your phone on speakers connected to a PC."),
+        feature("PC to Phone to PC", images.pc_phone_pc, "Play music from your PC on another PC. Control playback with your phone.")
       ),
       hr,
       row(
@@ -368,13 +371,13 @@ object PimpWebHtml {
           h2("Getting Started"),
           leadPara(
             "Get started in minutes. Check the ",
-            aHref(HomeRoute.win(), "documentation"),
+            aHref(homeRoute.win(), "documentation"),
             " for instructions."
           )
         ),
         divClass(ColMd4)(
           h2("Develop"),
-          leadPara("Build cool apps using the JSON ", aHref(HomeRoute.api(), "API"), ".")
+          leadPara("Build cool apps using the JSON ", aHref(homeRoute.api(), "API"), ".")
         )
       )
     )
@@ -444,18 +447,18 @@ object PimpWebHtml {
     row(
       divClass(ColMd6)(
         p("Developed by ", aHref("https://github.com/malliina", "Michael Skogberg"), "."),
-        p(img(src := versioned("img/beauty.png"), `class` := "img-responsive img-thumbnail")),
+        p(img(src := images.beauty, `class` := "img-responsive img-thumbnail")),
         p("Should you have any questions, don't hesitate to:",
           ul(
             li("contact ", aHref("mailto:info@musicpimp.org", "info@musicpimp.org")),
-            li("post in the ", a(href := HomeRoute.forum())("forum ", glyphIcon("comment"))),
+            li("post in the ", a(href := homeRoute.forum())("forum ", glyphIcon("comment"))),
             li("open an issue on ", aHref("https://github.com/malliina/musicpimp/issues", "GitHub"))
           )
         )
       ),
       divClass(ColMd6)(
         p("This site uses icons by ", aHref("http://glyphicons.com/", "Glyphicons"), " and ", aHref("http://fontawesome.io/", "Font Awesome"), "."),
-        p(a(href := "https://www.jetbrains.com/idea/")(img(src := versioned("img/logo_JetBrains_3.png"), `class` := "img-responsive")))
+        p(a(href := "https://www.jetbrains.com/idea/")(img(src := images.logo_JetBrains_3, `class` := "img-responsive")))
       )
     )
   )
@@ -479,18 +482,18 @@ object PimpWebHtml {
               spanClass("icon-bar"),
               spanClass("icon-bar")
             ),
-            a(`class` := NavbarBrand, href := HomeRoute.index())("MusicPimp")
+            a(`class` := NavbarBrand, href := homeRoute.index())("MusicPimp")
           ),
           divClass(s"$NavbarCollapse $Collapse")(
             ulClass(s"$Nav $NavbarNav")(
-              navItem("Home", "home", HomeRoute.index(), "home"),
-              navItem("Downloads", "downloads", HomeRoute.downloads(), "download-alt"),
-              navItem("Documentation", "documentation", HomeRoute.win(), "list-alt"),
-              navItem("Forum", "forum", HomeRoute.forum(), "comment")
+              navItem("Home", "home", homeRoute.index(), "home"),
+              navItem("Downloads", "downloads", homeRoute.downloads(), "download-alt"),
+              navItem("Documentation", "documentation", homeRoute.win(), "list-alt"),
+              navItem("Forum", "forum", homeRoute.forum(), "comment")
             ),
             ulClass(s"$Nav $NavbarNav $NavbarRight")(
-              navItem("Develop", "api", HomeRoute.api(), "edit"),
-              navItem("About", "about", HomeRoute.about(), "globe")
+              navItem("Develop", "api", homeRoute.api(), "edit"),
+              navItem("About", "about", homeRoute.about(), "globe")
             )
           )
         )
@@ -504,11 +507,11 @@ object PimpWebHtml {
       head(
         titleTag(pageTitle),
         meta(name := "viewport", content := "width=device-width, initial-scale=1.0"),
-        link(rel := "shortcut icon", href := versioned("img/pimp-28.png")),
+        link(rel := "shortcut icon", href := images.pimp_28),
         cssLink("//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"),
         cssLink("//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css"),
         cssLink("//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css"),
-        cssLink(versioned("css/main.css")),
+        cssLink(LessAssets.css.main),
         js("//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"),
         js("//netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js")
       ),
@@ -526,16 +529,18 @@ object PimpWebHtml {
     )
   )
 
-  def badgeFromAssets(link: String, altText: String, file: String, classes: String = "") =
-    badge(link, altText, versioned(s"img/$file").toString, classes)
+  def badgeFromAssets(link: String, altText: String, call: Call, classes: String = "") =
+    badge(link, altText, call, classes)
 
-  def badge(link: String, altText: String, imgUrl: String, classes: String) =
-    a(href := link, `class` := s"$VisibleLg $VisibleMd badge $classes")(img(alt := altText, src := imgUrl, `class` := "badge-image"))
+  def badge(link: String, altText: String, imgUrl: Call, classes: String) =
+    a(href := link, `class` := s"$VisibleLg $VisibleMd badge $classes")(
+      img(alt := altText, src := imgUrl.toString, `class` := "badge-image")
+    )
 
-  def feature(featureTitle: String, imgFile: String, leadText: String) =
+  def feature(featureTitle: String, imgFile: Call, leadText: String) =
     div4(
       h2(featureTitle),
-      p(img(src := versioned(s"img/$imgFile"))),
+      p(img(src := imgFile)),
       leadPara(leadText)
     )
 

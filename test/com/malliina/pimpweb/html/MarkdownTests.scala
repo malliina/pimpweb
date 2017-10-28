@@ -4,7 +4,6 @@ import org.scalatest.FunSuite
 
 class MarkdownTests extends FunSuite {
   test("can parse markdown") {
-    PimpWebHtml.api
-    assert(1 === 1)
+    assert(PimpWebHtml.api.tags.modifiers.nonEmpty)
   }
 }
