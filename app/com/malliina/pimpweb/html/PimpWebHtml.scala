@@ -56,7 +56,7 @@ object PimpWebHtml {
   val docDeb = docuBase("deb", Home.linuxConfFile, debInstall, debUninstall)
 
   val docMac = docPlain("mac")(
-    headerRow("Mac"),
+    headerRow("MacOS"),
     fullRow(
       h2("Installation"),
       p("Download ", aHref(Home.dmgDownload.url, Home.dmgDownload.fileName), ", open and install. MusicPimp installs" +
@@ -141,7 +141,7 @@ object PimpWebHtml {
       rowColumn(ColMd6)(
         div(`class` := BtnGroup, attr("src-toggle") := "buttons-radio")(
           docLink("Windows", homeRoute.win(), "win"),
-          docLink("Mac", homeRoute.mac(), "mac"),
+          docLink("MacOS", homeRoute.mac(), "mac"),
           docLink("DEB", homeRoute.deb(), "deb"),
           docLink("RPM", homeRoute.rpm(), "rpm")
         )
@@ -281,7 +281,7 @@ object PimpWebHtml {
         p("RPM packages are tested on Fedora.")
       ),
       div4(
-        h2(iClass("icon-apple"), " Mac"),
+        h2(iClass("icon-apple"), " MacOS"),
         downloadLink(Home.dmgDownload),
         p("OSX packages are tested on OSX Yosemite.")
       )
