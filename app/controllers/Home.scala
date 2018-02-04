@@ -1,13 +1,15 @@
 package controllers
 
 import com.malliina.pimpweb.html.PimpWebHtml
-import com.malliina.pimpweb.{BuildInfo, FileStore}
+import com.malliina.pimpweb.{BuildInfo, FileStore, S3FileStore}
 import com.malliina.play.controllers.Caching
 import play.api.http.Writeable
 import play.api.libs.json.Json
 import play.api.mvc.{AbstractController, ControllerComponents}
 
 object Home {
+
+  def s3(comps: ControllerComponents) = new Home(S3FileStore, comps)
 
   case class Download(fileName: String) {
     val url = toUrl(fileName)

@@ -6,9 +6,13 @@ import scalatags.Text.all._
 object Tags extends Tags
 
 trait Tags {
+  val crossorigin = attr("crossorigin")
+  val integrity = attr("integrity")
+  val Anonymous = "anonymous"
+
   def divClass(clazz: String) = div(`class` := clazz)
 
-  def spanClass(clazz: String) = span(`class` := clazz)
+  def spanClass(clazz: String, more: Modifier*) = span(`class` := clazz, more)
 
   def iClass(clazz: String) = i(`class` := clazz)
 
@@ -22,9 +26,17 @@ trait Tags {
 
   def aHref(url: String): TypedTag[String] = aHref(url, url)
 
-  def aHref[V: AttrValue](url: V, text: String): TypedTag[String] = a(href := url)(text)
+  def aHref[V: AttrValue](url: V, text: String): TypedTag[String] =
+    a(href := url)(text)
 
-  def js[V: AttrValue](url: V) = script(src := url)
+  def jsHashed[V: AttrValue](url: V, integrityHash: String, more: Modifier*) =
+    script(src := url, integrity := integrityHash, crossorigin := Anonymous, more)
 
-  def cssLink[V: AttrValue](url: V) = link(rel := "stylesheet", href := url)
+  def js[V: AttrValue](url: V, more: Modifier*) = script(src := url, more)
+
+  def cssLinkHashed[V: AttrValue](url: V, integrityHash: String, more: Modifier*) =
+    cssLink(url, integrity := integrityHash, crossorigin := Anonymous, more)
+
+  def cssLink[V: AttrValue](url: V, more: Modifier*) =
+    link(rel := "stylesheet", href := url, more)
 }

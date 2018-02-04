@@ -70,8 +70,7 @@ object PimpWebHtml {
       h2("System Requirements"),
       ul(
         li(aHref("http://java.com/en/download/index.jsp", "Java 8")),
-        li("A modern browser, such as ", aHref("http://windows.microsoft.com/en-us/internet-explorer/ie-10-worldwide-languages", "Internet Explorer 10"),
-          " or a recent version of ", aHref("http://getfirefox.com", "Firefox"), " or ", aHref("http://www.google.com/chrome", "Chrome")),
+        li("A modern browser, such as ", aHref("http://getfirefox.com", "Firefox"), " or ", aHref("http://www.google.com/chrome", "Chrome")),
         li(aHref("http://www.microsoft.com/net/download", ".NET Framework"), " 3.5 or higher")
       ),
       h2("Installation"),
@@ -91,9 +90,9 @@ object PimpWebHtml {
         ol(
           li("Navigate to ", aHref("http://localhost:8456/"), " and login."),
           li("Select tab ", strong("Manage"), " and specify folders containing MP3s under ", strong("Music Folders"), ":",
-            p(img(src := images.usage_folders2, `class` := "img-responsive img-thumbnail"))),
+            p(img(src := images.usage_folders2_png, `class` := "img-responsive img-thumbnail"))),
           li("Open the ", strong("MusicPimp"), " app on your mobile device and add your PC as a music endpoint:",
-            p(img(src := images.usage_wp8, `class` := "img-responsive img-thumbnail"))),
+            p(img(src := images.usage_wp8_png, `class` := "img-responsive img-thumbnail"))),
           li("Enjoy your music.")
         ),
         h2("Supported Audio Formats"),
@@ -139,7 +138,7 @@ object PimpWebHtml {
     indexMain("documentation")(
       headerRow("Documentation", ColMd6),
       rowColumn(ColMd6)(
-        div(`class` := BtnGroup, attr("src-toggle") := "buttons-radio")(
+        div(`class` := s"$BtnGroup last-box", attr("src-toggle") := "buttons-radio")(
           docLink("Windows", homeRoute.win(), "win"),
           docLink("MacOS", homeRoute.mac(), "mac"),
           docLink("DEB", homeRoute.deb(), "deb"),
@@ -252,13 +251,13 @@ object PimpWebHtml {
   )
 
   val success = indexMain("success")(
-    leadPara(glyphIcon("thumbs-up"), " Thanks for your donation!"),
+    leadPara(iconic("thumb-up"), " Thanks for your donation!"),
     p("Should you have any questions, don't hesitate to contact ", aHref("mailto:info@musicpimp.org", "info@musicpimp.org")),
     p("Best regards! Michael Skogberg, MusicPimp")
   )
 
   val cancel = indexMain("cancel")(
-    leadPara(glyphIcon("fire"), " The donation procedure was prematurely canceled. ", glyphIcon("fire")),
+    leadPara(glyphIcon("fire"), " The donation procedure was prematurely canceled. ", iconic("fire")),
     p("Should you have any questions, don't hesitate to contact ", aHref("mailto:info@musicpimp.org", "info@musicpimp.org"))
   )
 
@@ -338,12 +337,12 @@ object PimpWebHtml {
           a(href := Home.iosAppUri, `class` := s"$VisibleLg $VisibleMd $PullRight badge-ios")
         ),
         div4(
-          badgeFromAssets(Home.androidAppUri, "Android app on Google Play", images.en_app_rgb_wo_60),
-          badgeFromAssets(Home.amazonAppUri, "Android app on Amazon AppStore", images.amazon_apps_kindle_us_gray)
+          badgeFromAssets(Home.androidAppUri, "Android app on Google Play", images.en_app_rgb_wo_60_png),
+          badgeFromAssets(Home.amazonAppUri, "Android app on Amazon AppStore", images.amazon_apps_kindle_us_gray_png)
         ),
         div4(
-          badgeFromAssets(Home.winPhoneAppUri, "Windows Phone app", images.badge_winphone2, PullLeft),
-          badgeFromAssets(Home.winStoreAppUri, "Windows Store app", images.badge_winstore, PullLeft)
+          badgeFromAssets(Home.winPhoneAppUri, "Windows Phone app", images.badge_winphone2_png, PullLeft),
+          badgeFromAssets(Home.winStoreAppUri, "Windows Store app", images.badge_winstore_png, PullLeft)
         )
       ),
       hr,
@@ -356,14 +355,14 @@ object PimpWebHtml {
           )
         ),
         div4(
-          img(src := images.upload_alt_blue_128, `class` := s"$PullLeft $VisibleLg $VisibleMd")
+          img(src := images.upload_alt_blue_128_png, `class` := s"$PullLeft $VisibleLg $VisibleMd")
         )
       ),
       hr,
       row(
-        feature("PC to Phone", images.pc_phone, "Make the music library on a PC available for playback on your phone."),
-        feature("Phone to PC", images.phone_pc, "Play the music stored on your phone on speakers connected to a PC."),
-        feature("PC to Phone to PC", images.pc_phone_pc, "Play music from your PC on another PC. Control playback with your phone.")
+        feature("PC to Phone", images.pc_phone_png, "Make the music library on a PC available for playback on your phone."),
+        feature("Phone to PC", images.phone_pc_png, "Play the music stored on your phone on speakers connected to a PC."),
+        feature("PC to Phone to PC", images.pc_phone_pc_png, "Play music from your PC on another PC. Control playback with your phone.")
       ),
       hr,
       row(
@@ -386,17 +385,12 @@ object PimpWebHtml {
   val forum = indexMain("forum")(
     rowColumn(ColMd6)(
       divClass(PageHeader)(
-        h1(
-          "Forum ",
-          small(
-            "Visit this forum at ",
-            a(href := "https://groups.google.com/forum/#!forum/musicpimp")(
-              "groups.google.com ",
-              glyphIcon("external-link")
-            )
-          )
-        )
+        h1("Forum")
       )
+    ),
+    fullRow(
+      "Visit this forum at ",
+      a(href := "https://groups.google.com/forum/#!forum/musicpimp")("groups.google.com ", iconic("external-link")), "."
     )
   )
 
@@ -422,32 +416,32 @@ object PimpWebHtml {
           httpEndpoints,
           serverEvents
         ),
-        nav(`class` := s"$ColMd3 bs-docs-sidebar", id := "sidenav")(
-          ul(`class` := s"$NavStacked affix", id := "sidebar")(
-            liHref("#requests", "Requests"),
-            liHref("#responses", "Responses"),
-            li(
-              aHref("#endpoints", "HTTP endpoints"),
-              ulClass(NavStacked)(
-                liHref("#library", "Library"),
-                liHref("#player", "Player"),
-                liHref("#playlist", "Playlist"),
-                liHref("#alarms", "Alarms"),
-                liHref("#misc", "Miscellaneous")
-              )
+        nav(`class` := s"$ColMd3 side-nav bs-docs-sidebar", id := "sidenav")(
+          nav(`class` := s"nav flex-column", id := "sidebar")(
+            sideLink("#requests", "Requests"),
+            sideLink("#responses", "Responses"),
+            sideLink("#endpoints", "HTTP endpoints"),
+            nav(`class` := s"nav flex-column")(
+              sideLink("#library", "Library"),
+              sideLink("#player", "Player"),
+              sideLink("#playlist", "Playlist"),
+              sideLink("#alarms", "Alarms"),
+              sideLink("#misc", "Miscellaneous")
             ),
-            liHref("#server", "Server events")
+            sideLink("#server", "Server events")
           )
         )
       )
     )
+
+  def sideLink(anchor: String, text: String) = a(href := anchor, `class` := "nav-link")(text)
 
   val about = indexMain("about")(
     headerRow("About"),
     row(
       divClass(ColMd6)(
         p("Developed by ", aHref("https://github.com/malliina", "Michael Skogberg"), "."),
-        p(img(src := images.beauty, `class` := "img-responsive img-thumbnail")),
+        p(img(src := images.beauty_png, `class` := "img-responsive img-thumbnail")),
         p("Should you have any questions, don't hesitate to:",
           ul(
             li("contact ", aHref("mailto:info@musicpimp.org", "info@musicpimp.org")),
@@ -457,8 +451,9 @@ object PimpWebHtml {
         )
       ),
       divClass(ColMd6)(
-        p("This site uses icons by ", aHref("http://glyphicons.com/", "Glyphicons"), " and ", aHref("http://fontawesome.io/", "Font Awesome"), "."),
-        p(a(href := "https://www.jetbrains.com/idea/")(img(src := images.logo_JetBrains_3, `class` := "img-responsive")))
+        p("This site uses icons by ", aHref("https://useiconic.com/open", "Open Iconic"), "."),
+        p("Developed with ", a(href := "https://www.jetbrains.com/idea/")("IntelliJ IDEA"), "."),
+        p(a(href := "https://www.jetbrains.com/idea/")(img(src := images.logo_JetBrains_3_png, `class` := "img-responsive")))
       )
     )
   )
@@ -468,31 +463,29 @@ object PimpWebHtml {
   )
 
   def indexNoContainer(tabName: String)(inner: Modifier*) = {
-    def navItem(thisTabName: String, tabId: String, url: Call, glyphiconName: String) = {
-      val maybeActive = if (tabId == tabName) Option(`class` := "active") else None
-      li(maybeActive)(a(href := url)(glyphIcon(glyphiconName), s" $thisTabName"))
+    def navItem(thisTabName: String, tabId: String, url: Call, iconicName: String) = {
+      val itemClass = if (tabId == tabName) "nav-item active" else "nav-item"
+      li(`class` := itemClass)(a(href := url, `class` := "nav-link")(iconic(iconicName), s" $thisTabName"))
     }
 
     plainMain("MusicPimp")(
-      divClass(s"$Navbar $NavbarDefault")(
+      nav(`class` := s"$Navbar navbar-expand-lg navbar-light bg-light")(
         divClass(Container)(
           divClass(NavbarHeader)(
-            button(`class` := NavbarToggle, attr("data-toggle") := Collapse, attr("data-target") := s".$NavbarCollapse")(
-              spanClass("icon-bar"),
-              spanClass("icon-bar"),
-              spanClass("icon-bar")
-            ),
-            a(`class` := NavbarBrand, href := homeRoute.index())("MusicPimp")
+            a(`class` := NavbarBrand, href := homeRoute.index())("MusicPimp"),
+            button(`class` := "navbar-toggler", attr("data-toggle") := Collapse, attr("data-target") := s".$NavbarCollapse", aria.controls := "navbarSupportedContent", aria.expanded := "false", aria.label := "Toggle navigation")(
+              spanClass("navbar-toggler-icon")
+            )
           ),
-          divClass(s"$NavbarCollapse $Collapse")(
-            ulClass(s"$Nav $NavbarNav")(
+          div(`class` := s"$Collapse $NavbarCollapse", id := "navbarSupportedContent")(
+            ulClass(s"$NavbarNav mr-auto")(
               navItem("Home", "home", homeRoute.index(), "home"),
-              navItem("Downloads", "downloads", homeRoute.downloads(), "download-alt"),
-              navItem("Documentation", "documentation", homeRoute.win(), "list-alt"),
-              navItem("Forum", "forum", homeRoute.forum(), "comment")
+              navItem("Downloads", "downloads", homeRoute.downloads(), "data-transfer-download"),
+              navItem("Documentation", "documentation", homeRoute.win(), "document"),
+              navItem("Forum", "forum", homeRoute.forum(), "comment-square")
             ),
             ulClass(s"$Nav $NavbarNav $NavbarRight")(
-              navItem("Develop", "api", homeRoute.api(), "edit"),
+              navItem("Develop", "api", homeRoute.api(), "pencil"),
               navItem("About", "about", homeRoute.about(), "globe")
             )
           )
@@ -507,22 +500,19 @@ object PimpWebHtml {
       head(
         titleTag(pageTitle),
         meta(name := "viewport", content := "width=device-width, initial-scale=1.0"),
-        link(rel := "shortcut icon", href := images.pimp_28),
-        cssLink("//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"),
-        cssLink("//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css"),
-        cssLink("//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css"),
+        link(rel := "shortcut icon", href := images.pimp_28_png),
+        cssLinkHashed("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css", "sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"),
+        cssLink("https://use.fontawesome.com/releases/v5.0.6/css/all.css"),
         cssLink(versioned("css/main.css")),
-        js("//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"),
-        js("//netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js")
+        jsHashed("https://code.jquery.com/jquery-3.2.1.slim.min.js", "sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"),
+        jsHashed("https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js", "sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"),
+        jsHashed("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js", "sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl")
       ),
       body(attr("data-spy") := "scroll", attr("data-target") := "#sidenav", attr("data-offset") := "200")(
-        div(id := "wrap")(
-          inner,
-          div(id := "push")
-        ),
-        div(id := "footer")(
+        inner,
+        footer(`class` := "footer")(
           divClass(Container)(
-            pClass(s"muted credit $PullRight")("Developed by ", a(href := "https://mskogberg.info")("Michael Skogberg"), ".")
+            spanClass("text-muted float-right")("Developed by ", a(href := "https://www.musicpimp.org")("Michael Skogberg"), ".")
           )
         )
       )
@@ -544,8 +534,8 @@ object PimpWebHtml {
       leadPara(leadText)
     )
 
-  def downloadLink(dl: Home.Download, btnName: String = "default") =
-    p(a(`class` := s"$Btn $Btn-$btnName", href := dl.url)(glyphIcon("download"), s" ${dl.fileName}"))
+  def downloadLink(dl: Home.Download, btnName: String = "primary") =
+    p(a(`class` := s"$Btn $Btn-$btnName", href := dl.url)(iconic("data-transfer-download"), s" ${dl.fileName}"))
 
   def markdown(docName: String): Modifier = RawFrag(Docs.toHtml(markdownAsString(docName)))
 

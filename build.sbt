@@ -14,9 +14,9 @@ scalaVersion := "2.12.4"
 resolvers += Resolver.bintrayRepo("malliina", "maven")
 pipelineStages := Seq(digest, gzip)
 libraryDependencies ++= Seq(
-  malliinaGroup %% "util-play" % "4.4.0",
-  "com.amazonaws" % "aws-java-sdk-s3" % "1.11.221",
-  "com.vladsch.flexmark" % "flexmark-html-parser" % "0.27.0",
+  malliinaGroup %% "util-play" % "4.5.1",
+  "com.amazonaws" % "aws-java-sdk-s3" % "1.11.271",
+  "com.vladsch.flexmark" % "flexmark-html-parser" % "0.28.38",
   filters
 )
 

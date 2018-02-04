@@ -59,4 +59,6 @@ trait Bootstrap {
   def div4 = divClass(ColMd4)
 
   def glyphIcon(glyphName: String) = iClass(s"glyphicon glyphicon-$glyphName")
+
+  def iconic(iconicName: String) = spanClass(s"oi oi-$iconicName", title := iconicName, aria.hidden := "true")
 }
