@@ -2,10 +2,9 @@ package com.malliina.pimpweb.html
 
 import controllers.routes.PimpAssets.versioned
 import com.malliina.file.FileUtilities
+import com.malliina.html.{Bootstrap, Tags}
 import com.malliina.pimpweb.assets.AppAssets
-import com.malliina.tags.Bootstrap._
-import com.malliina.tags.TagPage
-import com.malliina.tags.Tags._
+import com.malliina.play.tags.TagPage
 import controllers.{Docs, Home}
 import models.PrivacyPolicy
 import play.api.mvc.Call
@@ -13,10 +12,10 @@ import play.api.mvc.Call
 import scalatags.Text.GenericAttr
 import scalatags.Text.all._
 
-object PimpWebHtml {
+object PimpWebHtml extends Bootstrap(Tags) {
+  import tags._
   implicit val callAttr = new GenericAttr[Call]
   val titleTag = tag("title")
-  val nav = tag("nav")
 
   val images = AppAssets.img
   val homeRoute = controllers.routes.Home
@@ -104,7 +103,8 @@ object PimpWebHtml {
           " in your installation directory. The path is typically ", code(confPath), ". Reasonable defaults are provided."),
         h4("HTTPS"),
         p("To enable HTTPS, specify the following parameters in ", code("musicpimp.conf"), ":"),
-        table(`class` := "table table-hover")(
+
+        tag("table")(`class` := "table table-hover")(
           thead,
           tr(th("Key"), th("Value")),
           tbody(
@@ -132,20 +132,20 @@ object PimpWebHtml {
   def docPlain(os: String)(inner: Modifier*) = {
     def docLink(text: String, clicked: Call, osId: String) = {
       val suffix = if (osId == os) " active" else ""
-      button(`type` := "button", `class` := s"$BtnPrimary$suffix", onclick := s"location.href='$clicked'")(text)
+      button(`type` := "button", `class` := s"${btn.primary}$suffix", onclick := s"location.href='$clicked'")(text)
     }
 
     indexMain("documentation")(
-      headerRow("Documentation", ColMd6),
-      rowColumn(ColMd6)(
-        div(`class` := s"$BtnGroup last-box", attr("src-toggle") := "buttons-radio")(
+      headerRow("Documentation", col.md.six),
+      rowColumn(col.md.six)(
+        div(`class` := s"${btn.group} last-box", attr("src-toggle") := "buttons-radio")(
           docLink("Windows", homeRoute.win(), "win"),
           docLink("MacOS", homeRoute.mac(), "mac"),
           docLink("DEB", homeRoute.deb(), "deb"),
           docLink("RPM", homeRoute.rpm(), "rpm")
         )
       ),
-      rowColumn(ColMd8)(inner)
+      rowColumn(col.md.eight)(inner)
     )
   }
 
@@ -175,8 +175,8 @@ object PimpWebHtml {
   )
 
   val privacyPolicy = indexMain("about")(
-    headerRow("Privacy Policy", ColMd6),
-    rowColumn(ColMd6)(
+    headerRow("Privacy Policy", col.md.six),
+    rowColumn(col.md.six)(
       p(PrivacyPolicy.text),
       p(PrivacyPolicy.purpose),
       p(PrivacyPolicy.roaming),
@@ -186,7 +186,7 @@ object PimpWebHtml {
 
   val alarms = indexMain("alarms")(
     headerRow("Alarm clock management"),
-    rowColumn(ColMd6)(
+    rowColumn(col.md.six)(
       leadPara("Control the alarm clock on the MusicPimp server using the following API."),
       h4("Get all alarms ", small("GET /alarms")),
       p("Get an array of the currently configured alarms."),
@@ -257,7 +257,7 @@ object PimpWebHtml {
   )
 
   val cancel = indexMain("cancel")(
-    leadPara(glyphIcon("fire"), " The donation procedure was prematurely canceled. ", iconic("fire")),
+    leadPara(iconic("fire"), " The donation procedure was prematurely canceled. ", iconic("fire")),
     p("Should you have any questions, don't hesitate to contact ", aHref("mailto:info@musicpimp.org", "info@musicpimp.org"))
   )
 
@@ -267,19 +267,19 @@ object PimpWebHtml {
       leadPara("Download the server. It's free. No nonsense.")
     ),
     row(
-      div4(
+      div(`class` := col.lg.four)(
         h2(iClass("icon-windows"), " Windows"),
-        downloadLink(Home.msiDownload, s"primary $Btn-lg"),
+        downloadLink(Home.msiDownload, s"primary ${btn.lg}"),
         p(s"Released on $releaseDate.")
       ),
-      div4(
+      div(`class` := col.lg.four)(
         h2(iClass("icon-linux"), " Linux"),
         downloadLink(Home.debDownload),
         p("DEB packages are tested on Ubuntu."),
         downloadLink(Home.rpmDownload),
         p("RPM packages are tested on Fedora.")
       ),
-      div4(
+      div(`class` := col.lg.four)(
         h2(iClass("icon-apple"), " MacOS"),
         downloadLink(Home.dmgDownload),
         p("OSX packages are tested on OSX Yosemite.")
@@ -290,11 +290,11 @@ object PimpWebHtml {
       p("Install the software and navigate to ", aHref("http://localhost:8456/"),
         ". For more information, check the ", aHref(homeRoute.win(), "documentation"), ".")
     ),
-    rowColumn(ColMd6)(
+    rowColumn(col.md.six)(
       h3("Previous versions"),
       ul(`class` := "pimp-list")(
         previous map { prev =>
-          liHref(Home.downloadBaseUrl + prev, prev)
+          liHref(Home.downloadBaseUrl + prev)(prev)
         }
       )
     )
@@ -347,7 +347,7 @@ object PimpWebHtml {
       ),
       hr,
       row(
-        divClass(s"$ColMd4 $ColMdOffset2")(
+        divClass(s"${col.md.four} ${col.md.offset.two}")(
           h2("MusicBeamer"),
           leadPara(
             "Stream tracks from your music library to any PC using ",
@@ -366,7 +366,7 @@ object PimpWebHtml {
       ),
       hr,
       row(
-        divClass(s"$ColMd4 $ColMdOffset2")(
+        divClass(s"${col.md.four} ${col.md.offset.two}")(
           h2("Getting Started"),
           leadPara(
             "Get started in minutes. Check the ",
@@ -374,7 +374,7 @@ object PimpWebHtml {
             " for instructions."
           )
         ),
-        divClass(ColMd4)(
+        divClass(col.md.four)(
           h2("Develop"),
           leadPara("Build cool apps using the JSON ", aHref(homeRoute.api(), "API"), ".")
         )
@@ -383,7 +383,7 @@ object PimpWebHtml {
   )
 
   val forum = indexMain("forum")(
-    rowColumn(ColMd6)(
+    rowColumn(col.md.six)(
       divClass(PageHeader)(
         h1("Forum")
       )
@@ -405,18 +405,18 @@ object PimpWebHtml {
     indexMain("api")(
       headerRow("Develop"),
       row(
-        divClass(ColMd9)(
+        divClass(col.md.width("9"))(
           leadPara("Develop apps for MusicPimp using the JSON API.")
         )
       ),
       row(
-        divClass(ColMd8)(
+        divClass(col.md.eight)(
           requests,
           responses,
           httpEndpoints,
           serverEvents
         ),
-        nav(`class` := s"$ColMd3 side-nav bs-docs-sidebar", id := "sidenav")(
+        nav(`class` := s"${col.md.width("3")} side-nav bs-docs-sidebar", id := "sidenav")(
           nav(`class` := s"nav flex-column", id := "sidebar")(
             sideLink("#requests", "Requests"),
             sideLink("#responses", "Responses"),
@@ -439,18 +439,18 @@ object PimpWebHtml {
   val about = indexMain("about")(
     headerRow("About"),
     row(
-      divClass(ColMd6)(
+      divClass(col.md.six)(
         p("Developed by ", aHref("https://github.com/malliina", "Michael Skogberg"), "."),
         p(img(src := images.beauty_png, `class` := "img-responsive img-thumbnail")),
         p("Should you have any questions, don't hesitate to:",
           ul(
             li("contact ", aHref("mailto:info@musicpimp.org", "info@musicpimp.org")),
-            li("post in the ", a(href := homeRoute.forum())("forum ", glyphIcon("comment"))),
+            li("post in the ", a(href := homeRoute.forum())("forum ", iconic("comment-square"))),
             li("open an issue on ", aHref("https://github.com/malliina/musicpimp/issues", "GitHub"))
           )
         )
       ),
-      divClass(ColMd6)(
+      divClass(col.md.six)(
         p("This site uses icons by ", aHref("https://useiconic.com/open", "Open Iconic"), "."),
         p("Developed with ", a(href := "https://www.jetbrains.com/idea/")("IntelliJ IDEA"), "."),
         p(a(href := "https://www.jetbrains.com/idea/")(img(src := images.logo_JetBrains_3_png, `class` := "img-responsive")))
@@ -469,25 +469,19 @@ object PimpWebHtml {
     }
 
     plainMain("MusicPimp")(
-      nav(`class` := s"$Navbar navbar-expand-lg navbar-light bg-light")(
-        divClass(Container)(
-          divClass(NavbarHeader)(
-            a(`class` := NavbarBrand, href := homeRoute.index())("MusicPimp"),
-            button(`class` := "navbar-toggler", attr("data-toggle") := Collapse, attr("data-target") := s".$NavbarCollapse", aria.controls := "navbarSupportedContent", aria.expanded := "false", aria.label := "Toggle navigation")(
-              spanClass("navbar-toggler-icon")
-            )
+      navbar.basic(
+        homeRoute.index(),
+        "MusicPimp",
+        modifier(
+          ulClass(s"${navbar.Nav} $MrAuto mr-auto")(
+            navItem("Home", "home", homeRoute.index(), "home"),
+            navItem("Downloads", "downloads", homeRoute.downloads(), "data-transfer-download"),
+            navItem("Documentation", "documentation", homeRoute.win(), "document"),
+            navItem("Forum", "forum", homeRoute.forum(), "comment-square")
           ),
-          div(`class` := s"$Collapse $NavbarCollapse", id := "navbarSupportedContent")(
-            ulClass(s"$NavbarNav mr-auto")(
-              navItem("Home", "home", homeRoute.index(), "home"),
-              navItem("Downloads", "downloads", homeRoute.downloads(), "data-transfer-download"),
-              navItem("Documentation", "documentation", homeRoute.win(), "document"),
-              navItem("Forum", "forum", homeRoute.forum(), "comment-square")
-            ),
-            ulClass(s"$Nav $NavbarNav $NavbarRight")(
-              navItem("Develop", "api", homeRoute.api(), "pencil"),
-              navItem("About", "about", homeRoute.about(), "globe")
-            )
+          ulClass(s"${navbar.Nav} ${navbar.Right}")(
+            navItem("Develop", "api", homeRoute.api(), "pencil"),
+            navItem("About", "about", homeRoute.about(), "globe")
           )
         )
       ),
@@ -535,7 +529,7 @@ object PimpWebHtml {
     )
 
   def downloadLink(dl: Home.Download, btnName: String = "primary") =
-    p(a(`class` := s"$Btn $Btn-$btnName", href := dl.url)(iconic("data-transfer-download"), s" ${dl.fileName}"))
+    p(a(`class` := s"${btn.Btn} ${btn.Btn}-$btnName", href := dl.url)(iconic("data-transfer-download"), s" ${dl.fileName}"))
 
   def markdown(docName: String): Modifier = RawFrag(Docs.toHtml(markdownAsString(docName)))
 
