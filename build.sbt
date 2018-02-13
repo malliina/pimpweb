@@ -7,6 +7,7 @@ import sbtbuildinfo.BuildInfoKeys.{buildInfoKeys, buildInfoPackage}
 
 val pimpWeb = PlayProject.server("pimpweb").enablePlugins(FileTreePlugin)
 val malliinaGroup = "com.malliina"
+val utilPlayDep = malliinaGroup %% "util-play" % "4.6.0"
 
 organization := "org.musicpimp"
 version := "1.10.2"
@@ -14,10 +15,12 @@ scalaVersion := "2.12.4"
 resolvers += Resolver.bintrayRepo("malliina", "maven")
 pipelineStages := Seq(digest, gzip)
 libraryDependencies ++= Seq(
-  malliinaGroup %% "util-play" % "4.6.0",
+  utilPlayDep,
+  utilPlayDep % Test classifier "tests",
   "com.amazonaws" % "aws-java-sdk-s3" % "1.11.275",
   "com.vladsch.flexmark" % "flexmark-html-parser" % "0.30.0",
-  filters
+  filters,
+  "org.seleniumhq.selenium" % "selenium-java" % "2.35.0" % Test
 )
 
 buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion)

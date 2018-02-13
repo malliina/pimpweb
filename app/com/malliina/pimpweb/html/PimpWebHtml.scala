@@ -13,12 +13,17 @@ import scalatags.Text.GenericAttr
 import scalatags.Text.all._
 
 object PimpWebHtml extends Bootstrap(Tags) {
+
   import tags._
+
   implicit val callAttr = new GenericAttr[Call]
   val titleTag = tag("title")
 
   val images = AppAssets.img
   val homeRoute = controllers.routes.Home
+
+  val PageTitle = "MusicPimp"
+  val subHeader = "No ads. No social media. Pure music."
 
   val linuxReqs: Modifier = Seq(
     h2("System Requirements"),
@@ -304,7 +309,7 @@ object PimpWebHtml extends Bootstrap(Tags) {
     divClass(Jumbotron)(
       divClass(s"$Container hero-section")(
         h1("MusicPimp"),
-        h2("No ads. No social media. Pure music"),
+        h2(subHeader),
         leadPara("Control your music libraries with your phone. Play the music on your phone, home stereo system, in your car or stream it anywhere.")
       )
     ),
@@ -351,7 +356,7 @@ object PimpWebHtml extends Bootstrap(Tags) {
           h2("MusicBeamer"),
           leadPara(
             "Stream tracks from your music library to any PC using ",
-            strong("MusicBeamer"), " at ", aHref("https://beam.musicpimp.org"), "."
+            strong("MusicBeamer"), " at ", a(href := "https://beam.musicpimp.org")("https://beam.musicpimp.org"), "."
           )
         ),
         div4(
@@ -370,13 +375,13 @@ object PimpWebHtml extends Bootstrap(Tags) {
           h2("Getting Started"),
           leadPara(
             "Get started in minutes. Check the ",
-            aHref(homeRoute.win(), "documentation"),
+            a(href := homeRoute.win())("documentation"),
             " for instructions."
           )
         ),
         divClass(col.md.four)(
           h2("Develop"),
-          leadPara("Build cool apps using the JSON ", aHref(homeRoute.api(), "API"), ".")
+          leadPara("Build cool apps using the JSON ", a(href := homeRoute.api())("API"), ".")
         )
       )
     )
@@ -468,7 +473,7 @@ object PimpWebHtml extends Bootstrap(Tags) {
       li(`class` := itemClass)(a(href := url, `class` := "nav-link")(iconic(iconicName), s" $thisTabName"))
     }
 
-    plainMain("MusicPimp")(
+    plainMain(PageTitle)(
       navbar.basic(
         homeRoute.index(),
         "MusicPimp",
@@ -502,7 +507,7 @@ object PimpWebHtml extends Bootstrap(Tags) {
         jsHashed("https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js", "sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"),
         jsHashed("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js", "sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl")
       ),
-      body(attr("data-spy") := "scroll", attr("data-target") := "#sidenav", attr("data-offset") := "200")(
+      body(data("spy") := "scroll", dataTarget := "#sidenav", data("offset") := "200")(
         inner,
         footer(`class` := "footer")(
           divClass(Container)(
