@@ -10,7 +10,7 @@ val malliinaGroup = "com.malliina"
 val utilPlayDep = malliinaGroup %% "util-play" % "4.6.0"
 
 organization := "org.musicpimp"
-version := "1.10.2"
+version := "1.10.3"
 scalaVersion := "2.12.4"
 resolvers += Resolver.bintrayRepo("malliina", "maven")
 pipelineStages := Seq(digest, gzip)
@@ -34,3 +34,6 @@ fileTreeSources ++= (resourceDirectories in Assets).value.map { dir =>
   if (dir.name == "main") DirMap(dir, "com.malliina.pimpweb.css.LessAssets", "controllers.PimpAssets.at")
   else DirMap(dir, "com.malliina.pimpweb.assets.AppAssets", "controllers.PimpAssets.at")
 }
+
+// WTF?
+linuxPackageSymlinks := linuxPackageSymlinks.value.filterNot(_.link == "/usr/bin/starter")
