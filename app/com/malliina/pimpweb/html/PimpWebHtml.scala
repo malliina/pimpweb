@@ -8,7 +8,6 @@ import com.malliina.play.tags.TagPage
 import controllers.{Docs, Home}
 import models.PrivacyPolicy
 import play.api.mvc.Call
-
 import scalatags.Text.GenericAttr
 import scalatags.Text.all._
 
@@ -18,6 +17,10 @@ object PimpWebHtml extends Bootstrap(Tags) {
 
   implicit val callAttr = new GenericAttr[Call]
   val titleTag = tag("title")
+
+  def aHref(url: String): Modifier = aHref(url, url)
+
+  def aHref[V: AttrValue](url: V, text: String): Modifier = a(href := url)(text)
 
   val images = AppAssets.img
   val homeRoute = controllers.routes.Home
