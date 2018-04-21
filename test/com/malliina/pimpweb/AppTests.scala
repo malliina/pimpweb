@@ -1,6 +1,5 @@
 package com.malliina.pimpweb
 
-import com.malliina.app.AppComponents
 import com.malliina.pimpweb.html.PimpWebHtml
 import org.scalatest.selenium.HtmlUnit
 import tests.ServerSuite

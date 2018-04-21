@@ -1,4 +1,4 @@
-package com.malliina.app
+package com.malliina.pimpweb
 
 import com.malliina.play.app.DefaultApp
 import controllers.{AssetsComponents, Home, PimpAssets}

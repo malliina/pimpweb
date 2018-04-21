@@ -7,7 +7,7 @@ import sbtbuildinfo.BuildInfoKeys.{buildInfoKeys, buildInfoPackage}
 
 val pimpWeb = PlayProject.server("pimpweb").enablePlugins(FileTreePlugin)
 val malliinaGroup = "com.malliina"
-val utilPlayDep = malliinaGroup %% "util-play" % "4.11.0"
+val utilPlayDep = malliinaGroup %% "util-play" % "4.11.1"
 
 organization := "org.musicpimp"
 version := "1.11.0"
@@ -42,3 +42,10 @@ fileTreeSources ++= (resourceDirectories in Assets).value.map { dir =>
 
 // WTF?
 linuxPackageSymlinks := linuxPackageSymlinks.value.filterNot(_.link == "/usr/bin/starter")
+javaOptions in Universal ++= {
+  val linuxName = (name in Linux).value
+  Seq(
+    s"-Dconfig.file=/etc/$linuxName/production.conf",
+    s"-Dlogger.file=/etc/$linuxName/logback-prod.xml"
+  )
+}
