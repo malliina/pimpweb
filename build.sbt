@@ -17,6 +17,7 @@ pipelineStages := Seq(digest, gzip)
 libraryDependencies ++= Seq(
   utilPlayDep,
   utilPlayDep % Test classifier "tests",
+  "com.malliina" %% "logstreams-client" % "1.0.0",
   "com.amazonaws" % "aws-java-sdk-s3" % "1.11.313",
   "com.vladsch.flexmark" % "flexmark-html-parser" % "0.32.20",
   filters,
