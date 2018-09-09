@@ -7,17 +7,17 @@ import sbtbuildinfo.BuildInfoKeys.{buildInfoKeys, buildInfoPackage}
 
 val pimpWeb = PlayProject.server("pimpweb").enablePlugins(FileTreePlugin)
 val malliinaGroup = "com.malliina"
-val utilPlayDep = malliinaGroup %% "util-play" % "4.11.1"
+val utilPlayDep = malliinaGroup %% "util-play" % "4.14.0"
 
 organization := "org.musicpimp"
 version := "1.11.0"
-scalaVersion := "2.12.5"
+scalaVersion := "2.12.6"
 resolvers += Resolver.bintrayRepo("malliina", "maven")
 pipelineStages := Seq(digest, gzip)
 libraryDependencies ++= Seq(
   utilPlayDep,
   utilPlayDep % Test classifier "tests",
-  "com.malliina" %% "logstreams-client" % "1.0.0",
+  "com.malliina" %% "logstreams-client" % "1.2.0",
   "com.amazonaws" % "aws-java-sdk-s3" % "1.11.313",
   "com.vladsch.flexmark" % "flexmark-html-parser" % "0.32.20",
   filters,
