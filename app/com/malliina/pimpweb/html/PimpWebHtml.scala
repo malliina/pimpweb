@@ -1,11 +1,10 @@
 package com.malliina.pimpweb.html
 
+import controllers.routes.PimpAssets.versioned
 import com.malliina.html.{Bootstrap, Tags}
-import com.malliina.pimpweb.AppFiles
 import com.malliina.pimpweb.assets.AppAssets
 import com.malliina.play.tags.TagPage
 import controllers.{Docs, Home}
-import controllers.routes.PimpAssets.versioned
 import models.PrivacyPolicy
 import play.api.mvc.Call
 import scalatags.Text.GenericAttr
@@ -15,7 +14,7 @@ object PimpWebHtml extends Bootstrap(Tags) {
 
   import tags._
 
-  implicit val callAttr = new GenericAttr[Call]
+  implicit val callAttr: GenericAttr[Call] = new GenericAttr[Call]
   val titleTag = tag("title")
 
   def aHref(url: String): Modifier = aHref(url, url)
@@ -539,8 +538,5 @@ object PimpWebHtml extends Bootstrap(Tags) {
   def downloadLink(dl: Home.Download, btnName: String = "primary") =
     p(a(`class` := s"${btn.Btn} ${btn.Btn}-$btnName", href := dl.url)(iconic("data-transfer-download"), s" ${dl.fileName}"))
 
-  def markdown(docName: String): Modifier = RawFrag(Docs.toHtml(markdownAsString(docName)))
-
-  def markdownAsString(docName: String): String =
-    AppFiles.readerFrom(s"docs/$docName.md")(_.mkString(AppFiles.lineSep))
+  def markdown(docName: String): Modifier = RawFrag(Docs.fromFile(docName))
 }
