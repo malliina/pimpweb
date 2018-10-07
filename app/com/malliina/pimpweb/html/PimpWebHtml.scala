@@ -1,11 +1,11 @@
 package com.malliina.pimpweb.html
 
-import controllers.routes.PimpAssets.versioned
-import com.malliina.file.FileUtilities
 import com.malliina.html.{Bootstrap, Tags}
+import com.malliina.pimpweb.AppFiles
 import com.malliina.pimpweb.assets.AppAssets
 import com.malliina.play.tags.TagPage
 import controllers.{Docs, Home}
+import controllers.routes.PimpAssets.versioned
 import models.PrivacyPolicy
 import play.api.mvc.Call
 import scalatags.Text.GenericAttr
@@ -541,6 +541,6 @@ object PimpWebHtml extends Bootstrap(Tags) {
 
   def markdown(docName: String): Modifier = RawFrag(Docs.toHtml(markdownAsString(docName)))
 
-  def markdownAsString(docName: String) =
-    FileUtilities.readerFrom(s"docs/$docName.md")(_.mkString(FileUtilities.lineSep))
+  def markdownAsString(docName: String): String =
+    AppFiles.readerFrom(s"docs/$docName.md")(_.mkString(AppFiles.lineSep))
 }

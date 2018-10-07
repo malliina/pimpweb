@@ -7,21 +7,22 @@ import sbtbuildinfo.BuildInfoKeys.{buildInfoKeys, buildInfoPackage}
 
 val pimpWeb = PlayProject.server("pimpweb").enablePlugins(FileTreePlugin)
 val malliinaGroup = "com.malliina"
-val utilPlayDep = malliinaGroup %% "util-play" % "4.11.1"
+val utilPlayDep = malliinaGroup %% "util-play" % "4.15.0"
 
 organization := "org.musicpimp"
-version := "1.11.0"
-scalaVersion := "2.12.5"
+version := "1.11.1"
+scalaVersion := "2.12.7"
 resolvers += Resolver.bintrayRepo("malliina", "maven")
 pipelineStages := Seq(digest, gzip)
 libraryDependencies ++= Seq(
   utilPlayDep,
   utilPlayDep % Test classifier "tests",
-  "com.malliina" %% "logstreams-client" % "1.0.0",
-  "com.amazonaws" % "aws-java-sdk-s3" % "1.11.313",
-  "com.vladsch.flexmark" % "flexmark-html-parser" % "0.32.20",
+  malliinaGroup %% "logstreams-client" % "1.2.0",
+  malliinaGroup %% "util-base" % "1.6.0",
+  "com.amazonaws" % "aws-java-sdk-s3" % "1.11.423",
+  "com.vladsch.flexmark" % "flexmark-html-parser" % "0.34.48",
   filters,
-  "org.seleniumhq.selenium" % "selenium-java" % "3.11.0" % Test
+  "org.seleniumhq.selenium" % "selenium-java" % "3.14.0" % Test
 )
 
 dependencyOverrides ++= Seq(
@@ -37,8 +38,8 @@ httpsPort in Linux := Option("disabled")
 maintainer := "Michael Skogberg <malliina123@gmail.com>"
 
 fileTreeSources ++= (resourceDirectories in Assets).value.map { dir =>
-  if (dir.name == "main") DirMap(dir, "com.malliina.pimpweb.css.LessAssets", "controllers.PimpAssets.at")
-  else DirMap(dir, "com.malliina.pimpweb.assets.AppAssets", "controllers.PimpAssets.at")
+  val dest = if(dir.name == "main") "com.malliina.pimpweb.css.LessAssets" else "com.malliina.pimpweb.assets.AppAssets"
+  DirMap(dir, dest, "controllers.PimpAssets.at")
 }
 
 // WTF?
