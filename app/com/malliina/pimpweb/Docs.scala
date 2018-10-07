@@ -1,4 +1,4 @@
-package controllers
+package com.malliina.pimpweb
 
 import com.vladsch.flexmark.html.HtmlRenderer
 import com.vladsch.flexmark.parser.Parser

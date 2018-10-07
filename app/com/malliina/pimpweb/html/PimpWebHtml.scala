@@ -3,8 +3,9 @@ package com.malliina.pimpweb.html
 import controllers.routes.PimpAssets.versioned
 import com.malliina.html.{Bootstrap, Tags}
 import com.malliina.pimpweb.assets.AppAssets
+import com.malliina.pimpweb.Docs
 import com.malliina.play.tags.TagPage
-import controllers.{Docs, Home}
+import controllers.Home
 import models.PrivacyPolicy
 import play.api.mvc.Call
 import scalatags.Text.GenericAttr
