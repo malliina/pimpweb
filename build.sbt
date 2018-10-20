@@ -7,7 +7,7 @@ import sbtbuildinfo.BuildInfoKeys.{buildInfoKeys, buildInfoPackage}
 
 val pimpWeb = PlayProject.server("pimpweb").enablePlugins(FileTreePlugin)
 val malliinaGroup = "com.malliina"
-val utilPlayDep = malliinaGroup %% "util-play" % "4.15.0"
+val utilPlayDep = malliinaGroup %% "util-play" % "4.16.0"
 
 organization := "org.musicpimp"
 version := "1.11.1"
@@ -18,7 +18,7 @@ libraryDependencies ++= Seq(
   utilPlayDep,
   utilPlayDep % Test classifier "tests",
   malliinaGroup %% "logstreams-client" % "1.2.0",
-  malliinaGroup %% "util-base" % "1.6.0",
+  malliinaGroup %% "util-base" % "1.6.1",
   "com.amazonaws" % "aws-java-sdk-s3" % "1.11.423",
   "com.vladsch.flexmark" % "flexmark-html-parser" % "0.34.48",
   filters,
