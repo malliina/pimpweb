@@ -17,7 +17,7 @@ pipelineStages := Seq(digest, gzip)
 libraryDependencies ++= Seq(
   utilPlayDep,
   utilPlayDep % Test classifier "tests",
-  malliinaGroup %% "logstreams-client" % "1.2.0",
+  malliinaGroup %% "logstreams-client" % "1.3.0",
   malliinaGroup %% "util-base" % "1.6.1",
   "com.amazonaws" % "aws-java-sdk-s3" % "1.11.423",
   "com.vladsch.flexmark" % "flexmark-html-parser" % "0.34.48",
@@ -38,7 +38,9 @@ httpsPort in Linux := Option("disabled")
 maintainer := "Michael Skogberg <malliina123@gmail.com>"
 
 fileTreeSources ++= (resourceDirectories in Assets).value.map { dir =>
-  val dest = if(dir.name == "main") "com.malliina.pimpweb.css.LessAssets" else "com.malliina.pimpweb.assets.AppAssets"
+  val dest =
+    if (dir.name == "main") "com.malliina.pimpweb.css.LessAssets"
+    else "com.malliina.pimpweb.assets.AppAssets"
   DirMap(dir, dest, "controllers.PimpAssets.at")
 }
 
