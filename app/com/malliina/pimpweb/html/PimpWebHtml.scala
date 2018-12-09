@@ -12,6 +12,7 @@ import scalatags.Text.GenericAttr
 import scalatags.Text.all._
 
 object PimpWebHtml extends Bootstrap(Tags) {
+  val DocsUrl = "https://docs.musicpimp.org"
 
   import tags._
 
@@ -402,48 +403,6 @@ object PimpWebHtml extends Bootstrap(Tags) {
     )
   )
 
-  val api = docApi(
-    markdown("Requests"),
-    markdown("Responses"),
-    markdown("HttpEndpoints"),
-    markdown("ServerEvents")
-  )
-
-  def docApi(requests: Modifier, responses: Modifier, httpEndpoints: Modifier, serverEvents: Modifier) =
-    indexMain("api")(
-      headerRow("Develop"),
-      row(
-        divClass(col.md.width("9"))(
-          leadPara("Develop apps for MusicPimp using the JSON API.")
-        )
-      ),
-      row(
-        divClass(col.md.eight)(
-          requests,
-          responses,
-          httpEndpoints,
-          serverEvents
-        ),
-        nav(`class` := s"${col.md.width("3")} side-nav bs-docs-sidebar", id := "sidenav")(
-          nav(`class` := s"nav flex-column", id := "sidebar")(
-            sideLink("#requests", "Requests"),
-            sideLink("#responses", "Responses"),
-            sideLink("#endpoints", "HTTP endpoints"),
-            nav(`class` := s"nav flex-column")(
-              sideLink("#library", "Library"),
-              sideLink("#player", "Player"),
-              sideLink("#playlist", "Playlist"),
-              sideLink("#alarms", "Alarms"),
-              sideLink("#misc", "Miscellaneous")
-            ),
-            sideLink("#server", "Server events")
-          )
-        )
-      )
-    )
-
-  def sideLink(anchor: String, text: String) = a(href := anchor, `class` := "nav-link")(text)
-
   val about = indexMain("about")(
     headerRow("About"),
     row(
@@ -488,7 +447,7 @@ object PimpWebHtml extends Bootstrap(Tags) {
             navItem("Forum", "forum", homeRoute.forum(), "comment-square")
           ),
           ulClass(s"${navbar.Nav} ${navbar.Right}")(
-            navItem("Develop", "api", homeRoute.api(), "pencil"),
+            navItem("Develop", "api", Call("GET", DocsUrl), "pencil"),
             navItem("About", "about", homeRoute.about(), "globe")
           )
         )

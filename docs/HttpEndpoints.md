@@ -1,5 +1,3 @@
-## HTTP endpoints <div id="endpoints" class="area"></div>
-
 HTTP requests are made using URLs like
 
     http://my_server_ip:8456/playback

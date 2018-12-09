@@ -1,5 +1,3 @@
-## Code samples <div id="code" class="area"></div>
-
 As an example, let's use the API to ping a locally installed MusicPimp server 
 and validate our credentials. We make a request and expect to get an HTTP response 
 with status code 200 [OK](http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html).

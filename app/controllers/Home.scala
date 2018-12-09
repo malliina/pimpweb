@@ -63,7 +63,7 @@ class Home(fileStore: FileStore, comps: ControllerComponents) extends AbstractCo
 
   def wp = GoTo(PimpWebHtml.docWinPhone)
 
-  def api = GoTo(PimpWebHtml.api)
+  def api = Action(Redirect(PimpWebHtml.DocsUrl))
 
   def alarms = GoTo(PimpWebHtml.alarms)
 
