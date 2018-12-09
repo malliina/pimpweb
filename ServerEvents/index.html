@@ -33,21 +33,21 @@
       
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
-      <link rel="shortcut icon" href="assets/images/favicon.png">
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-3.1.0">
     
     
       
-        <title>MusicPimp</title>
+        <title>Server Events - MusicPimp</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/application.11e41852.css">
+      <link rel="stylesheet" href="../assets/stylesheets/application.11e41852.css">
       
       
     
     
-      <script src="assets/javascripts/modernizr.20ef595d.js"></script>
+      <script src="../assets/javascripts/modernizr.20ef595d.js"></script>
     
     
       
@@ -56,7 +56,7 @@
         <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
       
     
-    <link rel="stylesheet" href="assets/fonts/material-icons.css">
+    <link rel="stylesheet" href="../assets/fonts/material-icons.css">
     
     
     
@@ -74,7 +74,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#requests" tabindex="1" class="md-skip">
+      <a href="#events" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -83,7 +83,7 @@
   <nav class="md-header-nav md-grid">
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
-        <a href="." title="MusicPimp" class="md-header-nav__button md-logo">
+        <a href=".." title="MusicPimp" class="md-header-nav__button md-logo">
           
             <i class="md-icon"></i>
           
@@ -100,7 +100,7 @@
                 MusicPimp
               </span>
               <span class="md-header-nav__topic">
-                Develop
+                Server Events
               </span>
             
           
@@ -155,7 +155,7 @@
                   <div class="md-sidebar__inner">
                     <nav class="md-nav md-nav--primary" data-md-level="0">
   <label class="md-nav__title md-nav__title--site" for="__drawer">
-    <a href="." title="MusicPimp" class="md-nav__button md-logo">
+    <a href=".." title="MusicPimp" class="md-nav__button md-logo">
       
         <i class="md-icon"></i>
       
@@ -164,6 +164,30 @@
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href=".." title="Develop" class="md-nav__link">
+      Develop
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../HttpEndpoints/" title="Http Endpoints" class="md-nav__link">
+      Http Endpoints
+    </a>
+  </li>
+
     
       
       
@@ -178,11 +202,11 @@
     
     
       <label class="md-nav__link md-nav__link--active" for="__toc">
-        Develop
+        Server Events
       </label>
     
-    <a href="." title="Develop" class="md-nav__link md-nav__link--active">
-      Develop
+    <a href="./" title="Server Events" class="md-nav__link md-nav__link--active">
+      Server Events
     </a>
     
       
@@ -194,50 +218,58 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#requests" title="Requests " class="md-nav__link">
-    Requests 
+  <a href="#events" title="Events" class="md-nav__link">
+    Events
   </a>
   
     <nav class="md-nav">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#media-types" title="Media Types" class="md-nav__link">
-    Media Types
+  <a href="#time-updated" title="Time updated" class="md-nav__link">
+    Time updated
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#authentication" title="Authentication" class="md-nav__link">
-    Authentication
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#responses" title="Responses " class="md-nav__link">
-    Responses 
-  </a>
-  
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#compression" title="Compression" class="md-nav__link">
-    Compression
+  <a href="#track-changed" title="Track changed" class="md-nav__link">
+    Track changed
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#success-and-failure" title="Success and Failure" class="md-nav__link">
-    Success and Failure
+  <a href="#playstate-changed" title="Playstate changed" class="md-nav__link">
+    Playstate changed
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#playlist-modified" title="Playlist modified" class="md-nav__link">
+    Playlist modified
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#playlist-index-changed" title="Playlist index changed" class="md-nav__link">
+    Playlist index changed
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#volume-changed" title="Volume changed" class="md-nav__link">
+    Volume changed
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mute-toggled" title="Mute toggled" class="md-nav__link">
+    Mute toggled
   </a>
   
 </li>
@@ -264,31 +296,7 @@
 
 
   <li class="md-nav__item">
-    <a href="HttpEndpoints/" title="Http Endpoints" class="md-nav__link">
-      Http Endpoints
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="ServerEvents/" title="Server Events" class="md-nav__link">
-      Server Events
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="CodeSamples/" title="Code Samples" class="md-nav__link">
+    <a href="../CodeSamples/" title="Code Samples" class="md-nav__link">
       Code Samples
     </a>
   </li>
@@ -313,50 +321,58 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#requests" title="Requests " class="md-nav__link">
-    Requests 
+  <a href="#events" title="Events" class="md-nav__link">
+    Events
   </a>
   
     <nav class="md-nav">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#media-types" title="Media Types" class="md-nav__link">
-    Media Types
+  <a href="#time-updated" title="Time updated" class="md-nav__link">
+    Time updated
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#authentication" title="Authentication" class="md-nav__link">
-    Authentication
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#responses" title="Responses " class="md-nav__link">
-    Responses 
-  </a>
-  
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#compression" title="Compression" class="md-nav__link">
-    Compression
+  <a href="#track-changed" title="Track changed" class="md-nav__link">
+    Track changed
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#success-and-failure" title="Success and Failure" class="md-nav__link">
-    Success and Failure
+  <a href="#playstate-changed" title="Playstate changed" class="md-nav__link">
+    Playstate changed
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#playlist-modified" title="Playlist modified" class="md-nav__link">
+    Playlist modified
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#playlist-index-changed" title="Playlist index changed" class="md-nav__link">
+    Playlist index changed
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#volume-changed" title="Volume changed" class="md-nav__link">
+    Volume changed
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mute-toggled" title="Mute toggled" class="md-nav__link">
+    Mute toggled
   </a>
   
 </li>
@@ -383,55 +399,75 @@
               
                 
                 
-                  <h1>Develop</h1>
+                  <h1>Server Events</h1>
                 
-                <p>Develop apps for MusicPimp using the JSON API.</p>
-<h2 id="requests">Requests <div id="requests" class="area"></div></h2>
-<p>Clients may interact with the MusicPimp server using HTTP requests and/or 
-<a href="http://en.wikipedia.org/wiki/WebSockets">WebSocket</a> connections.</p>
-<p>Obtain information using HTTP GET requests, and send JSON-formatted messages either 
-in the body of HTTP POST requests or as WebSocket messages.</p>
-<p>To upload files, HTTP POST them as <strong>multipart/form-data</strong>.</p>
-<h3 id="media-types">Media Types</h3>
-<p>When making requests, indicate the desired response format in the <strong>Accept</strong> HTTP header.
-The JSON response formats are versioned, and in order to ensure API compatibility,
-clients should be explicit about which version of the format they accept. The following formats are
-currently valid:</p>
-<ul>
-<li>application/vnd.musicpimp.v18+json</li>
-<li>application/vnd.musicpimp.v17+json</li>
-<li>application/vnd.musicpimp+json</li>
-<li>application/json</li>
-</ul>
-<p>Remember this also when opening WebSocket connections; the value in the Accept header of the 
-HTTP request that initiates a WebSocket connection will determine the format of the messages.</p>
-<p>Whenever backwards-incompatible changes are made to the JSON response format in future MusicPimp server 
-updates, they will be made under a new version. However, new content (name/value pairs) may be added to an existing 
-format without notice. The examples in this documentation are based on the latest format, 
-<em>application/vnd.musicpimp.v18+json</em>.</p>
-<p><span class="label label-info">Note</span> To force the server to respond with the latest JSON format
-regardless of the Accept header, append query parameter <code>f=json</code> to the request URL.</p>
-<h3 id="authentication">Authentication</h3>
-<p>HTTP Basic authentication is supported and required most of the time. Set your 
-credentials in the <strong>Authorization</strong> HTTP header of the request.</p>
-<p>For example, if your username is <code>i_love</code> and password <code>michael</code>,
-the value of the Authorization header must be </p>
-<pre><code>Basic aV9sb3ZlOm1pY2hhZWw=
+                <p>You can subscribe to server-side playback updates. This is useful when you want to display 
+a player in your app even though playback happens on another device.</p>
+<p>To subscribe, open a WebSocket connection to <code>/ws/playback</code> on the MusicPimp server.</p>
+<h3 id="events">Events</h3>
+<p>The following events are sent by the server.</p>
+<h4 id="time-updated">Time updated</h4>
+<p>Sent when playback has progressed in time. The playback position is 
+given as an integer in seconds. Sent at least once per second during playback:</p>
+<pre><code>{"event":"time_updated","position":42}
 </code></pre>
-<p>where <code>aV9sb3ZlOm1pY2hhZWw=</code> is <code>i_love:michael</code> base64-encoded.</p>
-<h2 id="responses">Responses <div id="responses" class="area"></div></h2>
-<p>The MusicPimp server responds to requests in either <strong>JSON</strong> (application/json)
-or <strong>HTML</strong> (text/html), depending on what the client has requested.</p>
-<h3 id="compression">Compression</h3>
-<p>The responses are gzip-compressed provided that the <strong>Accept-Encoding</strong> HTTP header 
-of the request contains <code>gzip</code>.</p>
-<h3 id="success-and-failure">Success and Failure</h3>
-<p>A successful HTTP status code indicates that the request was processed successfully. The 
-response of a failed request will have an HTTP status code indicating failure.</p>
-<p>In addition to the information you get from the status code, failed API requests may contain 
-a JSON response content indicating the reason your request went titsup.</p>
-<p>Example: </p>
-<pre><code>{"reason":"Invalid parameter."}
+<h4 id="track-changed">Track changed</h4>
+<p>The player track has changed.</p>
+<pre><code>{
+    "event":"track_changed",
+    "track":{
+        "id":"Pearl+Jam+-+Man+Of+The+Hour.mp3",
+        "title":"Man Of The Hour",
+        "artist":"Pearl Jam",
+        "album":"My Lost Dogs",
+        "duration":225,
+        "size":5408768
+    }
+}
+</code></pre>
+<p>The track size is reported in bytes.</p>
+<h4 id="playstate-changed">Playstate changed</h4>
+<p>Sent when the playstate has changed.</p>
+<pre><code>{"event":"playstate_changed","state":"Stopped"}
+</code></pre>
+<p>The playstate is one of the following: <strong>Playing</strong>, <strong>Paused</strong>, <strong>Stopped</strong>, <strong>NoMedia</strong>. NoMedia 
+implies that the player has no track set.</p>
+<h4 id="playlist-modified">Playlist modified</h4>
+<p>The tracks in the playlist have been modified. A separate event exists for when the 
+playlist index has changed; see the next item.</p>
+<pre><code>{
+    "event":"playlist_modified",
+    "playlist":[
+        {
+            "id":"Pearl+Jam+-+Man+Of+The+Hour.mp3",
+            "title":"Man Of The Hour",
+            "artist":"Pearl Jam",
+            "album":"My Lost Dogs",
+            "duration":225,
+            "size":5408768
+        },
+        {
+            "id":"ryan+adams+-+desire.mp3",
+            "title":"Desire",
+            "artist":"Ryan Adams",
+            "album":"48 Hours",
+            "duration":231,
+            "size":5546654
+        }
+    ]
+}
+</code></pre>
+<h4 id="playlist-index-changed">Playlist index changed</h4>
+<p>The player has skipped to a new song in the playlist.</p>
+<pre><code>{"event":"playlist_index_changed","playlist_index":42}
+</code></pre>
+<h4 id="volume-changed">Volume changed</h4>
+<p>The volume has changed. The volume is an integer value within [0,100].</p>
+<pre><code>{"event":"volume_changed","volume":42}
+</code></pre>
+<h4 id="mute-toggled">Mute toggled</h4>
+<p>Mute has been turned on or off.</p>
+<pre><code>{"event":"mute_toggled","mute":true}
 </code></pre>
                 
                   
@@ -453,14 +489,28 @@ a JSON response content indicating the reason your request went titsup.</p>
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
+          <a href="../HttpEndpoints/" title="Http Endpoints" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Http Endpoints
+              </span>
+            </div>
+          </a>
         
-          <a href="HttpEndpoints/" title="Http Endpoints" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+        
+          <a href="../CodeSamples/" title="Code Samples" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Http Endpoints
+                Code Samples
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">
@@ -494,9 +544,9 @@ a JSON response content indicating the reason your request went titsup.</p>
       
     </div>
     
-      <script src="assets/javascripts/application.9e1f3b71.js"></script>
+      <script src="../assets/javascripts/application.9e1f3b71.js"></script>
       
-      <script>app.initialize({version:"1.0.4",url:{base:"."}})</script>
+      <script>app.initialize({version:"1.0.4",url:{base:".."}})</script>
       
     
     
