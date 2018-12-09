@@ -1,4 +1,4 @@
-Develop apps for MusicPimp using the JSON API.
+Develop apps for [MusicPimp](https://www.musicpimp.org) using the JSON API.
 
 ## Requests <div id="requests" class="area"></div>
 
