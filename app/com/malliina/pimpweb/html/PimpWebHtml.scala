@@ -3,7 +3,6 @@ package com.malliina.pimpweb.html
 import controllers.routes.PimpAssets.versioned
 import com.malliina.html.{Bootstrap, Tags}
 import com.malliina.pimpweb.assets.AppAssets
-import com.malliina.pimpweb.Docs
 import com.malliina.play.tags.TagPage
 import controllers.Home
 import models.PrivacyPolicy
@@ -497,6 +496,4 @@ object PimpWebHtml extends Bootstrap(Tags) {
 
   def downloadLink(dl: Home.Download, btnName: String = "primary") =
     p(a(`class` := s"${btn.Btn} ${btn.Btn}-$btnName", href := dl.url)(iconic("data-transfer-download"), s" ${dl.fileName}"))
-
-  def markdown(docName: String): Modifier = RawFrag(Docs.fromFile(docName))
 }

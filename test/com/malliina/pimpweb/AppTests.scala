@@ -7,7 +7,7 @@ import tests.ServerSuite
 class AppTests extends ServerSuite(ctx => new AppComponents(ctx)) with HtmlUnit {
   val host = s"http://localhost:$port"
 
-  test("selenium demo") {
+  test("page title and sub header is rendered") {
     go to host
     assert(pageTitle === "MusicPimp")
     val header = cssSelector(".hero-section h2").findElement
