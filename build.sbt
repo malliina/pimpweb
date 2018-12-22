@@ -21,7 +21,7 @@ libraryDependencies ++= Seq(
   malliinaGroup %% "util-base" % "1.7.1",
   "com.amazonaws" % "aws-java-sdk-s3" % "1.11.475",
   filters,
-  "org.seleniumhq.selenium" % "selenium-java" % "3.141.59" % Test
+  "org.seleniumhq.selenium" % "selenium-java" % "3.14.0" % Test
 )
 
 buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion)
