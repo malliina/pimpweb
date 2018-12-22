@@ -195,7 +195,7 @@ object PimpWebHtml extends Bootstrap(Tags) {
   val alarms = indexMain("alarms")(
     headerRow("Alarm clock management"),
     rowColumn(col.md.six)(
-      leadPara("Control the alarm clock on the MusicPimp server using the following API."),
+      leadNormal("Control the alarm clock on the MusicPimp server using the following API."),
       h4("Get all alarms ", small("GET /alarms")),
       p("Get an array of the currently configured alarms."),
       p("Example response:"),
@@ -259,20 +259,20 @@ object PimpWebHtml extends Bootstrap(Tags) {
   )
 
   val success = indexMain("success")(
-    leadPara(iconic("thumb-up"), " Thanks for your donation!"),
+    leadNormal(iconic("thumb-up"), " Thanks for your donation!"),
     p("Should you have any questions, don't hesitate to contact ", aHref("mailto:info@musicpimp.org", "info@musicpimp.org")),
     p("Best regards! Michael Skogberg, MusicPimp")
   )
 
   val cancel = indexMain("cancel")(
-    leadPara(iconic("fire"), " The donation procedure was prematurely canceled. ", iconic("fire")),
+    leadNormal(iconic("fire"), " The donation procedure was prematurely canceled. ", iconic("fire")),
     p("Should you have any questions, don't hesitate to contact ", aHref("mailto:info@musicpimp.org", "info@musicpimp.org"))
   )
 
   def downloads(releaseDate: String, previous: Seq[String]) = indexMain("downloads")(
     headerRow("Downloads"),
     fullRow(
-      leadPara("Download the server. It's free. No nonsense.")
+      leadNormal("Download the server. It's free. No nonsense.")
     ),
     row(
       div(`class` := col.lg.four)(
@@ -313,7 +313,7 @@ object PimpWebHtml extends Bootstrap(Tags) {
       divClass(s"$Container hero-section")(
         h1("MusicPimp"),
         h2(subHeader),
-        leadPara("Control your music libraries with your phone. Play the music on your phone, home stereo system, in your car or stream it anywhere.")
+        leadNormal("Control your music libraries with your phone. Play the music on your phone, home stereo system, in your car or stream it anywhere.")
       )
     ),
     divClass("container")(
@@ -357,7 +357,7 @@ object PimpWebHtml extends Bootstrap(Tags) {
       row(
         divClass(s"${col.md.four} ${col.md.offset.two}")(
           h2("MusicBeamer"),
-          leadPara(
+          leadNormal(
             "Stream tracks from your music library to any PC using ",
             strong("MusicBeamer"), " at ", a(href := "https://beam.musicpimp.org")("https://beam.musicpimp.org"), "."
           )
@@ -376,7 +376,7 @@ object PimpWebHtml extends Bootstrap(Tags) {
       row(
         divClass(s"${col.md.four} ${col.md.offset.two}")(
           h2("Getting Started"),
-          leadPara(
+          leadNormal(
             "Get started in minutes. Check the ",
             a(href := homeRoute.win())("documentation"),
             " for instructions."
@@ -384,7 +384,7 @@ object PimpWebHtml extends Bootstrap(Tags) {
         ),
         divClass(col.md.four)(
           h2("Develop"),
-          leadPara("Build cool apps using the JSON ", a(href := homeRoute.api())("API"), ".")
+          leadNormal("Build cool apps using the JSON ", a(href := homeRoute.api())("API"), ".")
         )
       )
     )
@@ -430,8 +430,10 @@ object PimpWebHtml extends Bootstrap(Tags) {
 
   def indexNoContainer(tabName: String)(inner: Modifier*) = {
     def navItem(thisTabName: String, tabId: String, url: Call, iconicName: String) = {
-      val itemClass = if (tabId == tabName) "nav-item active" else "nav-item"
-      li(`class` := itemClass)(a(href := url, `class` := "nav-link")(iconic(iconicName), s" $thisTabName"))
+      val activeClass = if (tabId == tabName) " active" else ""
+      li(`class` := s"nav-item bolder$activeClass")(
+        a(href := url, `class` := "nav-link")(iconic(iconicName), s" $thisTabName")
+      )
     }
 
     plainMain(PageTitle)(
@@ -463,6 +465,7 @@ object PimpWebHtml extends Bootstrap(Tags) {
         link(rel := "shortcut icon", href := images.pimp_28_png),
         cssLinkHashed("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css", "sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"),
         cssLink("https://use.fontawesome.com/releases/v5.0.6/css/all.css"),
+        cssLink(AppAssets.css.fonts_css),
         cssLink(versioned("css/main.css")),
         jsHashed("https://code.jquery.com/jquery-3.2.1.slim.min.js", "sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"),
         jsHashed("https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js", "sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"),
@@ -491,8 +494,10 @@ object PimpWebHtml extends Bootstrap(Tags) {
     div4(
       h2(featureTitle),
       p(img(src := imgFile)),
-      leadPara(leadText)
+      leadNormal(leadText)
     )
+
+  def leadNormal(content: Modifier*) = p(`class` := s"$Lead font-weight-normal")(content)
 
   def downloadLink(dl: Home.Download, btnName: String = "primary") =
     p(a(`class` := s"${btn.Btn} ${btn.Btn}-$btnName", href := dl.url)(iconic("data-transfer-download"), s" ${dl.fileName}"))
