@@ -431,7 +431,7 @@ object PimpWebHtml extends Bootstrap(Tags) {
   def indexNoContainer(tabName: String)(inner: Modifier*) = {
     def navItem(thisTabName: String, tabId: String, url: Call, iconicName: String) = {
       val activeClass = if (tabId == tabName) " active" else ""
-      li(`class` := s"nav-item bolder$activeClass")(
+      li(`class` := s"nav-item$activeClass")(
         a(href := url, `class` := "nav-link")(iconic(iconicName), s" $thisTabName")
       )
     }
