@@ -9,14 +9,27 @@ import models.PrivacyPolicy
 import play.api.mvc.Call
 import scalatags.Text.GenericAttr
 import scalatags.Text.all._
+import PimpWebHtml.subHeader
+import play.api.Mode
 
-object PimpWebHtml extends Bootstrap(Tags) {
+object PimpWebHtml {
+  val subHeader = "No ads. No social media. Pure music."
+
+  def apply(mode: Mode): PimpWebHtml =
+    if (mode == Mode.Prod) apply(Seq("styles.css", "fonts.css"), Seq("client-fastopt-bundle.js"))
+    else apply(Nil, Seq("styles-bundle.js", "fonts-bundle.js", "client-fastopt-bundle.js"))
+
+  def apply(css: Seq[String], js: Seq[String]): PimpWebHtml = new PimpWebHtml(css, js)
+}
+
+class PimpWebHtml(css: Seq[String], js: Seq[String]) extends Bootstrap(Tags) {
   val DocsUrl = "https://docs.musicpimp.org"
 
   import tags._
 
   implicit val callAttr: GenericAttr[Call] = new GenericAttr[Call]
   val titleTag = tag("title")
+  val defer = attr("defer").empty
 
   def aHref(url: String): Modifier = aHref(url, url)
 
@@ -26,7 +39,6 @@ object PimpWebHtml extends Bootstrap(Tags) {
   val homeRoute = controllers.routes.Home
 
   val PageTitle = "MusicPimp"
-  val subHeader = "No ads. No social media. Pure music."
 
   val linuxReqs: Modifier = Seq(
     h2("System Requirements"),
@@ -465,11 +477,11 @@ object PimpWebHtml extends Bootstrap(Tags) {
         link(rel := "shortcut icon", href := images.pimp_28_png),
         cssLinkHashed("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css", "sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"),
         cssLink("https://use.fontawesome.com/releases/v5.0.6/css/all.css"),
-        cssLink(AppAssets.css.fonts_css),
-        cssLink(versioned("css/main.css")),
+        css.map { path => cssLink(versioned(path)) },
         jsHashed("https://code.jquery.com/jquery-3.2.1.slim.min.js", "sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"),
         jsHashed("https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js", "sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"),
-        jsHashed("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js", "sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl")
+        jsHashed("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js", "sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"),
+        js.map { path => jsScript(versioned(path), defer) }
       ),
       body(data("spy") := "scroll", dataTarget := "#sidenav", data("offset") := "200")(
         inner,
