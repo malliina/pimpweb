@@ -43,8 +43,8 @@ val pimpWeb = PlayProject.server("pimpweb")
   .settings(
     resolvers += Resolver.bintrayRepo("malliina", "maven"),
     scalaJSProjects := Seq(client),
-//    pipelineStages in Assets := Seq(scalaJSPipeline),
-    pipelineStages in Assets := Seq(scalaJSPipeline, digest, gzip),
+    pipelineStages in Assets := Seq(scalaJSPipeline),
+//    pipelineStages in Assets := Seq(scalaJSPipeline, digest, gzip),
     pipelineStages := Seq(digest, gzip),
     libraryDependencies ++= Seq(
       utilPlayDep,
