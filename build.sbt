@@ -1,11 +1,13 @@
 import com.malliina.sbt.filetree.DirMap
 import com.malliina.sbt.unix.LinuxKeys.{httpPort, httpsPort}
 import com.malliina.sbtplay.PlayProject
-import com.malliina.site.Site
 import com.typesafe.sbt.packager.Keys.maintainer
 import sbtbuildinfo.BuildInfoKey
 import sbtbuildinfo.BuildInfoKeys.{buildInfoKeys, buildInfoPackage}
+import sbt._
 
+val dummy = Home.androidAppUri
+val dummy2 = PimpWebHtml.subHeader
 val malliinaGroup = "com.malliina"
 val utilPlayDep = malliinaGroup %% "util-play" % "4.18.1"
 
@@ -13,11 +15,17 @@ ThisBuild / organization := "org.musicpimp"
 ThisBuild / version := "1.11.1"
 ThisBuild / scalaVersion := "2.12.8"
 
-TaskKey[Unit]("demo") := {
-  Site.build()
-}
+val Static = config("static")
+val buildSite = taskKey[BuiltSite]("Build the site")
+val buildSiteDev = taskKey[BuiltSite]("Build the site in dev mode")
 
-val builder = project.in(file("site-builder"))
+//TaskKey[Unit]("demo") := {
+//  Site.build(SiteSpec(Nil, Nil, (target in Static).value.toPath))
+//}
+//
+//TaskKey[Unit]("site") := {
+//  Site.build(SiteSpec(Nil, Nil, (target in Static).value.toPath))
+//}
 
 val client = project.in(file("client"))
   .enablePlugins(ScalaJSBundlerPlugin)
@@ -41,7 +49,34 @@ val client = project.in(file("client"))
     ),
     scalaJSUseMainModuleInitializer := true,
     webpackConfigFile in fastOptJS := Some(baseDirectory.value / "webpack.dev.config.js"),
-    webpackConfigFile in fullOptJS := Some(baseDirectory.value / "webpack.prod.config.js")
+    webpackConfigFile in fullOptJS := Some(baseDirectory.value / "webpack.prod.config.js"),
+    Static / target := baseDirectory.value / "dist",
+    buildSite := {
+      val siteDir = (target in Static).value.toPath
+      val files = (webpack in(Compile, fullOptJS)).value
+      val mappings =
+        files.map { file => FileMapping(file.data.toPath, file.data.name) } ++
+          (baseDirectory.value / "img").listFiles().map { img => FileMapping(img.toPath, img.name)}
+      // Excludes scripts emitted from CSS extraction
+      val excludedScripts = Seq("styles", "fonts")
+      val assets = AssetHelper.assetGroup(files, excludedScripts)
+      streams.value.log.info("Building...")
+      Site.build(SiteSpec(assets.styles, assets.scripts, mappings, siteDir), streams.value.log)
+    },
+    (webpack in(Compile, fastOptJS)) := {
+      val siteDir = (crossTarget in(Compile, fastOptJS)).value.toPath
+      val files = (webpack in(Compile, fastOptJS)).value
+      val mappings =
+        files.map { file => FileMapping(file.data.toPath, file.data.name) } ++
+          (baseDirectory.value / "img").listFiles().map { img => FileMapping(img.toPath, img.name)}
+      // Excludes scripts emitted from CSS extraction
+      val excludedScripts = Nil
+      val assets = AssetHelper.assetGroup(files, excludedScripts)
+      val log = streams.value.log
+      log.info("Building...")
+      Site.build(SiteSpec(assets.styles, assets.scripts, mappings, siteDir), log)
+      files
+    }
   )
 
 val pimpWeb = PlayProject.server("pimpweb")
