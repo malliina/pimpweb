@@ -3,13 +3,14 @@ package controllers
 import com.malliina.pimpweb.html.PimpWebHtml
 import com.malliina.pimpweb.{BuildInfo, FileStore, S3FileStore}
 import com.malliina.play.controllers.Caching
+import play.api.Mode
 import play.api.http.Writeable
 import play.api.libs.json.Json
 import play.api.mvc.{AbstractController, ControllerComponents}
 
 object Home {
 
-  def s3(comps: ControllerComponents) = new Home(S3FileStore, comps)
+  def s3(comps: ControllerComponents, mode: Mode) = new Home(S3FileStore, comps, mode)
 
   case class Download(fileName: String) {
     val url = toUrl(fileName)
@@ -42,44 +43,46 @@ object Home {
   private def toUrl(fileName: String) = downloadBaseUrl + fileName
 }
 
-class Home(fileStore: FileStore, comps: ControllerComponents) extends AbstractController(comps) {
+class Home(fileStore: FileStore, comps: ControllerComponents, mode: Mode) extends AbstractController(comps) {
+  val html = PimpWebHtml(mode)
+
   def ping = Action(Caching.NoCache(Ok(Json.obj("name" -> BuildInfo.name, "version" -> BuildInfo.version))))
 
-  def index = GoTo(PimpWebHtml.index)
+  def index = GoTo(html.index)
 
-  def downloads = GoTo(PimpWebHtml.downloads(Home.releaseDate, previousDownloadables))
+  def downloads = GoTo(html.downloads(Home.releaseDate, previousDownloadables))
 
   def previous = Action(Ok(Json.toJson(previousDownloadables)))
 
   def documentation = win
 
-  def win = GoTo(PimpWebHtml.docWin)
+  def win = GoTo(html.docWin)
 
-  def mac = GoTo(PimpWebHtml.docMac)
+  def mac = GoTo(html.docMac)
 
-  def deb = GoTo(PimpWebHtml.docDeb)
+  def deb = GoTo(html.docDeb)
 
-  def rpm = GoTo(PimpWebHtml.docRpm)
+  def rpm = GoTo(html.docRpm)
 
-  def wp = GoTo(PimpWebHtml.docWinPhone)
+  def wp = GoTo(html.docWinPhone)
 
-  def api = Action(Redirect(PimpWebHtml.DocsUrl))
+  def api = Action(Redirect(html.DocsUrl))
 
-  def alarms = GoTo(PimpWebHtml.alarms)
+  def alarms = GoTo(html.alarms)
 
-  def forum = GoTo(PimpWebHtml.forum)
+  def forum = GoTo(html.forum)
 
-  def about = GoTo(PimpWebHtml.about)
+  def about = GoTo(html.about)
 
-  def complete = GoTo(PimpWebHtml.success)
+  def complete = GoTo(html.success)
 
-  def incomplete = GoTo(PimpWebHtml.cancel)
+  def incomplete = GoTo(html.cancel)
 
   def success = Action(Redirect(routes.Home.complete()))
 
   def cancel = Action(Redirect(routes.Home.incomplete()))
 
-  def privacyPolicy = GoTo(PimpWebHtml.privacyPolicy)
+  def privacyPolicy = GoTo(html.privacyPolicy)
 
   private def GoTo[C: Writeable](page: C) = Action(Ok(page))
 
