@@ -21,7 +21,3 @@ Seq(
   "org.scala-js" % "sbt-scalajs" % "0.6.26",
   "ch.epfl.scala" % "sbt-web-scalajs-bundler" % "0.14.0"
 ) map addSbtPlugin
-
-lazy val builder = RootProject(file("../site-builder"))
-
-dependsOn(builder)

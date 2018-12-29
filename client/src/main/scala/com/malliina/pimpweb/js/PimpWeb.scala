@@ -1,7 +1,6 @@
 package com.malliina.pimpweb.js
 
-object Pimpweb {
+object PimpWeb {
   def main(args: Array[String]): Unit = {
-    println("Scala.js")
   }
 }

@@ -1,7 +1,6 @@
 import com.malliina.sbt.filetree.DirMap
 import com.malliina.sbt.unix.LinuxKeys.{httpPort, httpsPort}
 import com.malliina.sbtplay.PlayProject
-import com.malliina.site.Site
 import com.typesafe.sbt.packager.Keys.maintainer
 import sbtbuildinfo.BuildInfoKey
 import sbtbuildinfo.BuildInfoKeys.{buildInfoKeys, buildInfoPackage}
@@ -12,12 +11,6 @@ val utilPlayDep = malliinaGroup %% "util-play" % "4.18.1"
 ThisBuild / organization := "org.musicpimp"
 ThisBuild / version := "1.11.1"
 ThisBuild / scalaVersion := "2.12.8"
-
-TaskKey[Unit]("demo") := {
-  Site.build()
-}
-
-val builder = project.in(file("site-builder"))
 
 val client = project.in(file("client"))
   .enablePlugins(ScalaJSBundlerPlugin)
@@ -41,6 +34,7 @@ val client = project.in(file("client"))
     ),
     scalaJSUseMainModuleInitializer := true,
     webpackConfigFile in fastOptJS := Some(baseDirectory.value / "webpack.dev.config.js"),
+//    webpackConfigFile in fastOptJS := Some(baseDirectory.value / "webpack.prod.config.js"),
     webpackConfigFile in fullOptJS := Some(baseDirectory.value / "webpack.prod.config.js")
   )
 
@@ -49,7 +43,8 @@ val pimpWeb = PlayProject.server("pimpweb")
   .settings(
     resolvers += Resolver.bintrayRepo("malliina", "maven"),
     scalaJSProjects := Seq(client),
-    pipelineStages in Assets := Seq(scalaJSPipeline),
+//    pipelineStages in Assets := Seq(scalaJSPipeline),
+    pipelineStages in Assets := Seq(scalaJSPipeline, digest, gzip),
     pipelineStages := Seq(digest, gzip),
     libraryDependencies ++= Seq(
       utilPlayDep,
