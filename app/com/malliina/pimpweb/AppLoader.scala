@@ -17,6 +17,8 @@ class AppComponents(context: Context) extends BuiltInComponentsFromContext(conte
 
   override lazy val httpFilters = Seq(new GzipFilter())
   val pimpAssets = new PimpAssets(assets)
-  val home = Home.s3(controllerComponents, environment.mode)
+  val mode = environment.mode
+//  val mode = Mode.Prod
+  val home = Home.s3(controllerComponents, mode)
   override val router: Router = new Routes(httpErrorHandler, home, pimpAssets)
 }

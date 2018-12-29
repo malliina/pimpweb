@@ -34,7 +34,7 @@ val client = project.in(file("client"))
     ),
     scalaJSUseMainModuleInitializer := true,
     webpackConfigFile in fastOptJS := Some(baseDirectory.value / "webpack.dev.config.js"),
-//    webpackConfigFile in fastOptJS := Some(baseDirectory.value / "webpack.prod.config.js"),
+//    scalaJSStage in Global := FullOptStage,
     webpackConfigFile in fullOptJS := Some(baseDirectory.value / "webpack.prod.config.js")
   )
 
@@ -43,9 +43,11 @@ val pimpWeb = PlayProject.server("pimpweb")
   .settings(
     resolvers += Resolver.bintrayRepo("malliina", "maven"),
     scalaJSProjects := Seq(client),
+    scalaJSStage := FullOptStage,
     pipelineStages in Assets := Seq(scalaJSPipeline),
 //    pipelineStages in Assets := Seq(scalaJSPipeline, digest, gzip),
     pipelineStages := Seq(digest, gzip),
+//    compile in Compile := ((compile in Compile) dependsOn scalaJSPipeline).value,
     libraryDependencies ++= Seq(
       utilPlayDep,
       utilPlayDep % Test classifier "tests",
