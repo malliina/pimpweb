@@ -18,6 +18,11 @@ val client = project.in(file("client"))
     version in webpack := "4.28.2",
     version in startWebpackDevServer := "3.1.4",
     emitSourceMaps := false,
+    npmDependencies in Compile ++= Seq(
+      "jquery" -> "3.3.1",
+      "popper.js" -> "1.14.6",
+      "bootstrap" -> "4.2.1"
+    ),
     npmDevDependencies in Compile ++= Seq(
       "webpack-merge" -> "4.1.5",
       "style-loader" -> "0.23.1",
