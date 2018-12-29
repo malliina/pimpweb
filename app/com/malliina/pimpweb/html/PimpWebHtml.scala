@@ -15,9 +15,13 @@ import play.api.Mode
 object PimpWebHtml {
   val subHeader = "No ads. No social media. Pure music."
 
-  def apply(mode: Mode): PimpWebHtml =
-    if (mode == Mode.Prod) apply(Seq("styles.css", "fonts.css"), Seq("client-opt-bundle.js"))
-    else apply(Nil, Seq("styles-bundle.js", "fonts-bundle.js", "client-fastopt-bundle.js"))
+  def apply(mode: Mode): PimpWebHtml = {
+    val isProd = mode == Mode.Prod
+    val name = "client"
+    val opt = if (isProd) "opt" else "fastopt"
+    val appJs = Seq(s"$name-$opt-library.js", s"$name-$opt-loader.js", s"$name-$opt.js")
+    apply(Seq("styles.css", "fonts.css"), appJs)
+  }
 
   def apply(css: Seq[String], js: Seq[String]): PimpWebHtml = new PimpWebHtml(css, js)
 }

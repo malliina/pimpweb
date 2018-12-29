@@ -40,7 +40,8 @@ val client = project.in(file("client"))
     scalaJSUseMainModuleInitializer := true,
     webpackConfigFile in fastOptJS := Some(baseDirectory.value / "webpack.dev.config.js"),
 //    scalaJSStage in Global := FullOptStage,
-    webpackConfigFile in fullOptJS := Some(baseDirectory.value / "webpack.prod.config.js")
+    webpackConfigFile in fullOptJS := Some(baseDirectory.value / "webpack.prod.config.js"),
+    webpackBundlingMode := BundlingMode.LibraryOnly()
   )
 
 val pimpWeb = PlayProject.server("pimpweb")
