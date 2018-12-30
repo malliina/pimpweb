@@ -53,7 +53,6 @@ val client = project.in(file("client"))
   )
 
 val runSite = taskKey[Unit]("Runs the generator")
-val prepareDeploy = taskKey[Unit]("Build a prod version")
 val deploy = taskKey[Unit]("Deploys the website")
 
 val generator = project.in(file("generator"))
@@ -74,15 +73,18 @@ val generator = project.in(file("generator"))
       val js = assets.scripts.mkString(" ")
       run in Compile toTask s" build ${distDir.value} $css $js"
     }.value,
-    prepareDeploy := Def.taskDyn {
+    clean in Static := {
+      AssetHelper.deleteDirectory(distDir.value.toPath)
+    },
+    stage in Static := Def.taskDyn {
       val files = webpack.in(client, Compile, fullOptJS in client).value
       val assets = AssetHelper.assetGroup(files, Seq("styles", "fonts"))
       val css = assets.styles.mkString(" ")
       val js = assets.scripts.mkString(" ")
-      run in Compile toTask s" prepare ${distDir.value} $css $js"
-    }.value,
+      (run in Compile toTask s" prepare ${distDir.value} $css $js").map(_ => distDir.value)
+    }.dependsOn(clean in Static).value,
     deploy := Def.taskDyn { run in Compile toTask s" deploy ${distDir.value}" }.value,
-    deploy := deploy.dependsOn(prepareDeploy).value
+    deploy := deploy.dependsOn(stage in Static).value
   )
 
 val pimpWeb = PlayProject.server("pimpweb")

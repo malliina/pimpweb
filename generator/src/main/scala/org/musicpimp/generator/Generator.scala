@@ -2,7 +2,7 @@ package org.musicpimp.generator
 
 import java.nio.file.{Files, Paths}
 
-import org.musicpimp.generator.gcp.GCP
+import org.musicpimp.generator.gcp.{FileUtils, GCP}
 import org.slf4j.LoggerFactory
 
 import scala.collection.JavaConverters._
@@ -26,6 +26,8 @@ object Generator {
       routes
     )
     command match {
+      case "clean" =>
+        FileUtils.deleteDirectory(target)
       case "build" =>
         Site.build(spec)
       case "prepare" =>

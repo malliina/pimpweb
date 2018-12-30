@@ -36,6 +36,12 @@ class StorageClient(val client: Storage) {
 object GCP {
   def apply(dist: Path) = new GCP(dist, "beta.musicpimp.org", StorageClient())
 
+
+
+  def resolve(dir: Path) = Files.walk(dir).iterator().asScala.toList
+}
+
+object FileUtils {
   // https://stackoverflow.com/a/27917071
   def deleteDirectory(dir: Path): Path = {
     if (Files.exists(dir)) {
@@ -54,8 +60,6 @@ object GCP {
       dir
     }
   }
-
-  def resolve(dir: Path) = Files.walk(dir).iterator().asScala.toList
 }
 
 /** Deploys files in `dist` to `bucketName` in Google Cloud Storage.
