@@ -1,13 +1,25 @@
 package org.musicpimp.generator
 
 import com.malliina.html.{Bootstrap, Tags}
-import org.musicpimp.generator.PimpWebHtml.subHeader
+import org.musicpimp.generator.PimpWebHtml.{Page, PageConf, subHeader, PageTitle}
 import scalatags.Text.all._
 
 object PimpWebHtml {
+  val PageTitle = "MusicPimp"
   val subHeader = "No ads. No social media. Pure music."
 
   def apply(css: Seq[String], js: Seq[String], routes: Routes): PimpWebHtml = new PimpWebHtml(css, js, routes)
+
+  trait PageConf {
+    def title: String
+    def bodyClasses: Seq[String]
+  }
+
+  case class Page(title: String, bodyClasses: Seq[String]) extends PageConf
+
+  object Page {
+    def default = Page(PageTitle, Nil)
+  }
 }
 
 class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends Bootstrap(Tags) {
@@ -22,8 +34,6 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
   def aHref(url: String): Modifier = aHref(url, url)
 
   def aHref[V: AttrValue](url: V, text: String): Modifier = a(href := url)(text)
-
-  val PageTitle = "MusicPimp"
 
   val index = indexNoContainer("home")(
     divClass(Jumbotron)(
@@ -337,7 +347,7 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
     )
   )
 
-  def downloads(releaseDate: String, previous: Seq[String]) = indexMain("downloads")(
+  def downloads(releaseDate: String, previous: Seq[String]) = indexMain("downloads", Page(PageTitle, Seq("downloads")))(
     headerRow("Downloads"),
     fullRow(
       leadNormal("Download the server. It's free. No nonsense.")
@@ -423,11 +433,11 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
     )
   )
 
-  def indexMain(tabName: String)(inner: Modifier*) = indexNoContainer(tabName)(
+  def indexMain(tabName: String, pageConf: PageConf = Page.default)(inner: Modifier*) = indexNoContainer(tabName, pageConf)(
     divClass(s"$Container page-content")(inner)
   )
 
-  def indexNoContainer(tabName: String)(inner: Modifier*) = {
+  def indexNoContainer(tabName: String, pageConf: PageConf = Page(PageTitle, Nil))(inner: Modifier*) = {
     def navItem[V: AttrValue](thisTabName: String, tabId: String, url: V, iconicName: String) = {
       val activeClass = if (tabId == tabName) " active" else ""
       li(`class` := s"nav-item$activeClass")(
@@ -435,7 +445,7 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
       )
     }
 
-    plainMain(PageTitle)(
+    plainMain(pageConf)(
       navbar.basic(
         homeRoute.index,
         "MusicPimp",
@@ -456,21 +466,21 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
     )
   }
 
-  def plainMain(pageTitle: String)(inner: Modifier*) = TagPage(
+  def plainMain(page: PageConf)(inner: Modifier*) = TagPage(
     html(lang := "en")(
       head(
-        titleTag(pageTitle),
+        titleTag(page.title),
         meta(name := "viewport", content := "width=device-width, initial-scale=1.0"),
         link(rel := "shortcut icon", href := images.pimp_28_png),
         cssLinkHashed("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css", "sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"),
         cssLink("https://use.fontawesome.com/releases/v5.0.6/css/all.css"),
         css.map { path => cssLink(path) },
-        jsHashed("https://code.jquery.com/jquery-3.2.1.slim.min.js", "sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"),
-        jsHashed("https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js", "sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"),
-        jsHashed("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js", "sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"),
+//        jsHashed("https://code.jquery.com/jquery-3.2.1.slim.min.js", "sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"),
+//        jsHashed("https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js", "sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"),
+//        jsHashed("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js", "sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"),
         js.map { path => jsScript(path, defer) }
       ),
-      body(data("spy") := "scroll", dataTarget := "#sidenav", data("offset") := "200")(
+      body(`class` := page.bodyClasses.mkString(" "), data("spy") := "scroll", dataTarget := "#sidenav", data("offset") := "200")(
         inner,
         footer(`class` := "footer")(
           divClass(Container)(

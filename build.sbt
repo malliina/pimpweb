@@ -1,9 +1,3 @@
-import com.malliina.sbt.filetree.DirMap
-import com.malliina.sbt.unix.LinuxKeys.{httpPort, httpsPort}
-import com.malliina.sbtplay.PlayProject
-import com.typesafe.sbt.packager.Keys.maintainer
-import sbtbuildinfo.BuildInfoKey
-import sbtbuildinfo.BuildInfoKeys.{buildInfoKeys, buildInfoPackage}
 import sbt._
 
 val malliinaGroup = "com.malliina"
@@ -18,12 +12,24 @@ ThisBuild / Static / target := baseDirectory.value / "dist"
 val distDir = settingKey[File]("Static site target directory")
 ThisBuild / distDir := baseDirectory.value / "dist"
 
-val client = project.in(file("client"))
+lazy val client: Project = project.in(file("client"))
   .enablePlugins(ScalaJSBundlerPlugin)
   .settings(
+    libraryDependencies ++= Seq(
+      "org.scala-js" %%% "scalajs-dom" % "0.9.2",
+      "com.lihaoyi" %%% "scalatags" % "0.6.7",
+      "com.malliina" %%% "util-html" % "4.18.1",
+      "com.typesafe.play" %%% "play-json" % "2.6.11"
+    ),
     version in webpack := "4.28.2",
     version in startWebpackDevServer := "3.1.4",
+//    webpackBundlingMode := BundlingMode.LibraryOnly(),
     emitSourceMaps := false,
+    npmDependencies in Compile ++= Seq(
+      "jquery" -> "3.3.1",
+      "popper.js" -> "1.14.6",
+      "bootstrap" -> "4.2.1"
+    ),
     npmDevDependencies in Compile ++= Seq(
       "webpack-merge" -> "4.1.5",
       "style-loader" -> "0.23.1",
@@ -44,18 +50,21 @@ val client = project.in(file("client"))
     webpackMonitoredDirectories += distDir.value,
     includeFilter in webpackMonitoredFiles := "*.*",
     webpackDevServerExtraArgs ++= Seq("--content-base", distDir.value.getAbsolutePath),
-    (webpack in(Compile, fastOptJS)) := {
+    (webpack in(Compile, fastOptJS)) := Def.taskDyn {
       val log = streams.value.log
       log.info("Running webpack...")
       val files = (webpack in(Compile, fastOptJS)).value
-      files
-    }
+      val assets = AssetHelper.assetGroup(files, Seq("styles", "fonts"))
+      val css = assets.styles.mkString(" ")
+      val js = assets.scripts.mkString(" ")
+      run.in(generator, Compile).toTask(s" build ${distDir.value} $css $js").map(_ => files)
+    }.value
   )
 
 val runSite = taskKey[Unit]("Runs the generator")
 val deploy = taskKey[Unit]("Deploys the website")
 
-val generator = project.in(file("generator"))
+lazy val generator: Project = project.in(file("generator"))
   .settings(
     libraryDependencies ++= Seq(
       "com.lihaoyi" %% "scalatags" % "0.6.7",
@@ -85,42 +94,4 @@ val generator = project.in(file("generator"))
     }.dependsOn(clean in Static).value,
     deploy := Def.taskDyn { run in Compile toTask s" deploy ${distDir.value}" }.value,
     deploy := deploy.dependsOn(stage in Static).value
-  )
-
-val pimpWeb = PlayProject.server("pimpweb")
-  .enablePlugins(FileTreePlugin, WebScalaJSBundlerPlugin)
-  .settings(
-    resolvers += Resolver.bintrayRepo("malliina", "maven"),
-    scalaJSProjects := Seq(client),
-    pipelineStages in Assets := Seq(scalaJSPipeline),
-    pipelineStages := Seq(digest, gzip),
-    libraryDependencies ++= Seq(
-      utilPlayDep,
-      utilPlayDep % Test classifier "tests",
-      malliinaGroup %% "logstreams-client" % "1.3.0",
-      malliinaGroup %% "util-base" % "1.7.1",
-      "com.amazonaws" % "aws-java-sdk-s3" % "1.11.475",
-      filters,
-      "org.seleniumhq.selenium" % "selenium-java" % "3.14.0" % Test
-    ),
-    buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion),
-    buildInfoPackage := "com.malliina.pimpweb",
-    httpPort in Linux := Option("8462"),
-    httpsPort in Linux := Option("disabled"),
-    maintainer := "Michael Skogberg <malliina123@gmail.com>",
-    fileTreeSources ++= (resourceDirectories in Assets).value.map { dir =>
-      val dest =
-        if (dir.name == "main") "com.malliina.pimpweb.css.LessAssets"
-        else "com.malliina.pimpweb.assets.AppAssets"
-      DirMap(dir, dest, "controllers.PimpAssets.at")
-    },
-    // WTF?
-    linuxPackageSymlinks := linuxPackageSymlinks.value.filterNot(_.link == "/usr/bin/starter"),
-    javaOptions in Universal ++= {
-      val linuxName = (name in Linux).value
-      Seq(
-        s"-Dconfig.file=/etc/$linuxName/production.conf",
-        s"-Dlogger.file=/etc/$linuxName/logback-prod.xml"
-      )
-    }
   )
