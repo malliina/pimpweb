@@ -114,7 +114,7 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
         ),
         divClass(col.md.four)(
           h2("Develop"),
-          leadNormal("Build cool apps using the JSON ", a(href := homeRoute.docsApi)("API"), ".")
+          leadNormal("Build cool apps using the JSON ", a(href := DocsUrl)("API"), ".")
         )
       )
     )

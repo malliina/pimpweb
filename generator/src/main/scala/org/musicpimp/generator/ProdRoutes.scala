@@ -11,8 +11,6 @@ trait Routes {
 
   def docsAlarms: Route
 
-  def docsApi: Route
-
   def docsDeb: Route
 
   def docsMac: Route
@@ -55,7 +53,6 @@ class ProdRoutes(isProd: Boolean) extends Routes {
   val about = build("about")
   val docs = build("docs")
   val docsAlarms = build("docs/alarms")
-  val docsApi = build("docs/api")
   val docsDeb = build("docs/deb")
   val docsMac = build("docs/mac")
   val docsRpm = build("docs/rpm")
