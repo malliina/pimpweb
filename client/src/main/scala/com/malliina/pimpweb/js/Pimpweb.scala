@@ -5,7 +5,7 @@ import org.scalajs.dom
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
 
-object Pimpweb {
+object PimpWeb {
   def main(args: Array[String]): Unit = {
     val isDownloadsPage = dom.document.body.classList.contains("downloads")
     if (isDownloadsPage) {
