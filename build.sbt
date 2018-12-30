@@ -79,7 +79,7 @@ val generator = project.in(file("generator"))
       val assets = AssetHelper.assetGroup(files, Seq("styles", "fonts"))
       val css = assets.styles.mkString(" ")
       val js = assets.scripts.mkString(" ")
-      run in Compile toTask s" build ${distDir.value} $css $js"
+      run in Compile toTask s" prepare ${distDir.value} $css $js"
     }.value,
     deploy := Def.taskDyn { run in Compile toTask s" deploy ${distDir.value}" }.value,
     deploy := deploy.dependsOn(prepareDeploy).value

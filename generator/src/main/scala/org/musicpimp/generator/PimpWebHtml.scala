@@ -388,7 +388,18 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
     )
   )
 
-  val notFound = plainMain(PageTitle)(headerRow("Page not found."))
+  val notFound = indexMain(PageTitle)(
+    rowColumn(col.md.twelve)(
+      divClass(s"$PageHeader text-center")(
+        h1("Page not found")
+      )
+    ),
+    row(
+      divClass(s"${col.md.twelve} text-center")(
+        "Return to the ", a(href := homeRoute.index)("frontpage"), "."
+      )
+    )
+  )
 
   val about = indexMain("about")(
     headerRow("About"),

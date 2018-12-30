@@ -5,19 +5,31 @@ import scalatags.Text.all._
 import scalatags.text.Builder
 
 trait Routes {
-  val about: Route
-  val docs: Route
-  val docsAlarms: Route
-  val docsApi: Route
-  val docsDeb: Route
-  val docsMac: Route
-  val docsRpm: Route
-  val downloads: Route
-  val forum: Route
-  val index: Route
-  val legalPrivacy: Route
-  val wp: Route
-  val notFound: Route
+  def about: Route
+
+  def docs: Route
+
+  def docsAlarms: Route
+
+  def docsApi: Route
+
+  def docsDeb: Route
+
+  def docsMac: Route
+
+  def docsRpm: Route
+
+  def downloads: Route
+
+  def forum: Route
+
+  def index: Route
+
+  def legalPrivacy: Route
+
+  def wp: Route
+
+  def notFound: Route
 }
 
 case class Route(name: String, file: String, uri: String)
@@ -26,27 +38,33 @@ object Route {
 
   def apply(name: String): Route = Route(name, s"$name.html", s"/$name")
 
+  def local(name: String): Route = Route(name, s"$name.html", s"$name.html")
+
   implicit val v: AttrValue[Route] =
     (t: Builder, a: Text.Attr, v: Route) =>
       t.setAttr(a.name, Builder.GenericAttrValueSource(v.uri))
 }
 
-object SiteRoutes extends SiteRoutes
+object ProdRoutes extends ProdRoutes(true)
 
-trait SiteRoutes extends Routes {
-  val about = Route("about")
-  val docs = Route("docs")
-  val docsAlarms = Route("docs/alarms")
-  val docsApi = Route("docs/api")
-  val docsDeb = Route("docs/deb")
-  val docsMac = Route("docs/mac")
-  val docsRpm = Route("docs/rpm")
-  val downloads = Route("downloads")
-  val forum = Route("forum")
-  val index = Route("index", "index.html", "/")
-  val legalPrivacy = Route("legal/privacy")
-  val notFound = Route("notfound")
-  val wp = Route("docs/wp")
+object DevRoutes extends ProdRoutes(false)
+
+class ProdRoutes(isProd: Boolean) extends Routes {
+  def build(name: String) = if (isProd) Route(name) else Route.local(name)
+
+  val about = build("about")
+  val docs = build("docs")
+  val docsAlarms = build("docs/alarms")
+  val docsApi = build("docs/api")
+  val docsDeb = build("docs/deb")
+  val docsMac = build("docs/mac")
+  val docsRpm = build("docs/rpm")
+  val downloads = build("downloads")
+  val forum = build("forum")
+  val index = if (isProd) Route("index", "index.html", "/") else Route.local("index")
+  val legalPrivacy = build("legal/privacy")
+  val notFound = build("notfound")
+  val wp = build("docs/wp")
 }
 
 object Images extends Images
