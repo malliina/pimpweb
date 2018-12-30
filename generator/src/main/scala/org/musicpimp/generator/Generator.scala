@@ -16,11 +16,15 @@ object Generator {
       FileMapping(img, s"img/${img.getFileName.toString}")
     }
     val command = args(0)
-    val routes = if (command == "build") DevRoutes else ProdRoutes
+    val isLocal = command == "build"
+    val routes = if (isLocal) DevRoutes else ProdRoutes
     val target = Paths.get(args(1))
+    val cssFiles = args.drop(2).filter(_.endsWith(".css"))
+    val jsFiles = args.drop(2).filter(_.endsWith(".js"))
+
     val spec = SiteSpec(
-      css = args.filter(_.endsWith(".css")),
-      js = args.filter(_.endsWith(".js")),
+      css = if (isLocal) cssFiles else cssFiles.map(f => s"/$f"),
+      js = if (isLocal) jsFiles else jsFiles.map(f => s"/$f"),
       assets = imgs,
       targetDirectory = target,
       routes
