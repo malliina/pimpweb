@@ -1,3 +1,5 @@
+package org.musicpimp.generator
+
 object PrivacyPolicy {
   val text = "This privacy policy describes how your information is used and stored when you use this app."
   val purpose = "The purpose of using and storing your information is to enable app functionality and optimize your user experience."

@@ -1,3 +1,5 @@
+package org.musicpimp.generator
+
 object Home {
 
   case class Download(fileName: String) {

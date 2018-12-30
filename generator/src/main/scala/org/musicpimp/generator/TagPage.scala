@@ -1,3 +1,5 @@
+package org.musicpimp.generator
+
 import java.nio.charset.StandardCharsets
 import java.nio.file.{Files, Path, StandardOpenOption}
 

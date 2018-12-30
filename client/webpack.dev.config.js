@@ -1,5 +1,6 @@
 const ScalaJS = require('./scalajs.webpack.config');
 const Merge = require('webpack-merge');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 const rootDir = path.resolve(__dirname, '../../../..');
 const cssDir = path.resolve(rootDir, 'css');
@@ -15,27 +16,33 @@ const WebApp = Merge(ScalaJS, {
       {
         test: /\.css$/,
         use: [
-          'style-loader',
+          MiniCssExtractPlugin.loader,
           { loader: 'css-loader', options: { importLoaders: 1 } },
           'postcss-loader'
         ]
       },
       {
         test: /\.(png|woff|woff2|eot|ttf|svg)$/,
-        loader: 'url-loader?limit=100000'
+        use: [
+          { loader: 'url-loader', options: { limit: 100000 } }
+        ],
       },
       {
         test: /\.less$/,
         use: [
-          'style-loader',
+          MiniCssExtractPlugin.loader,
           { loader: 'css-loader', options: { importLoaders: 1 } },
           'less-loader'
         ]
       }
     ]
   },
+  output: {
+    filename: '[name].[chunkhash].js',
+    path: path.resolve(rootDir, '../dist')
+  },
   plugins: [
-
+    new MiniCssExtractPlugin({filename: '[name].[contenthash].css'})
   ]
 });
 

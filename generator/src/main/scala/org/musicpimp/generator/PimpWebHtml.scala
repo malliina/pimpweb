@@ -1,21 +1,22 @@
+package org.musicpimp.generator
+
 import com.malliina.html.{Bootstrap, Tags}
+import org.musicpimp.generator.PimpWebHtml.subHeader
 import scalatags.Text.all._
-import PimpWebHtml.subHeader
 
 object PimpWebHtml {
   val subHeader = "No ads. No social media. Pure music."
 
-  def apply(css: Seq[String], js: Seq[String]): PimpWebHtml = new PimpWebHtml(css, js)
+  def apply(css: Seq[String], js: Seq[String], routes: Routes): PimpWebHtml = new PimpWebHtml(css, js, routes)
 }
 
-class PimpWebHtml(css: Seq[String], js: Seq[String]) extends Bootstrap(Tags) {
-  val DocsUrl = "https://docs.musicpimp.org"
-
+class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends Bootstrap(Tags) {
   import tags._
+
+  val DocsUrl = "https://docs.musicpimp.org"
 
   val titleTag = tag("title")
   val defer = attr("defer").empty
-  val homeRoute = Routes
   val images = Images
 
   def aHref(url: String): Modifier = aHref(url, url)
@@ -23,6 +24,88 @@ class PimpWebHtml(css: Seq[String], js: Seq[String]) extends Bootstrap(Tags) {
   def aHref[V: AttrValue](url: V, text: String): Modifier = a(href := url)(text)
 
   val PageTitle = "MusicPimp"
+
+  val index = indexNoContainer("home")(
+    divClass(Jumbotron)(
+      divClass(s"$Container hero-section")(
+        h1("MusicPimp"),
+        h2(subHeader),
+        leadNormal("Control your music libraries with your phone. Play the music on your phone, home stereo system, in your car or stream it anywhere.")
+      )
+    ),
+    divClass("container")(
+      fullRow(
+        h2(`class` := "centered", "Get it")
+      ),
+      row(
+        div(`class` := "col-md-8 col-md-offset-2")(
+          ol(`class` := "pimp-list get-it")(
+            li(
+              aHref(homeRoute.downloads, "Download"),
+              " the free server for ", aHref(Home.msiDownload.url, "Windows"),
+              ", ", aHref(Home.debDownload.url, "Linux"),
+              " or ", aHref(Home.dmgDownload.url, "MacOS"), ".",
+            ),
+            li(
+              "Get the ", strong("MusicPimp"),
+              " apps for ", aHref(Home.iosAppUri, "iOS"),
+              ", ", aHref(Home.androidAppUri, "Android"),
+              " and ", aHref(Home.amazonAppUri, "Kindle Fire"),
+              ", ", aHref(Home.winPhoneAppUri, "Windows Phone"),
+              " and ", aHref(Home.winStoreAppUri, "Windows 8"), "."
+            )
+          )
+        ),
+      ),
+      row(
+        div4(
+          a(href := Home.iosAppUri, `class` := s"$VisibleLg $VisibleMd $PullRight badge-ios")
+        ),
+        div4(
+          badgeFromAssets(Home.androidAppUri, "Android app on Google Play", images.en_app_rgb_wo_60_png),
+          badgeFromAssets(Home.amazonAppUri, "Android app on Amazon AppStore", images.amazon_apps_kindle_us_gray_png)
+        ),
+        div4(
+          badgeFromAssets(Home.winPhoneAppUri, "Windows Phone app", images.badge_winphone2_png, PullLeft),
+          badgeFromAssets(Home.winStoreAppUri, "Windows Store app", images.badge_winstore_png, PullLeft)
+        )
+      ),
+      hr,
+      row(
+        divClass(s"${col.md.four} ${col.md.offset.two}")(
+          h2("MusicBeamer"),
+          leadNormal(
+            "Stream tracks from your music library to any PC using ",
+            strong("MusicBeamer"), " at ", a(href := "https://beam.musicpimp.org")("beam.musicpimp.org"), "."
+          )
+        ),
+        div4(
+          img(src := images.upload_alt_blue_128_png, `class` := s"$PullLeft $VisibleLg $VisibleMd")
+        )
+      ),
+      hr,
+      row(
+        feature("PC to Phone", images.pc_phone_png, "Make the music library on a PC available for playback on your phone."),
+        feature("Phone to PC", images.phone_pc_png, "Play the music stored on your phone on speakers connected to a PC."),
+        feature("PC to Phone to PC", images.pc_phone_pc_png, "Play music from your PC on another PC. Control playback with your phone.")
+      ),
+      hr,
+      row(
+        divClass(s"${col.md.four} ${col.md.offset.two}")(
+          h2("Getting Started"),
+          leadNormal(
+            "Get started in minutes. Check the ",
+            a(href := homeRoute.docs)("documentation"),
+            " for instructions."
+          )
+        ),
+        divClass(col.md.four)(
+          h2("Develop"),
+          leadNormal("Build cool apps using the JSON ", a(href := homeRoute.docsApi)("API"), ".")
+        )
+      )
+    )
+  )
 
   val linuxReqs: Modifier = Seq(
     h2("System Requirements"),
@@ -143,10 +226,10 @@ class PimpWebHtml(css: Seq[String], js: Seq[String]) extends Bootstrap(Tags) {
       headerRow("Documentation", col.md.six),
       rowColumn(col.md.six)(
         div(`class` := s"${btn.group} last-box", attr("src-toggle") := "buttons-radio")(
-          docLink("Windows", homeRoute.docs, "win"),
-          docLink("MacOS", homeRoute.docsMac, "mac"),
-          docLink("DEB", homeRoute.docsDeb, "deb"),
-          docLink("RPM", homeRoute.docsRpm, "rpm")
+          docLink("Windows", homeRoute.docs.uri, "win"),
+          docLink("MacOS", homeRoute.docsMac.uri, "mac"),
+          docLink("DEB", homeRoute.docsDeb.uri, "deb"),
+          docLink("RPM", homeRoute.docsRpm.uri, "rpm")
         )
       ),
       rowColumn(col.md.eight)(inner)
@@ -254,17 +337,6 @@ class PimpWebHtml(css: Seq[String], js: Seq[String]) extends Bootstrap(Tags) {
     )
   )
 
-  val success = indexMain("success")(
-    leadNormal(iconic("thumb-up"), " Thanks for your donation!"),
-    p("Should you have any questions, don't hesitate to contact ", aHref("mailto:info@musicpimp.org", "info@musicpimp.org")),
-    p("Best regards! Michael Skogberg, MusicPimp")
-  )
-
-  val cancel = indexMain("cancel")(
-    leadNormal(iconic("fire"), " The donation procedure was prematurely canceled. ", iconic("fire")),
-    p("Should you have any questions, don't hesitate to contact ", aHref("mailto:info@musicpimp.org", "info@musicpimp.org"))
-  )
-
   def downloads(releaseDate: String, previous: Seq[String]) = indexMain("downloads")(
     headerRow("Downloads"),
     fullRow(
@@ -300,88 +372,6 @@ class PimpWebHtml(css: Seq[String], js: Seq[String]) extends Bootstrap(Tags) {
         previous map { prev =>
           liHref(Home.downloadBaseUrl + prev)(prev)
         }
-      )
-    )
-  )
-
-  val index = indexNoContainer("home")(
-    divClass(Jumbotron)(
-      divClass(s"$Container hero-section")(
-        h1("MusicPimp"),
-        h2(subHeader),
-        leadNormal("Control your music libraries with your phone. Play the music on your phone, home stereo system, in your car or stream it anywhere.")
-      )
-    ),
-    divClass("container")(
-      fullRow(
-        h2(`class` := "centered", "Get it")
-      ),
-      row(
-        div(`class` := "col-md-8 col-md-offset-2")(
-          ol(`class` := "pimp-list get-it")(
-            li(
-              aHref(homeRoute.downloads, "Download"),
-              " the free server for ", aHref(Home.msiDownload.url, "Windows"),
-              ", ", aHref(Home.debDownload.url, "Linux"),
-              " or ", aHref(Home.dmgDownload.url, "MacOS"), ".",
-            ),
-            li(
-              "Get the ", strong("MusicPimp"),
-              " apps for ", aHref(Home.iosAppUri, "iOS"),
-              ", ", aHref(Home.androidAppUri, "Android"),
-              " and ", aHref(Home.amazonAppUri, "Kindle Fire"),
-              ", ", aHref(Home.winPhoneAppUri, "Windows Phone"),
-              " and ", aHref(Home.winStoreAppUri, "Windows 8"), "."
-            )
-          )
-        ),
-      ),
-      row(
-        div4(
-          a(href := Home.iosAppUri, `class` := s"$VisibleLg $VisibleMd $PullRight badge-ios")
-        ),
-        div4(
-          badgeFromAssets(Home.androidAppUri, "Android app on Google Play", images.en_app_rgb_wo_60_png),
-          badgeFromAssets(Home.amazonAppUri, "Android app on Amazon AppStore", images.amazon_apps_kindle_us_gray_png)
-        ),
-        div4(
-          badgeFromAssets(Home.winPhoneAppUri, "Windows Phone app", images.badge_winphone2_png, PullLeft),
-          badgeFromAssets(Home.winStoreAppUri, "Windows Store app", images.badge_winstore_png, PullLeft)
-        )
-      ),
-      hr,
-      row(
-        divClass(s"${col.md.four} ${col.md.offset.two}")(
-          h2("MusicBeamer"),
-          leadNormal(
-            "Stream tracks from your music library to any PC using ",
-            strong("MusicBeamer"), " at ", a(href := "https://beam.musicpimp.org")("https://beam.musicpimp.org"), "."
-          )
-        ),
-        div4(
-          img(src := images.upload_alt_blue_128_png, `class` := s"$PullLeft $VisibleLg $VisibleMd")
-        )
-      ),
-      hr,
-      row(
-        feature("PC to Phone", images.pc_phone_png, "Make the music library on a PC available for playback on your phone."),
-        feature("Phone to PC", images.phone_pc_png, "Play the music stored on your phone on speakers connected to a PC."),
-        feature("PC to Phone to PC", images.pc_phone_pc_png, "Play music from your PC on another PC. Control playback with your phone.")
-      ),
-      hr,
-      row(
-        divClass(s"${col.md.four} ${col.md.offset.two}")(
-          h2("Getting Started"),
-          leadNormal(
-            "Get started in minutes. Check the ",
-            a(href := homeRoute.docs)("documentation"),
-            " for instructions."
-          )
-        ),
-        divClass(col.md.four)(
-          h2("Develop"),
-          leadNormal("Build cool apps using the JSON ", a(href := homeRoute.docsApi)("API"), ".")
-        )
       )
     )
   )
@@ -427,7 +417,7 @@ class PimpWebHtml(css: Seq[String], js: Seq[String]) extends Bootstrap(Tags) {
   )
 
   def indexNoContainer(tabName: String)(inner: Modifier*) = {
-    def navItem(thisTabName: String, tabId: String, url: String, iconicName: String) = {
+    def navItem[V: AttrValue](thisTabName: String, tabId: String, url: V, iconicName: String) = {
       val activeClass = if (tabId == tabName) " active" else ""
       li(`class` := s"nav-item$activeClass")(
         a(href := url, `class` := "nav-link")(iconic(iconicName), s" $thisTabName")
