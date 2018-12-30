@@ -2,64 +2,18 @@ package org.musicpimp.generator.gcp
 
 import java.io._
 import java.nio.file._
-import java.nio.file.attribute.BasicFileAttributes
 import java.util.zip.GZIPOutputStream
 
-import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.storage.Acl.{Role, User}
-import com.google.cloud.storage.{Acl, BlobInfo, Storage, StorageOptions}
+import com.google.cloud.storage.{Acl, BlobInfo}
 import org.musicpimp.PathUtils
 import org.slf4j.LoggerFactory
 
-import scala.collection.JavaConverters.{asJavaCollectionConverter, asScalaIteratorConverter, mutableSeqAsJavaListConverter}
+import scala.collection.JavaConverters.{asScalaIteratorConverter, mutableSeqAsJavaListConverter}
 import scala.collection.mutable
-
-object StorageClient {
-  val credentialsFile = Paths.get(sys.props("user.home")).resolve(".gcp").resolve("credentials.json")
-
-  def apply(): StorageClient =
-    new StorageClient(StorageOptions.newBuilder().setCredentials(credentials).build().getService)
-
-  def credentials = {
-    val file = sys.env.get("GOOGLE_APPLICATION_CREDENTIALS").map(Paths.get(_)).getOrElse(credentialsFile)
-    GoogleCredentials.fromStream(new FileInputStream(file.toFile))
-      .createScoped(Seq("https://www.googleapis.com/auth/cloud-platform").asJavaCollection)
-  }
-}
-
-class StorageClient(val client: Storage) {
-  def bucket(name: String) = client.get(name)
-
-  def upload(blob: BlobInfo, file: Path) = client.create(blob, Files.readAllBytes(file))
-}
 
 object GCP {
   def apply(dist: Path) = new GCP(dist, "beta.musicpimp.org", StorageClient())
-
-
-
-  def resolve(dir: Path) = Files.walk(dir).iterator().asScala.toList
-}
-
-object FileUtils {
-  // https://stackoverflow.com/a/27917071
-  def deleteDirectory(dir: Path): Path = {
-    if (Files.exists(dir)) {
-      Files.walkFileTree(dir, new SimpleFileVisitor[Path] {
-        override def visitFile(file: Path, attrs: BasicFileAttributes): FileVisitResult = {
-          Files.delete(file)
-          FileVisitResult.CONTINUE
-        }
-
-        override def postVisitDirectory(dir: Path, exc: IOException): FileVisitResult = {
-          Files.delete(dir)
-          FileVisitResult.CONTINUE
-        }
-      })
-    } else {
-      dir
-    }
-  }
 }
 
 /** Deploys files in `dist` to `bucketName` in Google Cloud Storage.
