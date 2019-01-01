@@ -13,7 +13,7 @@ import scala.collection.JavaConverters.{asScalaIteratorConverter, mutableSeqAsJa
 import scala.collection.mutable
 
 object GCP {
-  def apply(dist: Path) = new GCP(dist, "www.musicpimp.org", StorageClient())
+  def apply(dist: Path, bucketName: String) = new GCP(dist, bucketName, StorageClient())
 }
 
 /** Deploys files in `dist` to `bucketName` in Google Cloud Storage.

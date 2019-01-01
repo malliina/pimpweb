@@ -1,4 +1,11 @@
+import java.nio.file.Path
+
+import com.lihaoyi.workbench.Api
+import com.lihaoyi.workbench.WorkbenchBasePlugin.server
 import sbt._
+import autowire._
+
+import scala.concurrent.ExecutionContext
 
 val malliinaGroup = "com.malliina"
 val utilPlayDep = malliinaGroup %% "util-play" % "4.18.1"
@@ -7,13 +14,13 @@ val Static = config("static")
 ThisBuild / organization := "org.musicpimp"
 ThisBuild / version := "1.11.1"
 ThisBuild / scalaVersion := "2.12.8"
-ThisBuild / Static / target := baseDirectory.value / "dist"
+ThisBuild / Static / target := target.value / "dist"
 
-val distDir = settingKey[File]("Static site target directory")
-ThisBuild / distDir := baseDirectory.value / "dist"
+val distDirectory = settingKey[Path]("Static site target directory")
+ThisBuild / distDirectory := (target.value / "dist").toPath
 
-lazy val client: Project = project.in(file("client"))
-  .enablePlugins(ScalaJSBundlerPlugin)
+val client: Project = project.in(file("client"))
+  .enablePlugins(ScalaJSBundlerPlugin, WorkbenchBasePlugin)
   .settings(
     libraryDependencies ++= Seq(
       "org.scala-js" %%% "scalajs-dom" % "0.9.2",
@@ -47,25 +54,17 @@ lazy val client: Project = project.in(file("client"))
     scalaJSUseMainModuleInitializer := true,
     webpackConfigFile in fastOptJS := Some(baseDirectory.value / "webpack.dev.config.js"),
     webpackConfigFile in fullOptJS := Some(baseDirectory.value / "webpack.prod.config.js"),
-    webpackMonitoredDirectories += distDir.value,
-    includeFilter in webpackMonitoredFiles := "*.*",
-    webpackDevServerExtraArgs ++= Seq("--content-base", distDir.value.getAbsolutePath),
-    (webpack in(Compile, fastOptJS)) := Def.taskDyn {
-      val log = streams.value.log
-      log.info("Running webpack...")
-      val files = (webpack in(Compile, fastOptJS)).value
-      val assets = AssetHelper.assetGroup(files, Seq("styles", "fonts"))
-      val css = assets.styles.mkString(" ")
-      val js = assets.scripts.mkString(" ")
-      run.in(generator, Compile).toTask(s" build ${distDir.value} $css $js").map(_ => files)
-    }.value
+    workbenchDefaultRootObject := Some((s"${distDirectory.value}/index.html", s"${distDirectory.value}/"))
   )
 
-val runSite = taskKey[Unit]("Runs the generator")
+val bucket = settingKey[String]("Bucket name")
+val build = taskKey[Unit]("Builds the website")
+val prepare = taskKey[Unit]("Builds the site for deployment")
 val deploy = taskKey[Unit]("Deploys the website")
 
-lazy val generator: Project = project.in(file("generator"))
+val generator: Project = project.in(file("generator"))
   .settings(
+    exportJars := false,
     libraryDependencies ++= Seq(
       "com.lihaoyi" %% "scalatags" % "0.6.7",
       "com.malliina" %% "util-html" % "4.18.1",
@@ -74,24 +73,25 @@ lazy val generator: Project = project.in(file("generator"))
       "ch.qos.logback" % "logback-core" % "1.2.3",
       "com.google.cloud" % "google-cloud-storage" % "1.55.0"
     ),
-    // https://github.com/sbt/sbt/issues/2975#issuecomment-358709526
-    runSite := Def.taskDyn {
-      val files = webpack.in(client, Compile, fastOptJS in client).value
-      val assets = AssetHelper.assetGroup(files, Seq("styles", "fonts"))
-      val css = assets.styles.mkString(" ")
-      val js = assets.scripts.mkString(" ")
-      run in Compile toTask s" build ${distDir.value} $css $js"
-    }.value,
-    clean in Static := {
-      AssetHelper.deleteDirectory(distDir.value.toPath)
+    watchSources := watchSources.value ++ (watchSources in client).value,
+    refreshBrowsers := {
+      implicit val ec: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
+      (server in client).value.Wire[Api].reload().call()
     },
-    stage in Static := Def.taskDyn {
+    refreshBrowsers := refreshBrowsers.triggeredBy(build).value,
+    bucket := "www.musicpimp.org",
+    // https://github.com/sbt/sbt/issues/2975#issuecomment-358709526
+    build := Def.taskDyn {
+      val files = webpack.in(client, Compile, fastOptJS in client).value
+      val assets = AssetHelper.prepareRelative(files, Seq("styles", "fonts"), distDirectory.value)
+      run in Compile toTask s" build ${distDirectory.value} $assets"
+    }.value,
+    clean in Static := AssetHelper.deleteDirectory(distDirectory.value),
+    prepare := Def.taskDyn {
       val files = webpack.in(client, Compile, fullOptJS in client).value
-      val assets = AssetHelper.assetGroup(files, Seq("styles", "fonts"))
-      val css = assets.styles.mkString(" ")
-      val js = assets.scripts.mkString(" ")
-      (run in Compile toTask s" prepare ${distDir.value} $css $js").map(_ => distDir.value)
+      val assets = AssetHelper.prepareRelative(files, Seq("styles", "fonts"), distDirectory.value)
+      run in Compile toTask s" prepare ${distDirectory.value} $assets"
     }.dependsOn(clean in Static).value,
-    deploy := Def.taskDyn { run in Compile toTask s" deploy ${distDir.value}" }.value,
-    deploy := deploy.dependsOn(stage in Static).value
+    deploy := Def.taskDyn { run in Compile toTask s" deploy ${distDirectory.value} ${bucket.value}" }
+      .dependsOn(prepare).value,
   )

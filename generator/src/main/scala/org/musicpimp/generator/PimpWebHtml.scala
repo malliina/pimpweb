@@ -120,6 +120,8 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
     )
   )
 
+  val ping = index
+
   val linuxReqs: Modifier = Seq(
     h2("System Requirements"),
     ul(

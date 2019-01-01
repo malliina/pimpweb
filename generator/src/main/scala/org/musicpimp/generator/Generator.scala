@@ -19,12 +19,10 @@ object Generator {
     val isLocal = command == "build"
     val routes = if (isLocal) DevRoutes else ProdRoutes
     val target = Paths.get(args(1))
-    val cssFiles = args.drop(2).filter(_.endsWith(".css"))
-    val jsFiles = args.drop(2).filter(_.endsWith(".js"))
-
+    val files = args.drop(2)
     val spec = SiteSpec(
-      css = if (isLocal) cssFiles else cssFiles.map(f => s"/$f"),
-      js = if (isLocal) jsFiles else jsFiles.map(f => s"/$f"),
+      css = files.filter(_.endsWith(".css")),
+      js = files.filter(_.endsWith(".js")),
       assets = imgs,
       targetDirectory = target,
       routes
@@ -37,7 +35,7 @@ object Generator {
       case "prepare" =>
         Site.build(spec)
       case "deploy" =>
-        val gcp = GCP(target)
+        val gcp = GCP(target, bucketName = args(2))
         log.info(s"Deploying ${spec.targetDirectory} to ${gcp.bucketName}...")
         gcp.deploy(routes.index.name, routes.notFound.name)
       case other =>

@@ -14,7 +14,7 @@ const WebApp = Merge(ScalaJS, {
   module: {
     rules: [
       {
-        test: /\.css$/,
+        test: /\.p?css$/,
         use: [
           MiniCssExtractPlugin.loader,
           { loader: 'css-loader', options: { importLoaders: 1 } },
@@ -39,7 +39,6 @@ const WebApp = Merge(ScalaJS, {
   },
   output: {
     filename: '[name].[chunkhash].js',
-    path: path.resolve(rootDir, '../dist')
   },
   plugins: [
     new MiniCssExtractPlugin({filename: '[name].[contenthash].css'})

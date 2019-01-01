@@ -32,7 +32,8 @@ object Site {
       html.docWinPhone -> routes.wp,
       html.alarms -> routes.docsAlarms,
       html.privacyPolicy -> routes.legalPrivacy,
-      html.downloads(Home.releaseDate, Nil) -> routes.downloads
+      html.downloads(Home.releaseDate, Nil) -> routes.downloads,
+      html.ping -> routes.ping
     ).mapValues { v => v.file }
 
     BuiltSite(

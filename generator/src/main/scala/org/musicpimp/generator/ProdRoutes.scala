@@ -25,9 +25,11 @@ trait Routes {
 
   def legalPrivacy: Route
 
-  def wp: Route
-
   def notFound: Route
+
+  def ping: Route
+
+  def wp: Route
 }
 
 case class Route(name: String, file: String, uri: String)
@@ -61,6 +63,7 @@ class ProdRoutes(isProd: Boolean) extends Routes {
   val index = if (isProd) Route("index", "index.html", "/") else Route.local("index")
   val legalPrivacy = build("legal/privacy")
   val notFound = build("notfound")
+  val ping = build("ping")
   val wp = build("docs/wp")
 }
 

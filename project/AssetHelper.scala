@@ -5,11 +5,31 @@ import java.nio.file.{FileVisitResult, Files, Path, SimpleFileVisitor}
 import sbt._
 import scalajsbundler.sbtplugin.ScalaJSBundlerPlugin.autoImport.{BundlerFileType, BundlerFileTypeAttr}
 
-case class AssetGroup(scripts: Seq[String], styles: Seq[String])
+case class AssetGroup(scripts: Seq[File], styles: Seq[File])
 
 object AssetHelper {
 
-  def assetGroup(files: Seq[sbt.Attributed[sbt.File]], excludePrefixes: Seq[String]): AssetGroup = {
+  def prepareRelative(files: Seq[Attributed[File]], excludePrefixes: Seq[String], base: Path) = {
+    val eligible = assetGroup(files, excludePrefixes)
+    val assetsDir = base.toFile / "assets"
+
+    def copyAndRelativize(subDir: String, file: File) = {
+      val dest = assetsDir / subDir / file.name
+      if (file.getAbsolutePath != dest.getAbsolutePath)
+        IO.copyFile(file, dest)
+      base.relativize(dest.toPath)
+    }
+
+    val relative =
+      eligible.styles.map(copyAndRelativize("css", _)) ++
+        eligible.scripts.map(copyAndRelativize("js", _))
+    relative.map { p =>
+      val r = p.toFile.getPath
+      if (r.startsWith("/")) r else s"/$r"
+    }.mkString(" ")
+  }
+
+  def assetGroup(files: Seq[Attributed[File]], excludePrefixes: Seq[String]): AssetGroup = {
     def filesOf(fileType: BundlerFileType) = files.filter(_.metadata.get(BundlerFileTypeAttr).contains(fileType))
 
     // Orders library scripts before app scripts
@@ -19,8 +39,8 @@ object AssetHelper {
     val loaders = filesOf(BundlerFileType.Loader)
     val scripts = (apps ++ loaders ++ assets ++ libraries).distinct.reverse.map(_.data)
       .filter(f => f.ext == "js" && !excludePrefixes.exists(e => f.name.startsWith(e)))
-      .map(_.name).distinct
-    val styles = files.map(_.data).filter(_.ext == "css").map(_.name)
+      .distinct
+    val styles = files.map(_.data).filter(_.ext == "css")
     AssetGroup(scripts, styles)
   }
 
