@@ -1,27 +1,23 @@
 import java.nio.file.Path
 
+import autowire._
 import com.lihaoyi.workbench.Api
 import com.lihaoyi.workbench.WorkbenchBasePlugin.server
 import sbt._
-import autowire._
 import sbtcrossproject.CrossPlugin.autoImport.crossProject
 
 import scala.concurrent.ExecutionContext
 
 val malliinaGroup = "com.malliina"
 val utilPlayDep = malliinaGroup %% "util-play" % "4.18.1"
-val Static = config("static")
-
-ThisBuild / Static / target := target.value / "dist"
-
-val distDirectory = settingKey[Path]("Static site target directory")
-ThisBuild / distDirectory := (target.value / "dist").toPath
 
 val commonSettings = Seq(
   organization := "org.musicpimp",
   version := "0.0.1",
   scalaVersion := "2.12.8"
 )
+val siteTarget = settingKey[Path]("Content target")
+ThisBuild / siteTarget := (target.value / "dist").toPath
 
 val shared = crossProject(JSPlatform, JVMPlatform)
   .settings(commonSettings)
@@ -66,19 +62,17 @@ val client: Project = project.in(file("client"))
     scalaJSUseMainModuleInitializer := true,
     webpackConfigFile in fastOptJS := Some(baseDirectory.value / "webpack.dev.config.js"),
     webpackConfigFile in fullOptJS := Some(baseDirectory.value / "webpack.prod.config.js"),
-    workbenchDefaultRootObject := Some((s"${distDirectory.value}/index.html", s"${distDirectory.value}/"))
+    workbenchDefaultRootObject := {
+      val dist = siteTarget.value
+      Some((s"$dist/index.html", s"$dist/"))
+    }
   )
 
-val bucket = settingKey[String]("Bucket name")
-val build = taskKey[Unit]("Builds the website")
-val prepare = taskKey[Unit]("Builds the site for deployment")
-val deploy = taskKey[Unit]("Deploys the website")
-
 val generator: Project = project.in(file("generator"))
+  .enablePlugins(ContentPlugin)
   .dependsOn(sharedJvm)
   .settings(commonSettings)
   .settings(
-    exportJars := false,
     libraryDependencies ++= Seq(
       "com.lihaoyi" %% "scalatags" % "0.6.7",
       "com.malliina" %% "util-html" % "4.18.1",
@@ -87,25 +81,12 @@ val generator: Project = project.in(file("generator"))
       "ch.qos.logback" % "logback-core" % "1.2.3",
       "com.google.cloud" % "google-cloud-storage" % "1.55.0"
     ),
-    watchSources := watchSources.value ++ (watchSources in client).value,
+    jsProject := client,
     refreshBrowsers := {
       implicit val ec: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
       (server in client).value.Wire[Api].reload().call()
     },
     refreshBrowsers := refreshBrowsers.triggeredBy(build).value,
     bucket := "www.musicpimp.org",
-    // https://github.com/sbt/sbt/issues/2975#issuecomment-358709526
-    build := Def.taskDyn {
-      val files = webpack.in(client, Compile, fastOptJS in client).value
-      val assets = AssetHelper.prepareRelative(files, Seq("styles", "fonts"), distDirectory.value)
-      run in Compile toTask s" build ${distDirectory.value} $assets"
-    }.value,
-    clean in Static := AssetHelper.deleteDirectory(distDirectory.value),
-    prepare := Def.taskDyn {
-      val files = webpack.in(client, Compile, fullOptJS in client).value
-      val assets = AssetHelper.prepareRelative(files, Seq("styles", "fonts"), distDirectory.value)
-      run in Compile toTask s" prepare ${distDirectory.value} $assets"
-    }.dependsOn(clean in Static).value,
-    deploy := Def.taskDyn { run in Compile toTask s" deploy ${distDirectory.value} ${bucket.value}" }
-      .dependsOn(prepare).value,
+    distDirectory := siteTarget.value
   )
