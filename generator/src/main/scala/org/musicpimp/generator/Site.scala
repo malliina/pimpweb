@@ -21,23 +21,22 @@ object Site {
     }
 
     val fileMap = Map(
-      html.index -> routes.index,
-      html.notFound -> routes.notFound,
-      html.about -> routes.about,
-      html.forum -> routes.forum,
-      html.docWin -> routes.docs,
-      html.docDeb -> routes.docsDeb,
-      html.docRpm -> routes.docsRpm,
-      html.docMac -> routes.docsMac,
-      html.docWinPhone -> routes.wp,
-      html.alarms -> routes.docsAlarms,
-      html.privacyPolicy -> routes.legalPrivacy,
-      html.downloads(Home.releaseDate, Nil) -> routes.downloads,
-      html.ping -> routes.ping
-    ).mapValues { v => v.file }
-
+      routes.index -> html.index,
+      routes.notFound -> html.notFound,
+      routes.about -> html.about,
+      routes.forum -> html.forum,
+      routes.docs -> html.docWin,
+      routes.docsDeb -> html.docDeb,
+      routes.docsRpm -> html.docRpm,
+      routes.docsMac -> html.docMac,
+      routes.wp -> html.docWinPhone,
+      routes.docsAlarms -> html.alarms,
+      routes.legalPrivacy -> html.privacyPolicy,
+      routes.downloads -> html.downloads(Home.releaseDate, Nil),
+      routes.ping -> html.ping
+    )
     BuiltSite(
-      fileMap.map { case (page, dest) => write(page, target.resolve(dest)) }.toList
+      fileMap.map { case (route, page) => write(page, target.resolve(route.file)) }.toList
     )
   }
 

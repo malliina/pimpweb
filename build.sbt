@@ -4,6 +4,7 @@ import com.lihaoyi.workbench.Api
 import com.lihaoyi.workbench.WorkbenchBasePlugin.server
 import sbt._
 import autowire._
+import sbtcrossproject.CrossPlugin.autoImport.crossProject
 
 import scala.concurrent.ExecutionContext
 
@@ -11,16 +12,27 @@ val malliinaGroup = "com.malliina"
 val utilPlayDep = malliinaGroup %% "util-play" % "4.18.1"
 val Static = config("static")
 
-ThisBuild / organization := "org.musicpimp"
-ThisBuild / version := "1.11.1"
-ThisBuild / scalaVersion := "2.12.8"
 ThisBuild / Static / target := target.value / "dist"
 
 val distDirectory = settingKey[Path]("Static site target directory")
 ThisBuild / distDirectory := (target.value / "dist").toPath
 
+val commonSettings = Seq(
+  organization := "org.musicpimp",
+  version := "0.0.1",
+  scalaVersion := "2.12.8"
+)
+
+val shared = crossProject(JSPlatform, JVMPlatform)
+  .settings(commonSettings)
+
+val sharedJs = shared.js
+val sharedJvm = shared.jvm
+
 val client: Project = project.in(file("client"))
   .enablePlugins(ScalaJSBundlerPlugin, WorkbenchBasePlugin)
+  .dependsOn(sharedJs)
+  .settings(commonSettings)
   .settings(
     libraryDependencies ++= Seq(
       "org.scala-js" %%% "scalajs-dom" % "0.9.2",
@@ -63,6 +75,8 @@ val prepare = taskKey[Unit]("Builds the site for deployment")
 val deploy = taskKey[Unit]("Deploys the website")
 
 val generator: Project = project.in(file("generator"))
+  .dependsOn(sharedJvm)
+  .settings(commonSettings)
   .settings(
     exportJars := false,
     libraryDependencies ++= Seq(

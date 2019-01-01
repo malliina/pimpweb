@@ -1,7 +1,8 @@
 package org.musicpimp.generator
 
 import com.malliina.html.{Bootstrap, Tags}
-import org.musicpimp.generator.PimpWebHtml.{Page, PageConf, subHeader, PageTitle}
+import com.malliina.pimpweb.{Download, FrontKeys}
+import org.musicpimp.generator.PimpWebHtml.{Page, PageConf, PageTitle, subHeader}
 import scalatags.Text.all._
 
 object PimpWebHtml {
@@ -383,7 +384,7 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
     ),
     rowColumn(col.md.six)(
       h3("Previous versions"),
-      ul(`class` := "pimp-list")(
+      ul(`class` := "pimp-list", id := FrontKeys.PimpListId)(
         previous map { prev =>
           liHref(Home.downloadBaseUrl + prev)(prev)
         }
@@ -510,6 +511,6 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
 
   def leadNormal(content: Modifier*) = p(`class` := s"$Lead font-weight-normal")(content)
 
-  def downloadLink(dl: Home.Download, btnName: String = "primary") =
+  def downloadLink(dl: Download, btnName: String = "primary") =
     p(a(`class` := s"${btn.Btn} ${btn.Btn}-$btnName", href := dl.url)(iconic("data-transfer-download"), s" ${dl.fileName}"))
 }

@@ -1,22 +1,9 @@
 package org.musicpimp.generator
 
-object Home {
+import com.malliina.pimpweb.DownloadVersions
 
-  case class Download(fileName: String) {
-    val url = toUrl(fileName)
-  }
-
+object Home extends DownloadVersions {
   val downloadBaseUrl = "https://files.musicpimp.org/"
-  val winVersion = "3.10.0"
-  val debVersion = "3.10.7"
-  val rpmVersion = "3.6.3"
-  val macVersion = "3.10.0"
-  val msiDownload = Download(s"musicpimp-$winVersion.msi")
-  val debDownload = Download(s"musicpimp_${debVersion}_all.deb")
-  val rpmDownload = Download(s"musicpimp-$rpmVersion-1.noarch.rpm")
-  val dmgDownload = Download(s"musicpimp-$macVersion.dmg")
-  val releaseDate = "28 October 2017"
-  val latestDownloads = Seq(msiDownload, debDownload, rpmDownload, dmgDownload)
   val linuxConfFile = "/etc/musicpimp/application.ini"
   val windowsConfFile = """C:\Program Files (x86)\MusicPimp\musicpimp.conf"""
   val winPhoneAppUri = "https://www.windowsphone.com/s?appid=84cd9030-4a5c-4a03-b0ab-4d59c2fa7d42"
@@ -29,6 +16,4 @@ object Home {
   val serverPlaybackResource = "/playback"
   val webPlayWebSocketResource = "/ws/webplay"
   val webPlayPostResource = "/webplay"
-
-  private def toUrl(fileName: String) = downloadBaseUrl + fileName
 }

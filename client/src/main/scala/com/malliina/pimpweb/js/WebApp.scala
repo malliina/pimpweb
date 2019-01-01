@@ -9,7 +9,7 @@ object WebApp {
   def main(args: Array[String]): Unit = {
     val isDownloadsPage = dom.document.body.classList.contains("downloads")
     if (isDownloadsPage) {
-      new Downloads
+      new DownloadsPage
     }
     touchBundles()
   }
