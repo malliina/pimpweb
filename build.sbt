@@ -97,7 +97,8 @@ val pimpweb = project.in(file("."))
   .aggregate(client, generator)
   .settings(
     build := build.in(generator).value,
-    releaseProcess := releaseProcess.in(generator).value
+    releaseProcess := releaseProcess.in(generator).value,
+    publishTo := Option(Resolver.defaultLocal)
   )
 
 def gitHash: String =
