@@ -6,8 +6,8 @@ import com.malliina.pimpweb.{Downloads, FrontKeys}
 import org.scalajs.dom
 import org.scalajs.dom.ext.Ajax
 import org.scalajs.dom.raw.Element
-import play.api.libs.json.Json
 import scalatags.JsDom.all._
+import scalatags.generic
 
 import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
 
@@ -23,16 +23,17 @@ class DownloadsPage extends com.malliina.html.Bootstrap(JSTags) {
   val downloadBaseUrl = FullUrl.https(bucketName, "")
 
   Ajax.get(listObjectsUrl).map { xhr =>
-    Json.parse(xhr.responseText).validate[ListObjectsResponse].asEither.fold(
-      err => println(err),
-      res => appendHistorical(res.items.map(_.name)
+    xhr.validate[ListObjectsResponse].map { res =>
+      appendHistorical(res.items.map(_.name)
         .filterNot(name => Downloads.latestDownloads.exists(_.fileName == name))
         .sorted
         .reverse)
-    )
+    }.left.foreach { err =>
+      println(err)
+    }
   }
 
-  implicit val v = new AttrValue[FullUrl] {
+  implicit val v: generic.AttrValue[Element, FullUrl] = new AttrValue[FullUrl] {
     override def apply(t: Element, a: Attr, v: FullUrl): Unit = t.setAttribute(a.name, v.url)
   }
 

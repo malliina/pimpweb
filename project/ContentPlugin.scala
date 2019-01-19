@@ -7,13 +7,22 @@ import sbt.Keys._
 import sbt.{AutoPlugin, _}
 import scalajsbundler.sbtplugin.ScalaJSBundlerPlugin.autoImport.{BundlerFileType, BundlerFileTypeAttr, webpack}
 
-/** Define the JS project in key `jsProject`.
+/** Controls builds and deployments of a static website.
   *
+  * The `build` task uses webpack to build assets, then provides built assets as program
+  * arguments to the run task. The run task will run the main method of the SBT project
+  * this plugin is enabled for. You may trigger HTML generation from the main method
+  * with the given arguments.
+  *
+  * Similarly, use `prepare` to prep prod assets, and `deploy` to deploy the website to
+  * `bucket`.
+  *
+  * Specify the JS project, used to build assets, in key `jsProject`.
   */
 object ContentPlugin extends AutoPlugin {
 
   object autoImport {
-    val bucket = settingKey[String]("Bucket name")
+    val bucket = settingKey[String]("Target bucket name of website in Google Cloud Storage")
     val distDirectory = settingKey[Path]("Static site target directory")
     val build = taskKey[Unit]("Builds the website")
     val prepare = taskKey[Unit]("Builds the site for deployment")
@@ -44,6 +53,7 @@ object ContentPlugin extends AutoPlugin {
       val assets = prepareRelative(fastWebpack.value, distDirectory.value)
       run in Compile toTask s" build ${distDirectory.value} /workbench.js $assets"
     }.value,
+    publishLocal in Static := build.value,
     clean in Static := deleteDirectory(distDirectory.value),
     prepare := Def.taskDyn {
       val assets = prepareRelative(fullWebpack.value, distDirectory.value)
@@ -51,7 +61,9 @@ object ContentPlugin extends AutoPlugin {
     }.dependsOn(clean in Static).value,
     deploy := Def.taskDyn {
       run in Compile toTask s" deploy ${distDirectory.value} ${bucket.value}"
-    }.dependsOn(prepare).value
+    }.dependsOn(prepare).value,
+    publish in Static := deploy.value,
+    publish := deploy.value
   )
 
   case class AssetGroup(scripts: Seq[File], styles: Seq[File])

@@ -8,9 +8,6 @@ import sbtcrossproject.CrossPlugin.autoImport.crossProject
 
 import scala.concurrent.ExecutionContext
 
-val malliinaGroup = "com.malliina"
-val utilPlayDep = malliinaGroup %% "util-play" % "4.18.1"
-
 val commonSettings = Seq(
   organization := "org.musicpimp",
   version := "0.0.1",
@@ -38,7 +35,7 @@ val client: Project = project.in(file("client"))
     ),
     version in webpack := "4.28.2",
     version in startWebpackDevServer := "3.1.4",
-//    webpackBundlingMode := BundlingMode.LibraryOnly(),
+    //    webpackBundlingMode := BundlingMode.LibraryOnly(),
     emitSourceMaps := false,
     npmDependencies in Compile ++= Seq(
       "jquery" -> "3.3.1",
@@ -89,4 +86,10 @@ val generator: Project = project.in(file("generator"))
     refreshBrowsers := refreshBrowsers.triggeredBy(build).value,
     bucket := "www.musicpimp.org",
     distDirectory := siteTarget.value
+  )
+
+val pimpweb = project.in(file("."))
+  .aggregate(client, generator)
+  .settings(
+    releaseProcess := releaseProcess.in(generator).value
   )
