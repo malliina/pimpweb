@@ -30,6 +30,8 @@ trait Routes {
   def ping: Route
 
   def wp: Route
+
+  def build: Route
 }
 
 case class Route(name: String, file: String, uri: String)
@@ -39,6 +41,8 @@ object Route {
   def apply(name: String): Route = Route(name, s"$name.html", s"/$name")
 
   def local(name: String): Route = Route(name, s"$name.html", s"$name.html")
+
+  def simple(name: String): Route = Route(name, name, s"/$name")
 
   implicit val v: AttrValue[Route] =
     (t: Builder, a: Text.Attr, v: Route) =>
@@ -65,6 +69,7 @@ class ProdRoutes(isProd: Boolean) extends Routes {
   val notFound = build("notfound")
   val ping = build("ping")
   val wp = build("docs/wp")
+  val build = Route.simple("build.json")
 }
 
 object Images extends Images

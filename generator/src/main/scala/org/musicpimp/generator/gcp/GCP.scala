@@ -2,17 +2,23 @@ package org.musicpimp.generator.gcp
 
 import java.io._
 import java.nio.file._
+import java.util.concurrent.Executors
 import java.util.zip.GZIPOutputStream
 
 import com.google.cloud.storage.Acl.{Role, User}
 import com.google.cloud.storage.{Acl, BlobInfo}
 import org.musicpimp.PathUtils
+import org.musicpimp.generator.gcp.GCP.executionContext
 import org.slf4j.LoggerFactory
 
 import scala.collection.JavaConverters.{asScalaIteratorConverter, mutableSeqAsJavaListConverter}
 import scala.collection.mutable
+import scala.concurrent.duration.DurationInt
+import scala.concurrent.{Await, ExecutionContext, Future}
 
 object GCP {
+  implicit val executionContext: ExecutionContext = ExecutionContext.fromExecutorService(Executors.newCachedThreadPool())
+
   def apply(dist: Path, bucketName: String) = new GCP(dist, bucketName, StorageClient())
 }
 
@@ -25,6 +31,7 @@ class GCP(dist: Path, val bucketName: String, client: StorageClient) {
   val defaultContentType = "application/octet-stream"
   val contentTypes = Map(
     "html" -> "text/html",
+    "json" -> "application/json",
     "js" -> "text/javascript",
     "css" -> "text/css",
     "jpg" -> "image/jpg",
@@ -42,6 +49,7 @@ class GCP(dist: Path, val bucketName: String, client: StorageClient) {
     "svg" -> "public, max-age=31536000",
     "html" -> "public, max-age=10"
   )
+  val htmlExt = ".html"
 
   def deployDryRun(): Unit = {
     Files.walk(dist).iterator().asScala.toList.filter(p => Files.isRegularFile(p)).foreach { p =>
@@ -53,32 +61,17 @@ class GCP(dist: Path, val bucketName: String, client: StorageClient) {
   def deploy(indexFile: String, notFoundFile: String, stripHtmlExt: Boolean = true): Unit = {
     def keyFor(relativePath: String) = {
       val chopped =
-        if (stripHtmlExt && relativePath.endsWith(".html")) relativePath.dropRight(".html".length)
+        if (stripHtmlExt && relativePath.endsWith(htmlExt)) relativePath.dropRight(htmlExt.length)
         else relativePath
       if (chopped.startsWith("/")) chopped.drop(1) else chopped
     }
 
     val files = Files.walk(dist).iterator().asScala.toList.filter(p => Files.isRegularFile(p))
-    files.foreach { file =>
-      val name = file.getFileName.toString
-      val extension = PathUtils.ext(file)
-      val contentType = contentTypes.getOrElse(extension, defaultContentType)
-      val isFingerprinted = name.count(_ == '.') > 1
-      val cacheControl =
-        if (isFingerprinted) cacheControls.getOrElse(extension, defaultCacheControl)
-        else defaultCacheControl
+    val uploads = Future.traverse(files) { file =>
       val relativePath = dist.relativize(file).toString.replace('\\', '/')
-      val blob = BlobInfo.newBuilder(bucketName, keyFor(relativePath))
-        .setContentType(contentType)
-        .setAcl(mutable.Buffer(Acl.of(User.ofAllUsers(), Role.READER)).asJava)
-        .setContentEncoding("gzip")
-        .setCacheControl(cacheControl)
-        .build()
-      val gzipFile = Files.createTempFile(name, "gz")
-      gzip(file, gzipFile)
-      client.upload(blob, gzipFile)
-      log.info(s"Uploaded '$file' to '$bucketName' as '$contentType'.")
+      upload(file, keyFor(relativePath))
     }
+    Await.result(uploads, 180.seconds)
     val indexKey = keyFor(indexFile)
     bucket.toBuilder.setIndexPage(indexKey).build().update()
     log.info(s"Set index page to '$indexKey'.")
@@ -86,6 +79,26 @@ class GCP(dist: Path, val bucketName: String, client: StorageClient) {
     bucket.toBuilder.setNotFoundPage(notFoundKey).build().update()
     log.info(s"Set 404 page to '$notFoundKey'.")
     log.info(s"Deployed to '$bucketName'.")
+  }
+
+  def upload(file: Path, key: String) = Future {
+    val name = file.getFileName.toString
+    val extension = PathUtils.ext(file)
+    val contentType = contentTypes.getOrElse(extension, defaultContentType)
+    val isFingerprinted = name.count(_ == '.') > 1
+    val cacheControl =
+      if (isFingerprinted) cacheControls.getOrElse(extension, defaultCacheControl)
+      else defaultCacheControl
+    val blob = BlobInfo.newBuilder(bucketName, key)
+      .setContentType(contentType)
+      .setAcl(mutable.Buffer(Acl.of(User.ofAllUsers(), Role.READER)).asJava)
+      .setContentEncoding("gzip")
+      .setCacheControl(cacheControl)
+      .build()
+    val gzipFile = Files.createTempFile(name, "gz")
+    gzip(file, gzipFile)
+    client.upload(blob, gzipFile)
+    log.info(s"Uploaded '$file' to '$bucketName' as '$contentType'.")
   }
 
   def gzip(src: Path, dest: Path): Unit =

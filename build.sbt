@@ -7,6 +7,8 @@ import sbt._
 import sbtcrossproject.CrossPlugin.autoImport.crossProject
 
 import scala.concurrent.ExecutionContext
+import scala.sys.process.Process
+import scala.util.Try
 
 val commonSettings = Seq(
   organization := "org.musicpimp",
@@ -65,7 +67,7 @@ val client: Project = project.in(file("client"))
   )
 
 val generator: Project = project.in(file("generator"))
-  .enablePlugins(ContentPlugin)
+  .enablePlugins(ContentPlugin, BuildInfoPlugin)
   .dependsOn(sharedJvm)
   .settings(commonSettings)
   .settings(
@@ -86,11 +88,17 @@ val generator: Project = project.in(file("generator"))
     bucket := "www.musicpimp.org",
     distDirectory := siteTarget.value,
     releasePublishArtifactsAction := publish.value,
-    publishTo := Option(Resolver.defaultLocal)
+    publishTo := Option(Resolver.defaultLocal),
+    buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, "gitHash" -> gitHash),
+    buildInfoPackage := "org.musicpimp.generator"
   )
 
 val pimpweb = project.in(file("."))
   .aggregate(client, generator)
   .settings(
+    build := build.in(generator).value,
     releaseProcess := releaseProcess.in(generator).value
   )
+
+def gitHash: String =
+  Try(Process("git rev-parse --short HEAD").lineStream.head).toOption.getOrElse("unknown")

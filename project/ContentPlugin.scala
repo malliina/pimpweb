@@ -63,7 +63,9 @@ object ContentPlugin extends AutoPlugin {
       run in Compile toTask s" deploy ${distDirectory.value} ${bucket.value}"
     }.dependsOn(prepare).value,
     publish in Static := deploy.value,
-    publish := deploy.value
+    publish := deploy.value,
+    // Hack to make the default release process work instead of fake error "Repository for publishing is not specified"
+    publishTo := Option(Resolver.defaultLocal)
   )
 
   case class AssetGroup(scripts: Seq[File], styles: Seq[File])

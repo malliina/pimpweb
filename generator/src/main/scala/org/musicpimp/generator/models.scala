@@ -2,6 +2,8 @@ package org.musicpimp.generator
 
 import java.nio.file.Path
 
+import play.api.libs.json.Json
+
 /**
   * @param from local file
   * @param to   relative to the target directory
@@ -15,6 +17,13 @@ case class SiteSpec(css: Seq[String],
                     routes: Routes)
 
 /**
-  * @param files        files written
+  * @param files files written
   */
 case class BuiltSite(files: Seq[Path])
+
+case class VersionInfo(name: String, version: String, gitHash: String)
+
+object VersionInfo {
+  implicit val json = Json.format[VersionInfo]
+  val default: VersionInfo = VersionInfo(BuildInfo.name, BuildInfo.version, BuildInfo.gitHash)
+}
