@@ -10,7 +10,6 @@ import scala.concurrent.ExecutionContext
 
 val commonSettings = Seq(
   organization := "org.musicpimp",
-  version := "0.0.1",
   scalaVersion := "2.12.8"
 )
 val siteTarget = settingKey[Path]("Content target")
