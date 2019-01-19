@@ -14,10 +14,11 @@ import org.slf4j.LoggerFactory
 import scala.collection.JavaConverters.{asScalaIteratorConverter, mutableSeqAsJavaListConverter}
 import scala.collection.mutable
 import scala.concurrent.duration.DurationInt
-import scala.concurrent.{Await, ExecutionContext, Future}
+import scala.concurrent.{Await, ExecutionContext, ExecutionContextExecutorService, Future}
 
 object GCP {
-  implicit val executionContext: ExecutionContext = ExecutionContext.fromExecutorService(Executors.newCachedThreadPool())
+  implicit val executionContext: ExecutionContextExecutorService =
+    ExecutionContext.fromExecutorService(Executors.newCachedThreadPool())
 
   def apply(dist: Path, bucketName: String) = new GCP(dist, bucketName, StorageClient())
 }
@@ -79,6 +80,7 @@ class GCP(dist: Path, val bucketName: String, client: StorageClient) {
     bucket.toBuilder.setNotFoundPage(notFoundKey).build().update()
     log.info(s"Set 404 page to '$notFoundKey'.")
     log.info(s"Deployed to '$bucketName'.")
+    executionContext.shutdown()
   }
 
   def upload(file: Path, key: String) = Future {
