@@ -85,7 +85,8 @@ val generator: Project = project.in(file("generator"))
     refreshBrowsers := refreshBrowsers.triggeredBy(build).value,
     bucket := "www.musicpimp.org",
     distDirectory := siteTarget.value,
-    releasePublishArtifactsAction := publish.value
+    releasePublishArtifactsAction := publish.value,
+    publishTo := Option(Resolver.defaultLocal)
   )
 
 val pimpweb = project.in(file("."))
