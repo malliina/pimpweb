@@ -63,7 +63,8 @@ val client: Project = project.in(file("client"))
     workbenchDefaultRootObject := {
       val dist = siteTarget.value
       Some((s"$dist/index.html", s"$dist/"))
-    }
+    },
+    skip in publish := true
   )
 
 val generator: Project = project.in(file("generator"))
@@ -98,7 +99,8 @@ val pimpweb = project.in(file("."))
   .settings(
     build := build.in(generator).value,
     releaseProcess := releaseProcess.in(generator).value,
-    publishTo := Option(Resolver.defaultLocal)
+    publishTo := Option(Resolver.defaultLocal),
+    skip in publish := true
   )
 
 def gitHash: String =
