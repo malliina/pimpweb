@@ -10,6 +10,8 @@ import scala.concurrent.ExecutionContext
 import scala.sys.process.Process
 import scala.util.Try
 
+val deployDocs = taskKey[Unit]("Deploys docs.musicpimp.org")
+
 val commonSettings = Seq(
   organization := "org.musicpimp",
   scalaVersion := "2.12.8"
@@ -88,7 +90,12 @@ val generator: Project = project.in(file("generator"))
     refreshBrowsers := refreshBrowsers.triggeredBy(build).value,
     bucket := "www.musicpimp.org",
     distDirectory := siteTarget.value,
-    releasePublishArtifactsAction := publish.value,
+    deployDocs := {
+      val exitCode = Process("mkdocs gh-deploy").run(streams.value.log).exitValue()
+      if (exitCode != 0)
+        sys.error(s"Invalid exit code for 'mkdocs gh-deploy': $exitCode.")
+    },
+    releasePublishArtifactsAction := Def.sequential(publish, deployDocs).value,
     publishTo := Option(Resolver.defaultLocal),
     buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, "gitHash" -> gitHash),
     buildInfoPackage := "org.musicpimp.generator"

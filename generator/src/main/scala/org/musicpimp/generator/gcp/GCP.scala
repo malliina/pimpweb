@@ -30,6 +30,7 @@ class GCP(dist: Path, val bucketName: String, client: StorageClient) {
   val bucket = client.bucket(bucketName)
 
   val defaultContentType = "application/octet-stream"
+  val eternalCache = "public, max-age=31536000"
   val contentTypes = Map(
     "html" -> "text/html",
     "json" -> "application/json",
@@ -43,11 +44,11 @@ class GCP(dist: Path, val bucketName: String, client: StorageClient) {
 
   val defaultCacheControl = "private, max-age=0"
   val cacheControls = Map(
-    "js" -> "public, max-age=31536000",
-    "css" -> "public, max-age=31536000",
-    "jpg" -> "public, max-age=31536000",
-    "png" -> "public, max-age=31536000",
-    "svg" -> "public, max-age=31536000",
+    "js" -> eternalCache,
+    "css" -> eternalCache,
+    "jpg" -> eternalCache,
+    "png" -> eternalCache,
+    "svg" -> eternalCache,
     "html" -> "public, max-age=10"
   )
   val htmlExt = ".html"
@@ -83,7 +84,7 @@ class GCP(dist: Path, val bucketName: String, client: StorageClient) {
     executionContext.shutdown()
   }
 
-  def upload(file: Path, key: String) = Future {
+  def upload(file: Path, key: String): Future[Path] = Future {
     val name = file.getFileName.toString
     val extension = PathUtils.ext(file)
     val contentType = contentTypes.getOrElse(extension, defaultContentType)
@@ -101,6 +102,7 @@ class GCP(dist: Path, val bucketName: String, client: StorageClient) {
     gzip(file, gzipFile)
     client.upload(blob, gzipFile)
     log.info(s"Uploaded '$file' to '$bucketName' as '$contentType'.")
+    gzipFile
   }
 
   def gzip(src: Path, dest: Path): Unit =
