@@ -1,10 +1,10 @@
 # pimpweb
 
-Repository of the MusicPimp website at www.musicpimp.org.
+Repository of the MusicPimp website at [www.musicpimp.org](https://www.musicpimp.org).
 
 ## Development
 
-Start incremental compilation with hot reload:
+To develop locally, start incremental compilation:
 
     sbt ~build
     
@@ -16,10 +16,14 @@ browser refresh automatically.
 The website consists of a main website at [www.musicpimp.org](https://www.musicpimp.org) and a documentation site at
 [docs.musicpimp.org](https://docs.musicpimp.org).
 
-To deploy the main website to [www.musicpimp.org](https://www.musicpimp.org):
+To deploy both the main website and documentation site:
 
     sbt release
-    
-To deploy documentation to [docs.musicpimp.org](https://docs.musicpimp.org)
 
-    mkdocs gh-deploy
+## Implementation Notes
+
+This is a static website with HTML and other frontend assets generated at build time. On deployment, generated files are 
+uploaded to a bucket named www.musicpimp.org in Google Cloud Storage and served via a CNAME entry in CloudFlare.
+
+The documentation site is a GitHub Pages site using the [Material theme](https://squidfunk.github.io/mkdocs-material/) 
+for [MkDocs](https://www.mkdocs.org/).
