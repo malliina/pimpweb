@@ -38,8 +38,14 @@ Sent when the playstate has changed.
 
     {"event":"playstate_changed","state":"Stopped"}
     
-The playstate is one of the following: **Playing**, **Paused**, **Stopped**, **NoMedia**. NoMedia 
-implies that the player has no track set.
+The playstate may be one of the following among others: 
+
+- Playing
+- Paused
+- Stopped
+- NoMedia
+
+NoMedia implies that the player has no track set.
 
 #### Playlist modified
 
