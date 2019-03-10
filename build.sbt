@@ -10,6 +10,8 @@ import scala.concurrent.ExecutionContext
 import scala.sys.process.Process
 import scala.util.Try
 
+val utilHtmlVersion = "5.0.0"
+
 val deployDocs = taskKey[Unit]("Deploys docs.musicpimp.org")
 
 val commonSettings = Seq(
@@ -33,8 +35,8 @@ val client: Project = project.in(file("client"))
     libraryDependencies ++= Seq(
       "org.scala-js" %%% "scalajs-dom" % "0.9.2",
       "com.lihaoyi" %%% "scalatags" % "0.6.7",
-      "com.malliina" %%% "util-html" % "4.18.1",
-      "com.typesafe.play" %%% "play-json" % "2.6.11"
+      "com.malliina" %%% "util-html" % utilHtmlVersion,
+      "com.typesafe.play" %%% "play-json" % "2.7.1"
     ),
     version in webpack := "4.28.2",
     version in startWebpackDevServer := "3.1.4",
@@ -76,7 +78,7 @@ val generator: Project = project.in(file("generator"))
   .settings(
     libraryDependencies ++= Seq(
       "com.lihaoyi" %% "scalatags" % "0.6.7",
-      "com.malliina" %% "util-html" % "4.18.1",
+      "com.malliina" %% "util-html" % utilHtmlVersion,
       "org.slf4j" % "slf4j-api" % "1.7.25",
       "ch.qos.logback" % "logback-classic" % "1.2.3",
       "ch.qos.logback" % "logback-core" % "1.2.3",

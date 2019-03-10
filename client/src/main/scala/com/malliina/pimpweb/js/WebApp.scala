@@ -15,6 +15,7 @@ object WebApp {
   }
 
   def touchBundles(): Unit = {
+
     /** To bundle the JS libraries (defined in key npmDependencies in build.sbt) into the built js file,
       * a facade with @JSImport like below is needed for each library. Also, they must be referenced in code.
       *

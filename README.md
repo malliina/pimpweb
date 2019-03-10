@@ -8,8 +8,9 @@ To develop locally, start incremental compilation:
 
     sbt ~build
     
-Then navigate to [http://localhost:12345](http://localhost:12345). Code changes in JavaScript or HTML should trigger a 
-browser refresh automatically.
+Then navigate to [http://localhost:12345](http://localhost:12345).
+
+Code changes in JavaScript or HTML should trigger a browser refresh automatically.
 
 ## Deployments
 

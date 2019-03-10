@@ -28,8 +28,6 @@ object Site {
       routes.forum -> html.forum,
       routes.docs -> html.docWin,
       routes.docsDeb -> html.docDeb,
-      routes.docsRpm -> html.docRpm,
-      routes.docsMac -> html.docMac,
       routes.wp -> html.docWinPhone,
       routes.docsAlarms -> html.alarms,
       routes.legalPrivacy -> html.privacyPolicy,

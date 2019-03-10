@@ -11,14 +11,10 @@ object Downloads extends DownloadVersions {
 }
 
 trait DownloadVersions {
-  val winVersion = "3.10.0"
-  val debVersion = "3.10.7"
-  val rpmVersion = "3.6.3"
-  val macVersion = "3.10.0"
+  val winVersion = "4.20.0"
+  val debVersion = "4.20.2"
   val msiDownload = Download(s"musicpimp-$winVersion.msi")
   val debDownload = Download(s"musicpimp_${debVersion}_all.deb")
-  val rpmDownload = Download(s"musicpimp-$rpmVersion-1.noarch.rpm")
-  val dmgDownload = Download(s"musicpimp-$macVersion.dmg")
-  val releaseDate = "28 October 2017"
-  val latestDownloads = Seq(msiDownload, debDownload, rpmDownload, dmgDownload)
+  val releaseDate = "10 March 2019"
+  val latestDownloads = Seq(msiDownload, debDownload)
 }
