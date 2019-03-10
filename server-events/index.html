@@ -430,8 +430,14 @@ given as an integer in seconds. Sent at least once per second during playback:</
 <p>Sent when the playstate has changed.</p>
 <pre><code>{"event":"playstate_changed","state":"Stopped"}
 </code></pre>
-<p>The playstate is one of the following: <strong>Playing</strong>, <strong>Paused</strong>, <strong>Stopped</strong>, <strong>NoMedia</strong>. NoMedia 
-implies that the player has no track set.</p>
+<p>The playstate may be one of the following among others: </p>
+<ul>
+<li>Playing</li>
+<li>Paused</li>
+<li>Stopped</li>
+<li>NoMedia</li>
+</ul>
+<p>NoMedia implies that the player has no track set.</p>
 <h4 id="playlist-modified">Playlist modified</h4>
 <p>The tracks in the playlist have been modified. A separate event exists for when the 
 playlist index has changed; see the next item.</p>
@@ -526,7 +532,7 @@ playlist index has changed; see the next item.</p>
       <div class="md-footer-copyright">
         
           <div class="md-footer-copyright__highlight">
-            Copyright &copy; 2018 <a href="https://github.com/malliina">Michael Skogberg</a>
+            Copyright &copy; 2019 <a href="https://github.com/malliina">Michael Skogberg</a>
           </div>
         
         powered by
