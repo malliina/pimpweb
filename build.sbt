@@ -64,6 +64,14 @@ val client: Project = project.in(file("client"))
     scalaJSUseMainModuleInitializer := true,
     webpackConfigFile in fastOptJS := Some(baseDirectory.value / "webpack.dev.config.js"),
     webpackConfigFile in fullOptJS := Some(baseDirectory.value / "webpack.prod.config.js"),
+    // Enables hot-reload of CSS
+    webpackMonitoredDirectories ++= Seq(
+      baseDirectory.value / "css"
+    ),
+    includeFilter in webpackMonitoredFiles := "*.less",
+    watchSources ++= Seq(
+      WatchSource(baseDirectory.value / "css", "*.less", HiddenFileFilter)
+    ),
     workbenchDefaultRootObject := {
       val dist = siteTarget.value
       Some((s"$dist/index.html", s"$dist/"))

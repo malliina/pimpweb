@@ -150,6 +150,7 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
     )
   )
 
+
   val debInstall: Modifier = Seq(
     headerRow("DEB"),
     fullRow(

@@ -41,6 +41,7 @@ object ContentPlugin extends AutoPlugin {
   override def projectSettings: Seq[Setting[_]] = Seq(
     exportJars := false,
     distDirectory := (target.value / "dist").toPath,
+    // Triggers compilation on code changes in either project
     watchSources := watchSources.value ++ Def.taskDyn(watchSources in clientProject.value).value,
     fastWebpack := Def.taskDyn {
       webpack.in(clientProject.value, Compile, fastOptJS in clientProject.value)
