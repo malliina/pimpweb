@@ -150,8 +150,6 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
     )
   )
 
-  val rpmUninstall = p(code("rpm -e musicpimp"))
-
   val debInstall: Modifier = Seq(
     headerRow("DEB"),
     fullRow(
@@ -274,9 +272,7 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
       rowColumn(col.md.six)(
         div(`class` := s"${btn.group} last-box", attr("src-toggle") := "buttons-radio")(
           docLink("Windows", homeRoute.docs.uri, "win"),
-          docLink("MacOS", homeRoute.docsMac.uri, "mac"),
           docLink("DEB", homeRoute.docsDeb.uri, "deb"),
-          docLink("RPM", homeRoute.docsRpm.uri, "rpm")
         )
       ),
       rowColumn(col.md.eight)(inner)

@@ -13,10 +13,6 @@ trait Routes {
 
   def docsDeb: Route
 
-  def docsMac: Route
-
-  def docsRpm: Route
-
   def downloads: Route
 
   def forum: Route
@@ -45,8 +41,7 @@ object Route {
   def simple(name: String): Route = Route(name, name, s"/$name")
 
   implicit val v: AttrValue[Route] =
-    (t: Builder, a: Text.Attr, v: Route) =>
-      t.setAttr(a.name, Builder.GenericAttrValueSource(v.uri))
+    (t: Builder, a: Text.Attr, v: Route) => t.setAttr(a.name, Builder.GenericAttrValueSource(v.uri))
 }
 
 object ProdRoutes extends ProdRoutes(true)
@@ -60,8 +55,6 @@ class ProdRoutes(isProd: Boolean) extends Routes {
   val docs = build("docs")
   val docsAlarms = build("docs/alarms")
   val docsDeb = build("docs/deb")
-  val docsMac = build("docs/mac")
-  val docsRpm = build("docs/rpm")
   val downloads = build("downloads")
   val forum = build("forum")
   val index = if (isProd) Route("index", "index.html", "/") else Route.local("index")
