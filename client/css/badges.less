@@ -1,0 +1,39 @@
+.badge {
+  margin-right: 20px;
+  background: none;
+}
+
+.badge-image {
+  display: block;
+  max-width: 248px;
+  height: 60px;
+  width: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/** webpack plugin url-loader will base64-encode and inline the image URLs */
+.badge-ios {
+  display: inline-block;
+  overflow: hidden;
+  background: url("../img/badge_appstore-lrg.svg") no-repeat center;
+  background-size: contain;
+  width: 248px;
+  height: 60px;
+}
+
+.badge-google {
+  background: url("../img/en_app_rgb_wo_60.png") no-repeat center;
+}
+
+.badge-amazon {
+  background: url("../img/amazon-apps-kindle-us-gray.png") no-repeat center;
+}
+
+.badge-winphone {
+  background: url("../img/badge_winphone2.png") no-repeat center;
+}
+
+.badge-winstore {
+  background: url("../img/badge_winstore.png") no-repeat center;
+}

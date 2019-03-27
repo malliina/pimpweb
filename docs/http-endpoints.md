@@ -2,7 +2,7 @@ HTTP requests are made using URLs like
 
     http://my_server_ip:8456/playback
     
-### Library <div id="library" class="sub-area"></a>
+### Library
 
 Library folders contain audio tracks and subfolders. Use the following methods 
 to browse and retrieve items from the library.
@@ -187,7 +187,7 @@ starting from the most recently played track, along with a timestamp
         ]
     }
 
-### Player <div id="player" class="sub-area"></a>
+### Player
 
 Control playback on the MusicPimp server using WebSockets or HTTP POST calls. 
 
@@ -325,7 +325,7 @@ of a track in its library to a remote destination.
 The credentials will be put into the **Authorization** header of the upload request
 as if the destination required HTTP Basic authentication.
 
-### Playlist <div id="playlist" class="sub-area"></a>
+### Playlist
 
 #### Add <small>HTTP POST or WebSocket</small>
 
@@ -493,7 +493,7 @@ Delete a playlist with a given ID:
     
 Returns HTTP 202 Accepted if deletion succeeds.
 
-### Alarms <div id="alarms" class="sub-area"></a>
+### Alarms
 
 Schedule tracks for playback on your MusicPimp server. Use this as an
 alarm clock, for example.
@@ -619,7 +619,7 @@ Supply a unique and static *tag* ID with your registrations. This is used to
 identify your device (as device tokens may change) and is included in the payload
 of every push notification so that devices can identify the source MusicPimp server.
 
-### Miscellaneous <div id="misc" class="sub-area"></a>
+### Miscellaneous
 
 #### Ping
 

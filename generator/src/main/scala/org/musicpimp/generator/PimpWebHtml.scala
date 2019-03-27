@@ -86,12 +86,12 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
           a(href := Home.iosAppUri, `class` := s"d-none d-md-block $PullRight badge-ios")
         ),
         div4(
-          badgeFromAssets(Home.androidAppUri, "Android app on Google Play", images.en_app_rgb_wo_60_png),
-          badgeFromAssets(Home.amazonAppUri, "Android app on Amazon AppStore", images.amazon_apps_kindle_us_gray_png)
+          badgeFromAssets(Home.androidAppUri, "Android app on Google Play", "badge-google"),
+          badgeFromAssets(Home.amazonAppUri, "Android app on Amazon AppStore", "badge-amazon")
         ),
         div4(
-          badgeFromAssets(Home.winPhoneAppUri, "Windows Phone app", images.badge_winphone2_png, PullLeft),
-          badgeFromAssets(Home.winStoreAppUri, "Windows Store app", images.badge_winstore_png, PullLeft)
+          badgeFromAssets(Home.winPhoneAppUri, "Windows Phone app", "badge-winphone", PullLeft),
+          badgeFromAssets(Home.winStoreAppUri, "Windows Store app", "badge-winstore", PullLeft)
         )
       ),
       hr(`class` := "hr-front"),
@@ -107,19 +107,15 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
           )
         ),
         div4(
-          img(src := images.upload_alt_blue_128_png, `class` := s"$PullLeft d-none d-md-block")
+          div(`class` := s"$PullLeft d-none d-md-block image-upload")
         )
       ),
       hr(`class` := "hr-front"),
       row(
-        feature("PC to Phone",
-                images.pc_phone_png,
-                "Make the music library on a PC available for playback on your phone."),
-        feature("Phone to PC",
-                images.phone_pc_png,
-                "Play the music stored on your phone on speakers connected to a PC."),
+        feature("PC to Phone", "pc-phone", "Make the music library on a PC available for playback on your phone."),
+        feature("Phone to PC", "phone-pc", "Play the music stored on your phone on speakers connected to a PC."),
         feature("PC to Phone to PC",
-                images.pc_phone_pc_png,
+                "pc-phone-pc",
                 "Play music from your PC on another PC. Control playback with your phone.")
       ),
       hr(`class` := "hr-front"),
@@ -149,7 +145,6 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
       li("A modern browser.")
     )
   )
-
 
   val debInstall: Modifier = Seq(
     headerRow("DEB"),
@@ -511,7 +506,10 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
       head(
         titleTag(page.title),
         meta(name := "viewport", content := "width=device-width, initial-scale=1.0"),
-        link(rel := "shortcut icon", href := images.pimp_28_png),
+        link(
+          rel := "shortcut icon",
+          href := "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAIAAAD9b0jDAAAABmJLR0QA/wD/AP+gvaeTAAAC5ElEQVRIib2V208TQRSHz5ntdVm2tA0gIASRWGOisRAf9c/xXxOJipcYteGmaDRGE+USQmkBpd4gQgrdnWEvMz6U7V6L9cV5Onv2N99+s53ZYu/tWehsxAevd5gkHeb+afw3qBAgREezOQfOO4Ky2gdW+9gJk20tsO3FcD8WbAhByyUQIjVUBCKdrdlYngLBkxduIfFxgqbs6zu7sWdr+2z3/dmadLNk1WvW0XdWCe4fP1TYtFxqlvrGC8GtdkTBzcbK3Wbd+HRH2GZbKN15Y+sHzZrTQ/blbVvNjWf28c9mbWt7tPw8Giq4STd9C6HlUkDBWY+prUx7O9rylLBOIqBsa4nTujfK2RHbfh2G6utPbO23t2PrB/rG0yBU2AatzIXn081ZYTGfpskCmo7stDCpD0qrL/lJIxzlRoNuL/k1H3JWj0iyur7+2IUKk9HKfDjnyM4JU3eeoWmrD9oltZV7TTMCALS60JoGACClQEq1roRJ9a1Xp5prM/zkuHULJRkl2bssff0RABBuaHRr0ftAVMdRHfd2WGWeGxpnR9rajC+ZvYrZaz7Z1fuc1SWi9Jv7ZY9mWsoXMdED+jfgzn7iNiJaxzXjx2eXGFOkvpuYzItGFbjhJC1AItmWAcJ2oz1XMJEFQIESsF+tvlWvWfUd8JwxKX8DU72ABDEu9F03eVglwjZa1xCTiTLcLEnXCMbc9yVsQ5ju3sKYgt0X3dcVV92kyXzHlKgF9zggolqANoPkJgBb3zBCsr5/GheKcQXlIe89lM9jTAkTMa6iMubrKGOYyERB1QIg+mcDZiJkSW4ilESSLQahGFdRHoiQkgcxofo6iSx2jUYklVFM5PzQTAEAw1EAQPWSTzMf0nSCJFd0oRjPYPpcJBEAMD2AiexpncyjPNw22TWCyV4HmrncLheQJbnJdgtyAkUAiGEyi+m+v0DTfZjMY6o7sD0ikvIQpvpjf9U8TWcKRIn4JaNkJ/8ArPM9PDd+ENcAAAAASUVORK5CYII="
+        ),
         cssLinkHashed("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css",
                       "sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"),
         cssLink("https://use.fontawesome.com/releases/v5.0.6/css/all.css"),
@@ -522,10 +520,7 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
           jsScript(path, defer)
         }
       ),
-      body(`class` := page.bodyClasses.mkString(" "),
-           data("spy") := "scroll",
-           dataTarget := "#sidenav",
-           data("offset") := "200")(
+      body(`class` := page.bodyClasses.mkString(" "))(
         inner,
         footer(`class` := "footer")(
           divClass(Container)(
@@ -538,18 +533,18 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
     )
   )
 
-  def badgeFromAssets(link: String, altText: String, call: String, classes: String = "") =
-    badge(link, altText, call, classes)
+  def badgeFromAssets(link: String, altText: String, badgeClass: String, linkClass: String = "") =
+    badge(link, altText, badgeClass, linkClass)
 
-  def badge(link: String, altText: String, imgUrl: String, classes: String) =
-    a(href := link, `class` := s"d-none d-md-block badge $classes")(
-      img(alt := altText, src := imgUrl.toString, `class` := "badge-image")
+  def badge(link: String, altText: String, classes: String, linkClass: String) =
+    a(href := link, `class` := s"d-none d-md-block badge $linkClass")(
+      div(aria.labelledby := altText, `class` := s"badge-image $classes")
     )
 
-  def feature(featureTitle: String, imgFile: String, leadText: String) =
+  def feature(featureTitle: String, classes: String, leadText: String) =
     div4(
       h2(featureTitle),
-      p(img(src := imgFile)),
+      p(div(`class` := s"feature $classes")),
       leadNormal(leadText)
     )
 
