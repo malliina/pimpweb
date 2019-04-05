@@ -504,6 +504,7 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
   def plainMain(page: PageConf)(inner: Modifier*) = TagPage(
     html(lang := "en")(
       head(
+        meta(charset := "utf-8"),
         titleTag(page.title),
         meta(name := "viewport", content := "width=device-width, initial-scale=1.0"),
         link(
