@@ -47,14 +47,14 @@ class GCP(dist: Path, val bucketName: String, client: StorageClient) {
     "otf" -> "font/otf"
   )
 
-  val defaultCacheControl = "private, max-age=0"
+  val defaultCacheControl = "private, max-age=60"
   val cacheControls = Map(
     "js" -> eternalCache,
     "css" -> eternalCache,
     "jpg" -> eternalCache,
     "png" -> eternalCache,
     "svg" -> eternalCache,
-    "html" -> "public, max-age=10"
+    "html" -> "public, max-age=60"
   )
   val htmlExt = ".html"
 
