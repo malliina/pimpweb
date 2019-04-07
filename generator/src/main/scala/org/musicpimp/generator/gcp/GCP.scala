@@ -107,7 +107,7 @@ class GCP(dist: Path, val bucketName: String, client: StorageClient) {
     val gzipFile = Files.createTempFile(name, "gz")
     gzip(file, gzipFile)
     client.upload(blob, gzipFile)
-    log.info(s"Uploaded '$file' to '$bucketName' as '$key' of '$contentType' with cache '$cacheControl'.")
+    log.info(s"Uploaded '$key' as '$contentType' with cache '$cacheControl' to '$bucketName' from '$file'.")
     gzipFile
   }
 
