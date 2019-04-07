@@ -47,7 +47,7 @@ class GCP(dist: Path, val bucketName: String, client: StorageClient) {
     "otf" -> "font/otf"
   )
 
-  val defaultCacheControl = "private, max-age=60"
+  val defaultCacheControl = "public, max-age=60"
   val cacheControls = Map(
     "js" -> eternalCache,
     "css" -> eternalCache,
