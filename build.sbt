@@ -28,7 +28,7 @@ val sharedJs = shared.js
 val sharedJvm = shared.jvm
 
 val client: Project = project.in(file("client"))
-  .enablePlugins(ScalaJSBundlerPlugin, WorkbenchBasePlugin)
+  .enablePlugins(ScalaJSBundlerPlugin, WorkbenchBasePlugin, NodeCheckPlugin)
   .dependsOn(sharedJs)
   .settings(commonSettings)
   .settings(
@@ -43,23 +43,25 @@ val client: Project = project.in(file("client"))
     //    webpackBundlingMode := BundlingMode.LibraryOnly(),
     emitSourceMaps := false,
     npmDependencies in Compile ++= Seq(
+      "@fortawesome/fontawesome-free" -> "5.8.1",
+      "bootstrap" -> "4.2.1",
       "jquery" -> "3.3.1",
-      "popper.js" -> "1.14.6",
-      "bootstrap" -> "4.2.1"
+      "popper.js" -> "1.14.6"
     ),
     npmDevDependencies in Compile ++= Seq(
-      "webpack-merge" -> "4.1.5",
-      "style-loader" -> "0.23.1",
+      "autoprefixer" -> "9.4.3",
+      "cssnano" -> "4.1.8",
       "css-loader" -> "2.1.0",
+      "file-loader" -> "3.0.1",
       "less" -> "3.9.0",
       "less-loader" -> "4.1.0",
-      "url-loader" -> "1.1.2",
       "mini-css-extract-plugin" -> "0.5.0",
-      "postcss-loader" -> "3.0.0",
       "postcss-import" -> "12.0.1",
+      "postcss-loader" -> "3.0.0",
       "postcss-preset-env" -> "6.5.0",
-      "autoprefixer" -> "9.4.3",
-      "cssnano" -> "4.1.8"
+      "style-loader" -> "0.23.1",
+      "url-loader" -> "1.1.2",
+      "webpack-merge" -> "4.1.5"
     ),
     scalaJSUseMainModuleInitializer := true,
     webpackConfigFile in fastOptJS := Some(baseDirectory.value / "webpack.dev.config.js"),

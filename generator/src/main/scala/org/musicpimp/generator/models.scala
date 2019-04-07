@@ -13,6 +13,7 @@ case class FileMapping(from: Path, to: String)
 case class SiteSpec(css: Seq[String],
                     js: Seq[String],
                     assets: Seq[FileMapping],
+                    statics: Seq[String],
                     targetDirectory: Path,
                     routes: Routes)
 

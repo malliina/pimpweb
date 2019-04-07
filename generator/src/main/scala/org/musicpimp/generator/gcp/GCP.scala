@@ -39,7 +39,12 @@ class GCP(dist: Path, val bucketName: String, client: StorageClient) {
     "jpg" -> "image/jpg",
     "png" -> "image/png",
     "gif" -> "image/gif",
-    "svg" -> "image/svg+xml"
+    "svg" -> "image/svg+xml",
+    "woff" -> "font/woff",
+    "woff2" -> "font/woff2",
+    "eot" -> "font/eot",
+    "ttf" -> "font/ttf",
+    "otf" -> "font/otf"
   )
 
   val defaultCacheControl = "private, max-age=0"
@@ -90,7 +95,8 @@ class GCP(dist: Path, val bucketName: String, client: StorageClient) {
     val contentType = contentTypes.getOrElse(extension, defaultContentType)
     val isFingerprinted = name.count(_ == '.') > 1
     val cacheControl =
-      if (isFingerprinted) cacheControls.getOrElse(extension, defaultCacheControl)
+      if (dist.relativize(file).toString.startsWith("static")) eternalCache
+      else if (isFingerprinted) cacheControls.getOrElse(extension, defaultCacheControl)
       else defaultCacheControl
     val blob = BlobInfo.newBuilder(bucketName, key)
       .setContentType(contentType)

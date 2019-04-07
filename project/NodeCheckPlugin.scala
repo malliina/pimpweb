@@ -9,24 +9,6 @@ object NodeCheckPlugin extends AutoPlugin {
   }
   import autoImport.checkNode
 
-  override lazy val projectSettings: Seq[Def.Setting[_]] = Seq(
-    checkNode := {
-      val log = streams.value.log
-      val nodeVersion = Process("node --version")
-        .lineStream(log)
-        .toList
-        .headOption
-        .getOrElse(sys.error(s"Unable to resolve node version."))
-      val validPrefixes = Seq("v8")
-      if (validPrefixes.exists(p => nodeVersion.startsWith(p))) {
-        log.info(s"Using node $nodeVersion")
-      } else {
-        log.info(s"Node $nodeVersion is unlikely to work. Trying to change version using nvm...")
-        Process("nvm use 8").run(log).exitValue()
-      }
-    }
-  )
-
   override val globalSettings: Seq[Def.Setting[_]] = Seq(
     checkNode := runNodeCheck(streams.value.log),
     onLoad in Global := (onLoad in Global).value andThen { state =>

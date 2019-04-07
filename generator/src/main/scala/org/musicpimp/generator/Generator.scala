@@ -24,6 +24,7 @@ object Generator {
       css = files.filter(_.endsWith(".css")),
       js = files.filter(_.endsWith(".js")),
       assets = imgs,
+      statics = files.filter(f => f.startsWith("/assets") && !f.endsWith(".css") && !f.endsWith(".js")),
       targetDirectory = target,
       routes
     )

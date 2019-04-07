@@ -511,9 +511,6 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
           rel := "shortcut icon",
           href := "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAIAAAD9b0jDAAAABmJLR0QA/wD/AP+gvaeTAAAC5ElEQVRIib2V208TQRSHz5ntdVm2tA0gIASRWGOisRAf9c/xXxOJipcYteGmaDRGE+USQmkBpd4gQgrdnWEvMz6U7V6L9cV5Onv2N99+s53ZYu/tWehsxAevd5gkHeb+afw3qBAgREezOQfOO4Ky2gdW+9gJk20tsO3FcD8WbAhByyUQIjVUBCKdrdlYngLBkxduIfFxgqbs6zu7sWdr+2z3/dmadLNk1WvW0XdWCe4fP1TYtFxqlvrGC8GtdkTBzcbK3Wbd+HRH2GZbKN15Y+sHzZrTQ/blbVvNjWf28c9mbWt7tPw8Giq4STd9C6HlUkDBWY+prUx7O9rylLBOIqBsa4nTujfK2RHbfh2G6utPbO23t2PrB/rG0yBU2AatzIXn081ZYTGfpskCmo7stDCpD0qrL/lJIxzlRoNuL/k1H3JWj0iyur7+2IUKk9HKfDjnyM4JU3eeoWmrD9oltZV7TTMCALS60JoGACClQEq1roRJ9a1Xp5prM/zkuHULJRkl2bssff0RABBuaHRr0ftAVMdRHfd2WGWeGxpnR9rajC+ZvYrZaz7Z1fuc1SWi9Jv7ZY9mWsoXMdED+jfgzn7iNiJaxzXjx2eXGFOkvpuYzItGFbjhJC1AItmWAcJ2oz1XMJEFQIESsF+tvlWvWfUd8JwxKX8DU72ABDEu9F03eVglwjZa1xCTiTLcLEnXCMbc9yVsQ5ju3sKYgt0X3dcVV92kyXzHlKgF9zggolqANoPkJgBb3zBCsr5/GheKcQXlIe89lM9jTAkTMa6iMubrKGOYyERB1QIg+mcDZiJkSW4ilESSLQahGFdRHoiQkgcxofo6iSx2jUYklVFM5PzQTAEAw1EAQPWSTzMf0nSCJFd0oRjPYPpcJBEAMD2AiexpncyjPNw22TWCyV4HmrncLheQJbnJdgtyAkUAiGEyi+m+v0DTfZjMY6o7sD0ikvIQpvpjf9U8TWcKRIn4JaNkJ/8ArPM9PDd+ENcAAAAASUVORK5CYII="
         ),
-        cssLinkHashed("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css",
-                      "sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"),
-        cssLink("https://use.fontawesome.com/releases/v5.0.6/css/all.css"),
         css.map { path =>
           cssLink(path)
         },
