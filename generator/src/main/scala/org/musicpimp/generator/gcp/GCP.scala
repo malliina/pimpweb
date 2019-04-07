@@ -95,7 +95,7 @@ class GCP(dist: Path, val bucketName: String, client: StorageClient) {
     val contentType = contentTypes.getOrElse(extension, defaultContentType)
     val isFingerprinted = name.count(_ == '.') > 1
     val cacheControl =
-      if (dist.relativize(file).toString.startsWith("assets/static")) eternalCache
+      if (key.startsWith("assets/static")) eternalCache
       else if (isFingerprinted) cacheControls.getOrElse(extension, defaultCacheControl)
       else defaultCacheControl
     val blob = BlobInfo.newBuilder(bucketName, key)
