@@ -11,7 +11,8 @@ object Generator {
   private val log = LoggerFactory.getLogger(getClass)
 
   def main(args: Array[String]): Unit = {
-    val imgDir = Paths.get("client/img")
+    val imgDir = Paths.get("client/src/main/resources/img")
+
     val imgs = Files.list(imgDir).iterator().asScala.toList.map { img =>
       FileMapping(img, s"img/${img.getFileName.toString}")
     }

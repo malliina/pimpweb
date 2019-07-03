@@ -18,7 +18,7 @@ Seq(
   "com.typesafe.sbt" % "sbt-digest" % "1.1.4",
   "com.typesafe.sbt" % "sbt-less" % "1.1.2",
   "com.vmunier" % "sbt-web-scalajs" % "1.0.6",
-  "org.scala-js" % "sbt-scalajs" % "0.6.26",
+  "org.scala-js" % "sbt-scalajs" % "0.6.28",
   "org.portable-scala" % "sbt-scalajs-crossproject" % "0.6.0",
   "ch.epfl.scala" % "sbt-web-scalajs-bundler" % "0.14.0",
   "com.lihaoyi" % "workbench" % "0.4.1"

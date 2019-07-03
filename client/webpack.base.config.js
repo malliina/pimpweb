@@ -2,7 +2,7 @@ const ScalaJS = require('./scalajs.webpack.config');
 const Merge = require('webpack-merge');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
-const rootDir = path.resolve(__dirname, '../../../..');
+const rootDir = path.resolve(__dirname, '../../../../src/main/resources');
 const cssDir = path.resolve(rootDir, 'css');
 const vendorsDir = path.resolve(rootDir, 'vendors');
 

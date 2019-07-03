@@ -55,24 +55,27 @@ I use
     "com.lihaoyi" % "workbench" % "0.4.1"
     
 instead of webpack-dev-server for hot reloading, because I also want to trigger the site generation
-on code Scala changes whereas by default webpack-dev-server would only build frontend assets.
+on Scala code changes whereas by default webpack-dev-server would only build frontend assets.
 
 The workbench plugin also prints compilation output to the browser console, which is nice.
 
 ### Hot-reloading CSS
 
-CSS files are hot-reloaded as follows:
+CSS files are hot-reloaded. For reference, it is setup as follows:
+
+1. Put your CSS files under a `resourceDirectory` of the frontend project, 
+for example [client/src/main/resources/css](client/src/main/resources/css).
 
 1. In the Scala.js project, make sure webpack picks up changes to CSS files:
 
-        webpackMonitoredDirectories ++= Seq(
-          baseDirectory.value / "css"
-        ),
+        webpackMonitoredDirectories ++= (resourceDirectories in Compile).value.map { dir =>
+            dir / "css"
+        },
         includeFilter in webpackMonitoredFiles := "*.less"
-    
+        
 1. The SBT *build* task launches webpack when sources change, so make sure the CSS sources are also
 watched by the build:
 
-        watchSources ++= Seq(
-          WatchSource(baseDirectory.value / "css", "*.less", HiddenFileFilter)
-        )
+        watchSources ++= (resourceDirectories in Compile).value.map { dir =>
+            WatchSource(dir / "css", "*.less", HiddenFileFilter)
+        }

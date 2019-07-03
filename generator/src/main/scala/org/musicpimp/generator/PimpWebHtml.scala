@@ -119,7 +119,7 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
                 "Play music from your PC on another PC. Control playback with your phone.")
       ),
       hr(`class` := "hr-front"),
-      row(
+      divClass(s"$Row")(
         divClass(s"${col.md.four} ${col.md.offset.two}")(
           h2("Getting Started"),
           leadNormal(
@@ -147,7 +147,7 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
   )
 
   val debInstall: Modifier = Seq(
-    headerRow("DEB"),
+    mainHeader("DEB"),
     fullRow(
       linuxReqs,
       h2("Installation"),
@@ -163,7 +163,7 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
   val docDeb = docuBase("deb", Home.linuxConfFile, debInstall, debUninstall)
 
   val winInstall: Modifier = Seq(
-    headerRow("Windows"),
+    mainHeader("Windows"),
     fullRow(
       h2("System Requirements"),
       ul(
@@ -264,7 +264,7 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
     }
 
     indexMain("documentation")(
-      headerRow("Documentation", col.md.six),
+      mainHeader("Documentation"),
       rowColumn(col.md.six)(
         div(`class` := s"${btn.group} last-box", attr("src-toggle") := "buttons-radio")(
           docLink("Windows", homeRoute.docs.uri, "win"),
@@ -276,7 +276,7 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
   }
 
   val docWinPhone = docPlain("wp")(
-    headerRow("Windows Phone"),
+    mainHeader("Windows Phone"),
     fullRow(
       h2("System Requirements"),
       p("Windows Phone 7.5 and higher are supported."),
@@ -302,7 +302,7 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
   )
 
   val privacyPolicy = indexMain("about")(
-    headerRow("Privacy Policy", col.md.six),
+    mainHeader("Privacy Policy"),
     rowColumn(col.md.six)(
       p(PrivacyPolicy.text),
       p(PrivacyPolicy.purpose),
@@ -312,7 +312,7 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
   )
 
   val alarms = indexMain("alarms")(
-    headerRow("Alarm clock management"),
+    mainHeader("Alarm clock management"),
     rowColumn(col.md.six)(
       leadNormal("Control the alarm clock on the MusicPimp server using the following API."),
       h4("Get all alarms ", small("GET /alarms")),
@@ -378,23 +378,23 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
 
   def downloads(releaseDate: String, previous: Seq[String]) =
     indexMain("downloads", Page(PageTitle, Seq("downloads")))(
-      headerRow("Downloads"),
+      mainHeader("Downloads"),
       fullRow(
         leadNormal("Download the server. It's free. No nonsense.")
       ),
-      row(
+      divClass(s"$Row mb-5 mt-4")(
         div(`class` := col.lg.four)(
-          h2(iClass("icon-windows"), " Windows"),
+          h2(`class` := "mb-4")(iClass("icon-windows"), " Windows"),
           downloadLink(Home.msiDownload, s"primary ${btn.lg}"),
           p(s"Released on $releaseDate.")
         ),
         div(`class` := col.lg.four)(
-          h2(iClass("icon-linux"), " Linux"),
+          h2(`class` := "mb-4")(iClass("icon-linux"), " Linux"),
           downloadLink(Home.debDownload, s"primary ${btn.lg}"),
           p("DEB packages are tested on Ubuntu."),
         )
       ),
-      fullRow(
+      rowColumn(s"${col.md.twelve} mb-5")(
         h2("What next?"),
         p(
           "Install the software and navigate to ",
@@ -417,7 +417,7 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
   val forum = indexMain("forum")(
     rowColumn(col.md.six)(
       divClass(PageHeader)(
-        h1("Forum")
+        h1(`class` := "mb-5")("Forum")
       )
     ),
     fullRow(
@@ -430,7 +430,7 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
   val notFound = indexMain(PageTitle)(
     rowColumn(col.md.twelve)(
       divClass(s"$PageHeader text-center")(
-        h1("Page not found")
+        h1(`class` := "mb-5")("Page not found")
       )
     ),
     row(
@@ -443,7 +443,7 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
   )
 
   val about = indexMain("about")(
-    headerRow("About"),
+    mainHeader("About"),
     row(
       divClass(col.md.six)(
         p("Developed by ", aHref("https://github.com/malliina", "Michael Skogberg"), "."),
@@ -552,4 +552,13 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
     p(
       a(`class` := s"${btn.Btn} ${btn.Btn}-$btnName", href := dl.url)(iconic("data-transfer-download"),
                                                                       s" ${dl.fileName}"))
+
+  def iconic(iconicName: String) = spanClass(s"oi oi-$iconicName", title := iconicName, aria.hidden := True)
+
+  def mainHeader(text: String, width: String = col.md.twelve) =
+    divClass(Row)(
+      divClass(width)(
+        h1(`class` := "mb-5 mt-4")(text)
+      )
+    )
 }
