@@ -140,7 +140,7 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
 
   val linuxReqs: Modifier = Seq(
     docHeader("System Requirements"),
-    ul(`class` := "mb-4")(
+    ul(`class` := "mb-5")(
       li("Java 8. Oracle Java is recommended."),
       li("A modern browser.")
     )
@@ -166,7 +166,7 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
     mainHeader("Windows"),
     rowColumn(s"${col.md.twelve}")(
       docHeader("System Requirements"),
-      ul(`class` := "mb-4")(
+      ul(`class` := "mb-5")(
         li(aHref("http://java.com/en/download/index.jsp", "Java 8")),
         li("A modern browser, such as ",
            aHref("http://getfirefox.com", "Firefox"),
