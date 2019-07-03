@@ -83,15 +83,15 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
       ),
       row(
         div4(
-          a(href := Home.iosAppUri, `class` := s"d-none d-md-block $PullRight badge-ios")
+          a(href := Home.iosAppUri, `class` := s"d-none d-md-block $PullRight app-badge-ios")
         ),
         div4(
-          badgeFromAssets(Home.androidAppUri, "Android app on Google Play", "badge-google"),
-          badgeFromAssets(Home.amazonAppUri, "Android app on Amazon AppStore", "badge-amazon")
+          badgeFromAssets(Home.androidAppUri, "Android app on Google Play", "app-badge-google"),
+          badgeFromAssets(Home.amazonAppUri, "Android app on Amazon AppStore", "app-badge-amazon")
         ),
         div4(
-          badgeFromAssets(Home.winPhoneAppUri, "Windows Phone app", "badge-winphone", PullLeft),
-          badgeFromAssets(Home.winStoreAppUri, "Windows Store app", "badge-winstore", PullLeft)
+          badgeFromAssets(Home.winPhoneAppUri, "Windows Phone app", "app-badge-winphone", PullLeft),
+          badgeFromAssets(Home.winStoreAppUri, "Windows Store app", "app-badge-winstore", PullLeft)
         )
       ),
       hr(`class` := "hr-front"),
@@ -119,7 +119,7 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
                 "Play music from your PC on another PC. Control playback with your phone.")
       ),
       hr(`class` := "hr-front"),
-      divClass(s"$Row")(
+      divClass(s"$Row mb-5")(
         divClass(s"${col.md.four} ${col.md.offset.two}")(
           h2("Getting Started"),
           leadNormal(
@@ -139,34 +139,34 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
   val ping = index
 
   val linuxReqs: Modifier = Seq(
-    h2("System Requirements"),
-    ul(
+    docHeader("System Requirements"),
+    ul(`class` := "mb-4")(
       li("Java 8. Oracle Java is recommended."),
       li("A modern browser.")
     )
   )
 
-  val debInstall: Modifier = Seq(
+  val debInstall: Modifier = modifier(
     mainHeader("DEB"),
-    fullRow(
+    rowColumn(s"${col.md.twelve}")(
       linuxReqs,
-      h2("Installation"),
-      p("Download ",
+      docHeader("Installation"),
+      p(`class` := "mb-5")("Download ",
         aHref(Home.debDownload.url, Home.debDownload.fileName),
         " and execute: ",
         code(s"dpkg -i ${Home.debDownload.fileName}"))
     )
   )
 
-  val debUninstall = p(code("apt-get purge musicpimp"))
+  val debUninstall = p(`class` := "mb-5")(code("apt-get purge musicpimp"))
 
   val docDeb = docuBase("deb", Home.linuxConfFile, debInstall, debUninstall)
 
-  val winInstall: Modifier = Seq(
+  val winInstall: Modifier = modifier(
     mainHeader("Windows"),
-    fullRow(
-      h2("System Requirements"),
-      ul(
+    rowColumn(s"${col.md.twelve}")(
+      docHeader("System Requirements"),
+      ul(`class` := "mb-4")(
         li(aHref("http://java.com/en/download/index.jsp", "Java 8")),
         li("A modern browser, such as ",
            aHref("http://getfirefox.com", "Firefox"),
@@ -174,12 +174,12 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
            aHref("http://www.google.com/chrome", "Chrome")),
         li(aHref("http://www.microsoft.com/net/download", ".NET Framework"), " 3.5 or higher")
       ),
-      h2("Installation"),
-      p("Download and run ", aHref(Home.msiDownload.url, Home.msiDownload.fileName), ".")
+      docHeader("Installation"),
+      p(`class` := "mb-5")("Download and run ", aHref(Home.msiDownload.url, Home.msiDownload.fileName), ".")
     )
   )
 
-  val winUninstall = p("Uninstall MusicPimp using the Add/Remove Programs section in the Control Panel.")
+  val winUninstall = p(`class` := "mb-5")("Uninstall MusicPimp using the Add/Remove Programs section in the Control Panel.")
 
   val docWin = docuBase("win", Home.windowsConfFile, winInstall, winUninstall)
 
@@ -187,8 +187,8 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
     docPlain(os)(
       fullRow(
         installation,
-        h2("Usage"),
-        ol(
+        docHeader("Usage"),
+        ol(`class` := "mb-5")(
           li("Navigate to ", aHref("http://localhost:8456/"), " and login."),
           li(
             "Select tab ",
@@ -196,22 +196,22 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
             " and specify folders containing MP3s under ",
             strong("Music Folders"),
             ":",
-            p(img(src := images.usage_folders2_png, `class` := "img-responsive img-thumbnail"))
+            img(src := images.usage_folders2_png, `class` := "img-responsive img-thumbnail my-4")
           ),
           li(
             "Open the ",
             strong("MusicPimp"),
             " app on your mobile device and add your PC as a music endpoint:",
-            p(img(src := images.usage_wp8_png, `class` := "img-responsive img-thumbnail"))
+            img(src := images.usage_wp8_png, `class` := "img-responsive img-thumbnail my-4")
           ),
           li("Enjoy your music.")
         ),
-        h2("Supported Audio Formats"),
-        p("MusicPimp supports MP3 playback."),
-        h2("Connectivity"),
-        p("Music is streamed over WLAN, mobile networks or Bluetooth."),
-        h2("Advanced Configuration"),
-        p(
+        docHeader("Supported Audio Formats"),
+        p(`class` := "mb-5")("MusicPimp supports MP3 playback."),
+        docHeader("Connectivity"),
+        p(`class` := "mb-5")("Music is streamed over WLAN, mobile networks or Bluetooth."),
+        docHeader("Advanced Configuration"),
+        p(`class` := "mb-4")(
           "Advanced settings can be configured in ",
           code("musicpimp.conf"),
           " in your installation directory. The path is typically ",
@@ -237,14 +237,14 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
           strong("musicpimp"),
           "."
         ),
-        p(
-          spanClass("label label-info")("Note"),
+        p(`class` := "mb-5")(
+          spanClass("badge badge-info")("Note"),
           " In order to successfully connect to the MusicPimp (or Subsonic) server " +
             "over HTTPS using Windows Phone, your server certificate must be trusted by your phone. " +
             "This means self-signed certificates are unlikely to work."
         ),
-        h2("Logging"),
-        p(
+        docHeader("Logging"),
+        p(`class` := "mb-5")(
           "MusicPimp writes a log to the directory given by the ",
           code("log.dir"),
           " system property. At midnight, the " +
@@ -252,10 +252,12 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
             "The active log file is also archived if it reaches 100 MB in size (during the same day.) " +
             "Logs older than 30 days are finally deleted."
         ),
-        h2("Uninstallation"),
+        docHeader("Uninstallation"),
         uninstallation
       )
     )
+
+  def docHeader(text: String) = h2(`class` := "mb-4")(text)
 
   def docPlain(os: String)(inner: Modifier*) = {
     def docLink(text: String, clicked: String, osId: String) = {
@@ -535,8 +537,8 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
     badge(link, altText, badgeClass, linkClass)
 
   def badge(link: String, altText: String, classes: String, linkClass: String) =
-    a(href := link, `class` := s"d-none d-md-block badge $linkClass")(
-      div(aria.labelledby := altText, `class` := s"badge-image $classes")
+    a(href := link, `class` := s"d-none d-md-block app-badge $linkClass")(
+      div(aria.labelledby := altText, `class` := s"app-badge-image $classes")
     )
 
   def feature(featureTitle: String, classes: String, leadText: String) =
