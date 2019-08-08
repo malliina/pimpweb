@@ -35,7 +35,7 @@ object Site {
       routes.ping -> html.ping,
     )
     BuiltSite(
-      fileMap.map { case (route, page) => write(page, target.resolve(route.file)) }.toList ++
+      fileMap.map { case (route: Route, page: TagPage) => write(page, target.resolve(route.file)) }.toList ++
         List(write(Json.toBytes(Json.toJson(VersionInfo.default)), target.resolve(routes.build.file)))
     )
   }

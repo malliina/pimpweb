@@ -14,9 +14,9 @@ Code changes in JavaScript, HTML or CSS triggers a browser refresh automatically
 
 ### Code structure
 
-- scala.js frontend code in [client](client)
-- stylesheets in [client/css](client/css)
-- site generator in [generator](generator)
+- Scala.js frontend code in [client](client)
+- Stylesheets in [client/css](client/css)
+- Site generator in [generator](generator)
 
 ## Deployments
 

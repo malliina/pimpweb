@@ -11,10 +11,9 @@ import org.musicpimp.PathUtils
 import org.musicpimp.generator.gcp.GCP.executionContext
 import org.slf4j.LoggerFactory
 
-import scala.collection.JavaConverters.{asScalaIteratorConverter, mutableSeqAsJavaListConverter}
-import scala.collection.mutable
 import scala.concurrent.duration.DurationInt
 import scala.concurrent.{Await, ExecutionContext, ExecutionContextExecutorService, Future}
+import scala.jdk.CollectionConverters.{IteratorHasAsScala, SeqHasAsJava}
 
 object GCP {
   implicit val executionContext: ExecutionContextExecutorService =
@@ -100,7 +99,7 @@ class GCP(dist: Path, val bucketName: String, client: StorageClient) {
       else defaultCacheControl
     val blob = BlobInfo.newBuilder(bucketName, key)
       .setContentType(contentType)
-      .setAcl(mutable.Buffer(Acl.of(User.ofAllUsers(), Role.READER)).asJava)
+      .setAcl(Seq(Acl.of(User.ofAllUsers(), Role.READER)).asJava)
       .setContentEncoding("gzip")
       .setCacheControl(cacheControl)
       .build()

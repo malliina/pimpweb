@@ -5,7 +5,7 @@ import java.nio.file.{Files, Paths}
 import org.musicpimp.generator.gcp.{FileUtils, GCP}
 import org.slf4j.LoggerFactory
 
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters.IteratorHasAsScala
 
 object Generator {
   private val log = LoggerFactory.getLogger(getClass)

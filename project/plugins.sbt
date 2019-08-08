@@ -1,4 +1,4 @@
-scalaVersion := "2.12.8"
+scalaVersion := "2.12.9"
 
 scalacOptions ++= Seq("-unchecked", "-deprecation")
 
@@ -12,6 +12,7 @@ resolvers ++= Seq(
 )
 
 Seq(
+  "com.malliina" %% "sbt-nodejs" % "0.14.0",
   "com.github.gseitz" % "sbt-release" % "1.0.11",
   "com.eed3si9n" % "sbt-buildinfo" % "0.9.0",
   "com.typesafe.sbt" % "sbt-gzip" % "1.0.2",
