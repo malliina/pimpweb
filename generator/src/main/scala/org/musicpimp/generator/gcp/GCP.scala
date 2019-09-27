@@ -98,7 +98,8 @@ class GCP(dist: Path, val bucketName: String, client: StorageClient) {
       if (key.startsWith("assets/static")) eternalCache
       else if (isFingerprinted) cacheControls.getOrElse(extension, defaultCacheControl)
       else defaultCacheControl
-    val blob = BlobInfo.newBuilder(bucketName, key)
+    val blob = BlobInfo
+      .newBuilder(bucketName, key)
       .setContentType(contentType)
       .setAcl(mutable.Buffer(Acl.of(User.ofAllUsers(), Role.READER)).asJava)
       .setContentEncoding("gzip")
@@ -136,16 +137,10 @@ class GCP(dist: Path, val bucketName: String, client: StorageClient) {
     read()
   }
 
-  def using[T <: AutoCloseable, U](res: T)(code: T => U): U = try {
-    code(res)
-  } finally {
-    res.close()
-  }
-
-  def ext(path: Path) = {
-    val name = path.getFileName.toString
-    val idx = name.lastIndexOf('.')
-    if (idx >= 0 && name.length > idx + 1) name.substring(idx + 1)
-    else ""
-  }
+  def using[T <: AutoCloseable, U](res: T)(code: T => U): U =
+    try {
+      code(res)
+    } finally {
+      res.close()
+    }
 }

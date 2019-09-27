@@ -10,14 +10,14 @@ import scala.concurrent.ExecutionContext
 import scala.sys.process.Process
 import scala.util.Try
 
-val utilHtmlVersion = "5.2.3"
+val utilHtmlVersion = "5.2.4"
 val scalatagsVersion = "0.7.0"
 val deployDocs = taskKey[Unit]("Deploys docs.musicpimp.org")
 val ncu = taskKey[Int]("Runs npm-check-updates")
 
 val commonSettings = Seq(
   organization := "org.musicpimp",
-  scalaVersion := "2.13.0"
+  scalaVersion := "2.13.1"
 )
 val siteTarget = settingKey[Path]("Content target")
 ThisBuild / siteTarget := (target.value / "dist").toPath
@@ -28,8 +28,9 @@ val shared = crossProject(JSPlatform, JVMPlatform)
 val sharedJs = shared.js
 val sharedJvm = shared.jvm
 
-val client: Project = project.in(file("client"))
-  .enablePlugins(ScalaJSBundlerPlugin, WorkbenchBasePlugin, NodeCheckPlugin)
+val client: Project = project
+  .in(file("client"))
+  .enablePlugins(ScalaJSBundlerPlugin, WorkbenchBasePlugin, NodeJsPlugin)
   .dependsOn(sharedJs)
   .settings(commonSettings)
   .settings(
@@ -88,7 +89,8 @@ val client: Project = project.in(file("client"))
     }
   )
 
-val generator: Project = project.in(file("generator"))
+val generator: Project = project
+  .in(file("generator"))
   .enablePlugins(ContentPlugin, BuildInfoPlugin)
   .dependsOn(sharedJvm)
   .settings(commonSettings)
@@ -120,7 +122,8 @@ val generator: Project = project.in(file("generator"))
     buildInfoPackage := "org.musicpimp.generator"
   )
 
-val pimpweb = project.in(file("."))
+val pimpweb = project
+  .in(file("."))
   .aggregate(client, generator)
   .settings(
     build := build.in(generator).value,

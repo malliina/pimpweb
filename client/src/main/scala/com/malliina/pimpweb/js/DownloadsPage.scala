@@ -24,19 +24,24 @@ class DownloadsPage extends com.malliina.html.Bootstrap(JSTags) {
   val downloadBaseUrl = FullUrl.https(bucketName, "")
 
   Ajax.get(listObjectsUrl).map { xhr =>
-    xhr.validate[ListObjectsResponse].map { res =>
-      appendHistorical(res.items.map(_.name)
-        .filterNot(name => Downloads.latestDownloads.exists(_.fileName == name))
-        .sorted
-        .reverse)
-    }.left.foreach { err =>
-      println(err)
-    }
+    xhr
+      .validate[ListObjectsResponse]
+      .map { res =>
+        appendHistorical(
+          res.items
+            .map(_.name)
+            .filterNot(name => Downloads.latestDownloads.exists(_.fileName == name))
+            .sorted
+            .reverse)
+      }
+      .left
+      .foreach { err =>
+        println(err)
+      }
   }
 
-  implicit val v: generic.AttrValue[Element, FullUrl] = new AttrValue[FullUrl] {
-    override def apply(t: Element, a: Attr, v: FullUrl): Unit = t.setAttribute(a.name, v.url)
-  }
+  implicit val v: generic.AttrValue[Element, FullUrl] =
+    (t: Element, a: Attr, v: FullUrl) => t.setAttribute(a.name, v.url)
 
   def appendHistorical(files: Seq[String]): Unit = {
     Option(dom.document.getElementById(FrontKeys.PimpListId)).foreach { ul =>

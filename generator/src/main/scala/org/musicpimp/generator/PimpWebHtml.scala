@@ -141,7 +141,7 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
   val linuxReqs: Modifier = Seq(
     docHeader("System Requirements"),
     ul(`class` := "mb-5")(
-      li("Java 8. Oracle Java is recommended."),
+      li("Java 11."),
       li("A modern browser.")
     )
   )
@@ -152,9 +152,9 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
       linuxReqs,
       docHeader("Installation"),
       p(`class` := "mb-5")("Download ",
-        aHref(Home.debDownload.url, Home.debDownload.fileName),
-        " and execute: ",
-        code(s"dpkg -i ${Home.debDownload.fileName}"))
+                           aHref(Home.debDownload.url, Home.debDownload.fileName),
+                           " and execute: ",
+                           code(s"dpkg -i ${Home.debDownload.fileName}"))
     )
   )
 
@@ -167,7 +167,7 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
     rowColumn(s"${col.md.twelve}")(
       docHeader("System Requirements"),
       ul(`class` := "mb-5")(
-        li(aHref("http://java.com/en/download/index.jsp", "Java 8")),
+        li(aHref("http://java.com/en/download/index.jsp", "Java 11")),
         li("A modern browser, such as ",
            aHref("http://getfirefox.com", "Firefox"),
            " or ",
@@ -179,7 +179,8 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
     )
   )
 
-  val winUninstall = p(`class` := "mb-5")("Uninstall MusicPimp using the Add/Remove Programs section in the Control Panel.")
+  val winUninstall =
+    p(`class` := "mb-5")("Uninstall MusicPimp using the Add/Remove Programs section in the Control Panel.")
 
   val docWin = docuBase("win", Home.windowsConfFile, winInstall, winUninstall)
 
