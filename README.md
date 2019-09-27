@@ -23,6 +23,11 @@ Code changes in JavaScript, HTML or CSS triggers a browser refresh automatically
 The website consists of a main website at [www.musicpimp.org](https://www.musicpimp.org) and a 
 documentation site at [docs.musicpimp.org](https://docs.musicpimp.org).
 
+Prerequisites:
+
+    pip install mkdocs
+    pip install mkdocs-material
+
 To deploy both the main website and documentation site:
 
     sbt release
