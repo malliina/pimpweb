@@ -119,7 +119,7 @@ object ContentPlugin extends AutoPlugin {
       .distinct
     val styles = files.map(_.data).filter(_.ext == "css")
     val statics = files.map(_.data).filter(f => f.ext != "css" && f.ext != "js")
-    AssetGroup(scripts, Seq("/workbench.js"), styles, statics)
+    AssetGroup(scripts, adhocScripts, styles, statics)
   }
 
   // https://stackoverflow.com/a/27917071
