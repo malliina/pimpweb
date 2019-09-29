@@ -48,6 +48,7 @@ object Generator {
         val built = buildSite()
         val gcp = GCP(BucketName(args(2)))
         val website = Website(routes.index.name, routes.notFound.name, built)
+        FileIO.writeJson(website, Paths.get("target/receipt.json"))
         gcp.deploy(website)
       case other =>
         throw new Exception(s"Unknown argument: '$other'.")

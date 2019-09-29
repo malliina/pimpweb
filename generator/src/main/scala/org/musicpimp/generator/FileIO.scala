@@ -3,11 +3,14 @@ package org.musicpimp.generator
 import java.nio.file.{Files, Path, StandardCopyOption, StandardOpenOption}
 
 import org.slf4j.LoggerFactory
+import play.api.libs.json.{Json, Writes}
 
 object FileIO extends FileIO
 
 class FileIO {
   private val log = LoggerFactory.getLogger(getClass)
+
+  def writeJson[T: Writes](t: T, to: Path): Path = write(Json.toBytes(Json.toJson(t)), to)
 
   def write(page: TagPage, to: Path): Path = write(page.toBytes, to)
 
