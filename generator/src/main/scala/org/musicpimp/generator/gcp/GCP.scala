@@ -8,6 +8,7 @@ import java.util.zip.GZIPOutputStream
 import com.google.cloud.storage.Acl.{Role, User}
 import com.google.cloud.storage.{Acl, BlobInfo}
 import org.musicpimp.PathUtils
+import org.musicpimp.generator.{CacheControl, CacheControls, ContentTypes, StorageKey, Website, WebsiteFile}
 import org.musicpimp.generator.gcp.GCP.executionContext
 import org.slf4j.LoggerFactory
 
@@ -28,34 +29,7 @@ class GCP(dist: Path, val bucketName: String, client: StorageClient) {
   private val log = LoggerFactory.getLogger(getClass)
   val bucket = client.bucket(bucketName)
 
-  val defaultContentType = "application/octet-stream"
-  val eternalCache = "public, max-age=31536000"
-  val contentTypes = Map(
-    "html" -> "text/html",
-    "json" -> "application/json",
-    "js" -> "text/javascript",
-    "css" -> "text/css",
-    "jpg" -> "image/jpg",
-    "png" -> "image/png",
-    "gif" -> "image/gif",
-    "svg" -> "image/svg+xml",
-    "woff" -> "font/woff",
-    "woff2" -> "font/woff2",
-    "eot" -> "font/eot",
-    "ttf" -> "font/ttf",
-    "otf" -> "font/otf"
-  )
-
-  val defaultCacheControl = "public, max-age=60"
-  val cacheControls = Map(
-    "js" -> eternalCache,
-    "css" -> eternalCache,
-    "jpg" -> eternalCache,
-    "png" -> eternalCache,
-    "svg" -> eternalCache,
-    "html" -> "public, max-age=60"
-  )
-  val htmlExt = ".html"
+  val contentTypes = ContentTypes.contentTypes
 
   def deployDryRun(): Unit = {
     Files.walk(dist).iterator().asScala.toList.filter(p => Files.isRegularFile(p)).foreach { p =>
@@ -64,49 +38,37 @@ class GCP(dist: Path, val bucketName: String, client: StorageClient) {
     }
   }
 
-  def deploy(indexFile: String, notFoundFile: String, stripHtmlExt: Boolean = true): Unit = {
-    def keyFor(relativePath: String) = {
-      val chopped =
-        if (stripHtmlExt && relativePath.endsWith(htmlExt)) relativePath.dropRight(htmlExt.length)
-        else relativePath
-      if (chopped.startsWith("/")) chopped.drop(1) else chopped
-    }
-
-    val files = Files.walk(dist).iterator().asScala.toList.filter(p => Files.isRegularFile(p))
-    val uploads = Future.traverse(files) { file =>
-      val relativePath = dist.relativize(file).toString.replace('\\', '/')
-      upload(file, keyFor(relativePath))
+  def deploy(indexFile: StorageKey, notFoundFile: StorageKey, stripHtmlExt: Boolean = true): Unit = {
+    val website = Website(indexFile, notFoundFile, WebsiteFile.list(dist, CacheControls))
+    val uploads = Future.traverse(website.files) { file =>
+      upload(file)
     }
     Await.result(uploads, 180.seconds)
-    val indexKey = keyFor(indexFile)
-    bucket.toBuilder.setIndexPage(indexKey).build().update()
-    log.info(s"Set index page to '$indexKey'.")
-    val notFoundKey = keyFor(notFoundFile)
-    bucket.toBuilder.setNotFoundPage(notFoundKey).build().update()
-    log.info(s"Set 404 page to '$notFoundKey'.")
+    bucket.toBuilder.setIndexPage(indexFile.value).build().update()
+    log.info(s"Set index page to '$indexFile'.")
+    bucket.toBuilder.setNotFoundPage(notFoundFile.value).build().update()
+    log.info(s"Set 404 page to '$notFoundFile'.")
     log.info(s"Deployed to '$bucketName'.")
     executionContext.shutdown()
   }
 
-  def upload(file: Path, key: String): Future[Path] = Future {
-    val name = file.getFileName.toString
-    val extension = PathUtils.ext(file)
-    val contentType = contentTypes.getOrElse(extension, defaultContentType)
-    val isFingerprinted = name.count(_ == '.') > 1
-    val cacheControl =
-      if (key.startsWith("assets/static")) eternalCache
-      else if (isFingerprinted) cacheControls.getOrElse(extension, defaultCacheControl)
-      else defaultCacheControl
-    val blob = BlobInfo.newBuilder(bucketName, key)
-      .setContentType(contentType)
+  def upload(websiteFile: WebsiteFile): Future[Path] = Future {
+    val key = websiteFile.key
+    val file = websiteFile.file
+    val name = websiteFile.name
+    val contentType = ContentTypes.resolve(file)
+    val blob = BlobInfo
+      .newBuilder(bucketName, key.value)
+      .setContentType(contentType.value)
       .setAcl(Seq(Acl.of(User.ofAllUsers(), Role.READER)).asJava)
       .setContentEncoding("gzip")
-      .setCacheControl(cacheControl)
+      .setCacheControl(websiteFile.cacheControl.value)
       .build()
     val gzipFile = Files.createTempFile(name, "gz")
     gzip(file, gzipFile)
     client.upload(blob, gzipFile)
-    log.info(s"Uploaded '$file' as '$key' of '$contentType' with cache '$cacheControl' to '$bucketName'.")
+    log.info(
+      s"Uploaded '$file' as '$key' of '$contentType' with cache '${websiteFile.cacheControl}' to '$bucketName'.")
     gzipFile
   }
 
@@ -135,16 +97,10 @@ class GCP(dist: Path, val bucketName: String, client: StorageClient) {
     read()
   }
 
-  def using[T <: AutoCloseable, U](res: T)(code: T => U): U = try {
-    code(res)
-  } finally {
-    res.close()
-  }
-
-  def ext(path: Path) = {
-    val name = path.getFileName.toString
-    val idx = name.lastIndexOf('.')
-    if (idx >= 0 && name.length > idx + 1) name.substring(idx + 1)
-    else ""
-  }
+  def using[T <: AutoCloseable, U](res: T)(code: T => U): U =
+    try {
+      code(res)
+    } finally {
+      res.close()
+    }
 }

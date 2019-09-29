@@ -27,12 +27,15 @@ object ContentPlugin extends AutoPlugin {
     val build = taskKey[Unit]("Builds the website")
     val prepare = taskKey[Unit]("Builds the site for deployment")
     val deploy = taskKey[Unit]("Deploys the website")
+    val website = taskKey[Unit]("JSONs the website")
+    val buildManifest = taskKey[Path]("Builds the site manifest")
     val Static = config("static")
     val jsProject = settingKey[Project]("Scala.js project")
     val fastWebpack = taskKey[Seq[Attributed[File]]]("Dev webpack")
     val fullWebpack = taskKey[Seq[Attributed[File]]]("Prod webpack")
     val dir = settingKey[Path]("Directory")
     val assetTarget = settingKey[File]("Assets target (from webpack)")
+    val manifestFile = settingKey[Path]("Path to manifest file")
   }
 
   import autoImport._
@@ -43,6 +46,7 @@ object ContentPlugin extends AutoPlugin {
     exportJars := false,
     assetTarget := Def.settingDyn(crossTarget.in(clientProject.value, Compile, fullOptJS in clientProject.value)).value,
     distDirectory := (target.value / "dist").toPath,
+    manifestFile := (target.value / "site.json").toPath,
     // Triggers compilation on code changes in either project
     watchSources := watchSources.value ++ Def.taskDyn(watchSources in clientProject.value).value,
     fastWebpack := Def.taskDyn {
@@ -71,6 +75,17 @@ object ContentPlugin extends AutoPlugin {
       }
       .dependsOn(prepare)
       .value,
+    website := Def
+      .taskDyn {
+        run in Compile toTask s" website ${distDirectory.value} ${bucket.value}"
+      }
+      .dependsOn(prepare)
+      .value,
+    buildManifest := Def.taskDyn {
+      val siteFile = manifestFile.value
+      val siteManifest = prepareManifest(fastWebpack.value, distDirectory.value, assetTarget.value).to(siteFile)
+      (run in Compile toTask s" manifest ${siteFile.toAbsolutePath.toString}").map(_ => siteFile)
+    }.dependsOn(clean in Static).value,
     publish in Static := deploy.value,
     publish := deploy.value,
     // Hack to make the default release process work instead of fake error "Repository for publishing is not specified"
@@ -110,6 +125,36 @@ object ContentPlugin extends AutoPlugin {
         if (r.startsWith("/")) r else s"/$r"
       }
       .mkString(" ")
+  }
+
+  def prepareManifest(files: Seq[Attributed[File]],
+                      distBase: Path,
+                      crossBase: File,
+                      excludePrefixes: Seq[String] = Seq("styles", "fonts", "vendors")): SiteManifest = {
+    val eligible = assetGroup(files, excludePrefixes)
+    val assetsDir = distBase.toFile / "assets"
+
+    def copyAndRelativize(subDir: String, file: File): Path = {
+      val dest = assetsDir / subDir / file.name
+      if (file.getAbsolutePath != dest.getAbsolutePath)
+        IO.copyFile(file, dest)
+      distBase.relativize(dest.toPath)
+    }
+
+    val statics = eligible.statics.flatMap { s =>
+      crossBase.relativize(s).map { relative =>
+        val dest = distBase.resolve(relative.toPath).toFile
+        IO.copyFile(s, dest)
+        relative.toPath
+      }
+    }
+    SiteManifest(
+      eligible.styles.map(copyAndRelativize("css", _)).map(_.toAbsolutePath.toString),
+      eligible.scripts.map(copyAndRelativize("js", _)).map(_.toAbsolutePath.toString),
+      Nil,
+      statics.map(_.toAbsolutePath.toString),
+      distBase
+    )
   }
 
   def assetGroup(files: Seq[Attributed[File]], excludePrefixes: Seq[String]): AssetGroup = {

@@ -11,6 +11,10 @@ resolvers ++= Seq(
   Resolver.mavenCentral
 )
 
+libraryDependencies ++= Seq(
+  "com.typesafe.play" %% "play-json" % "2.7.4"
+)
+
 Seq(
   "com.malliina" %% "sbt-nodejs" % "0.14.0",
   "com.github.gseitz" % "sbt-release" % "1.0.11",

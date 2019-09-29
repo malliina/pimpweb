@@ -4,6 +4,7 @@ import java.nio.file.{Files, Paths}
 
 import org.musicpimp.generator.gcp.{FileUtils, GCP}
 import org.slf4j.LoggerFactory
+import play.api.libs.json.Json
 
 import scala.jdk.CollectionConverters.IteratorHasAsScala
 
@@ -30,6 +31,8 @@ object Generator {
       routes
     )
     command match {
+      case "manifest" =>
+        SiteManifest(target)
       case "clean" =>
         FileUtils.deleteDirectory(target)
       case "build" =>
@@ -40,6 +43,11 @@ object Generator {
         val gcp = GCP(target, bucketName = args(2))
         log.info(s"Deploying ${spec.targetDirectory} to ${gcp.bucketName}...")
         gcp.deploy(routes.index.name, routes.notFound.name)
+      case "website" =>
+        val web = Website(routes.index.name, routes.notFound.name, WebsiteFile.list(target, CacheControls))
+        val out = Paths.get("website.json")
+        Files.write(out, Json.toBytes(Json.toJson(web)))
+        log.info(s"Wrote '${out.toAbsolutePath}'.")
       case other =>
         throw new Exception(s"Unknown argument: '$other'.")
     }

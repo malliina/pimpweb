@@ -13,7 +13,6 @@ import scala.util.Try
 val utilHtmlVersion = "5.2.4"
 val scalatagsVersion = "0.7.0"
 val deployDocs = taskKey[Unit]("Deploys docs.musicpimp.org")
-val ncu = taskKey[Int]("Runs npm-check-updates")
 
 val commonSettings = Seq(
   organization := "org.musicpimp",
@@ -29,7 +28,7 @@ val sharedJs = shared.js
 val sharedJvm = shared.jvm
 
 val client: Project = project.in(file("client"))
-  .enablePlugins(ScalaJSBundlerPlugin, WorkbenchBasePlugin, NodeCheckPlugin)
+  .enablePlugins(ScalaJSBundlerPlugin, WorkbenchBasePlugin, NodeJsPlugin)
   .dependsOn(sharedJs)
   .settings(commonSettings)
   .settings(
@@ -79,13 +78,7 @@ val client: Project = project.in(file("client"))
       val dist = siteTarget.value
       Some((s"$dist/index.html", s"$dist/"))
     },
-    skip in publish := true,
-    ncu := {
-      val log = streams.value.log
-      val cwd = (crossTarget in (Compile, npmUpdate)).value
-      log.info(s"Running 'ncu' in $cwd...")
-      Process("ncu", cwd).run(log).exitValue()
-    }
+    skip in publish := true
   )
 
 val generator: Project = project.in(file("generator"))
