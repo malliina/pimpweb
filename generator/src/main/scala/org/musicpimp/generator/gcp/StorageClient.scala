@@ -5,8 +5,9 @@ import java.nio.file.{Files, Path, Paths}
 
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.storage.{BlobInfo, Storage, StorageOptions}
+import org.musicpimp.generator.BucketName
 
-import scala.collection.JavaConverters.asJavaCollectionConverter
+import scala.jdk.CollectionConverters.SeqHasAsJava
 
 object StorageClient {
   val credentialsFile = Paths.get(sys.props("user.home")).resolve(".gcp").resolve("credentials.json")
@@ -16,13 +17,14 @@ object StorageClient {
 
   def credentials = {
     val file = sys.env.get("GOOGLE_APPLICATION_CREDENTIALS").map(Paths.get(_)).getOrElse(credentialsFile)
-    GoogleCredentials.fromStream(new FileInputStream(file.toFile))
-      .createScoped(Seq("https://www.googleapis.com/auth/cloud-platform").asJavaCollection)
+    GoogleCredentials
+      .fromStream(new FileInputStream(file.toFile))
+      .createScoped(Seq("https://www.googleapis.com/auth/cloud-platform").asJava)
   }
 }
 
 class StorageClient(val client: Storage) {
-  def bucket(name: String) = client.get(name)
+  def bucket(name: BucketName) = client.get(name.value)
 
   def upload(blob: BlobInfo, file: Path) = client.create(blob, Files.readAllBytes(file))
 }
