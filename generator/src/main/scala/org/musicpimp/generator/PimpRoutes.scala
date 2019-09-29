@@ -23,18 +23,18 @@ case class Route(name: StorageKey, file: String, uri: String)
 
 object Route {
   def apply(name: String): Route = Route(StorageKey(name), s"$name.html", s"/$name")
-  def local(name: String): Route = Route(StorageKey(name), s"$name.html", s"$name.html")
+  def local(name: String): Route = Route(StorageKey(name), s"$name.html", s"/$name.html")
   def simple(name: String): Route = Route(StorageKey(name), name, s"/$name")
 
   implicit val v: AttrValue[Route] =
     (t: Builder, a: Text.Attr, v: Route) => t.setAttr(a.name, Builder.GenericAttrValueSource(v.uri))
 }
 
-object ProdRoutes extends ProdRoutes(true)
+object ProdRoutes extends PimpRoutes(true)
 
-object DevRoutes extends ProdRoutes(false)
+object DevRoutes extends PimpRoutes(false)
 
-class ProdRoutes(isProd: Boolean) extends Routes {
+class PimpRoutes(isProd: Boolean) extends Routes {
   def build(name: String) = if (isProd) Route(name) else Route.local(name)
 
   val about = build("about")

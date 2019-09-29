@@ -1,11 +1,38 @@
 import java.io.IOException
+import java.nio.charset.StandardCharsets
 import java.nio.file.attribute.BasicFileAttributes
-import java.nio.file.{FileVisitResult, Files, Path, SimpleFileVisitor}
+import java.nio.file.{FileVisitResult, Files, Path, SimpleFileVisitor, StandardOpenOption}
 
 import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport.{fastOptJS, fullOptJS}
+import play.api.libs.json.Json
 import sbt.Keys._
 import sbt._
 import scalajsbundler.sbtplugin.ScalaJSBundlerPlugin.autoImport.{BundlerFileType, BundlerFileTypeAttr, webpack}
+
+case class AssetGroup(scripts: Seq[File], adhocScripts: Seq[String], styles: Seq[File], statics: Seq[File]) {
+  def manifest(assetsBase: File): AssetsManifest =
+    AssetsManifest(scripts.map(_.toPath), adhocScripts, styles.map(_.toPath), statics.map(_.toPath), assetsBase.toPath)
+}
+
+/**
+  *
+  * @param assetsBase typically .../scalajs-bundler/main
+  */
+case class AssetsManifest(scripts: Seq[Path],
+                          adhocScripts: Seq[String],
+                          styles: Seq[Path],
+                          statics: Seq[Path],
+                          assetsBase: Path) {
+  def to(file: Path) = {
+    val pretty = Json.prettyPrint(AssetsManifest.json.writes(this))
+    Files.write(file, pretty.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE).toAbsolutePath
+  }
+}
+
+object AssetsManifest {
+  implicit val paths = Formats.pathFormat
+  implicit val json = Json.format[AssetsManifest]
+}
 
 /** Controls builds and deployments of a static website.
   *
@@ -25,9 +52,9 @@ object ContentPlugin extends AutoPlugin {
     val bucket = settingKey[String]("Target bucket name of website in Google Cloud Storage")
     val distDirectory = settingKey[Path]("Static site target directory")
     val build = taskKey[Unit]("Builds the website")
-    val prepare = taskKey[Unit]("Builds the site for deployment")
     val deploy = taskKey[Unit]("Deploys the website")
-    val website = taskKey[Unit]("JSONs the website")
+    val produceManifestDev = taskKey[Path]("Builds the site assets file")
+    val produceManifestProd = taskKey[Path]("Builds the site assets file")
     val buildManifest = taskKey[Path]("Builds the site manifest")
     val Static = config("static")
     val jsProject = settingKey[Project]("Scala.js project")
@@ -55,109 +82,38 @@ object ContentPlugin extends AutoPlugin {
     fullWebpack := Def.taskDyn {
       webpack.in(clientProject.value, Compile, fullOptJS in clientProject.value)
     }.value,
-    // https://github.com/sbt/sbt/issues/2975#issuecomment-358709526
-    build := Def.taskDyn {
-      val assets = prepareRelative(fastWebpack.value, distDirectory.value, assetTarget.value)
-      run in Compile toTask s" build ${distDirectory.value} /workbench.js $assets"
-    }.value,
     publishLocal in Static := build.value,
     clean in Static := deleteDirectory(distDirectory.value),
-    prepare := Def
+    // https://github.com/sbt/sbt/issues/2975#issuecomment-358709526
+    build := Def.taskDyn {
+      run in Compile toTask s" build ${produceManifestDev.value}"
+    }.value,
+    deploy := Def.taskDyn {
+      run in Compile toTask s" deploy ${produceManifestDev.value} ${bucket.value}"
+    }.value,
+    produceManifestDev := assetGroup(fastWebpack.value, adhocScripts = Seq("/workbench.js"))
+      .manifest(assetTarget.value)
+      .to(manifestFile.value),
+    produceManifestProd := assetGroup(fullWebpack.value)
+      .manifest(assetTarget.value)
+      .to(manifestFile.value),
+    produceManifestProd := produceManifestProd.dependsOn(clean in Static).value,
+    buildManifest := Def
       .taskDyn {
-        val assets = prepareRelative(fullWebpack.value, distDirectory.value, assetTarget.value)
-        run in Compile toTask s" prepare ${distDirectory.value} $assets"
+        val manifestFile = produceManifestDev.value
+        (run in Compile toTask s" manifest $manifestFile").map(_ => manifestFile)
       }
       .dependsOn(clean in Static)
       .value,
-    deploy := Def
-      .taskDyn {
-        run in Compile toTask s" deploy ${distDirectory.value} ${bucket.value}"
-      }
-      .dependsOn(prepare)
-      .value,
-    website := Def
-      .taskDyn {
-        run in Compile toTask s" website ${distDirectory.value} ${bucket.value}"
-      }
-      .dependsOn(prepare)
-      .value,
-    buildManifest := Def.taskDyn {
-      val siteFile = manifestFile.value
-      val siteManifest = prepareManifest(fastWebpack.value, distDirectory.value, assetTarget.value).to(siteFile)
-      (run in Compile toTask s" manifest ${siteFile.toAbsolutePath.toString}").map(_ => siteFile)
-    }.dependsOn(clean in Static).value,
     publish in Static := deploy.value,
     publish := deploy.value,
     // Hack to make the default release process work instead of fake error "Repository for publishing is not specified"
     publishTo := Option(Resolver.defaultLocal)
   )
 
-  case class AssetGroup(scripts: Seq[File], styles: Seq[File], statics: Seq[File])
-
-  def prepareRelative(files: Seq[Attributed[File]],
-                      distBase: Path,
-                      crossBase: File,
-                      excludePrefixes: Seq[String] = Seq("styles", "fonts", "vendors")) = {
-    val eligible = assetGroup(files, excludePrefixes)
-    val assetsDir = distBase.toFile / "assets"
-
-    def copyAndRelativize(subDir: String, file: File) = {
-      val dest = assetsDir / subDir / file.name
-      if (file.getAbsolutePath != dest.getAbsolutePath)
-        IO.copyFile(file, dest)
-      distBase.relativize(dest.toPath)
-    }
-
-    val statics = eligible.statics.flatMap { s =>
-      crossBase.relativize(s).map { relative =>
-        val dest = distBase.resolve(relative.toPath).toFile
-        IO.copyFile(s, dest)
-        relative.toPath
-      }
-    }
-
-    val relative =
-      eligible.styles.map(copyAndRelativize("css", _)) ++
-        eligible.scripts.map(copyAndRelativize("js", _)) ++ statics
-    relative
-      .map { p =>
-        val r = p.toFile.getPath
-        if (r.startsWith("/")) r else s"/$r"
-      }
-      .mkString(" ")
-  }
-
-  def prepareManifest(files: Seq[Attributed[File]],
-                      distBase: Path,
-                      crossBase: File,
-                      excludePrefixes: Seq[String] = Seq("styles", "fonts", "vendors")): SiteManifest = {
-    val eligible = assetGroup(files, excludePrefixes)
-    val assetsDir = distBase.toFile / "assets"
-
-    def copyAndRelativize(subDir: String, file: File): Path = {
-      val dest = assetsDir / subDir / file.name
-      if (file.getAbsolutePath != dest.getAbsolutePath)
-        IO.copyFile(file, dest)
-      distBase.relativize(dest.toPath)
-    }
-
-    val statics = eligible.statics.flatMap { s =>
-      crossBase.relativize(s).map { relative =>
-        val dest = distBase.resolve(relative.toPath).toFile
-        IO.copyFile(s, dest)
-        relative.toPath
-      }
-    }
-    SiteManifest(
-      eligible.styles.map(copyAndRelativize("css", _)).map(_.toAbsolutePath.toString),
-      eligible.scripts.map(copyAndRelativize("js", _)).map(_.toAbsolutePath.toString),
-      Nil,
-      statics.map(_.toAbsolutePath.toString),
-      distBase
-    )
-  }
-
-  def assetGroup(files: Seq[Attributed[File]], excludePrefixes: Seq[String]): AssetGroup = {
+  def assetGroup(files: Seq[Attributed[File]],
+                 excludePrefixes: Seq[String] = Seq("styles", "fonts", "vendors"),
+                 adhocScripts: Seq[String] = Nil): AssetGroup = {
     def filesOf(fileType: BundlerFileType) = files.filter(_.metadata.get(BundlerFileTypeAttr).contains(fileType))
 
     // Orders library scripts before app scripts
@@ -171,7 +127,7 @@ object ContentPlugin extends AutoPlugin {
       .distinct
     val styles = files.map(_.data).filter(_.ext == "css")
     val statics = files.map(_.data).filter(f => f.ext != "css" && f.ext != "js")
-    AssetGroup(scripts, styles, statics)
+    AssetGroup(scripts, Seq("/workbench.js"), styles, statics)
   }
 
   // https://stackoverflow.com/a/27917071

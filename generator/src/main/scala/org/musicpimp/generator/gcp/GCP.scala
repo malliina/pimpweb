@@ -19,7 +19,7 @@ object GCP {
   implicit val executionContext: ExecutionContextExecutorService =
     ExecutionContext.fromExecutorService(Executors.newCachedThreadPool())
 
-  def apply(dist: Path, bucketName: BucketName) = new GCP(bucketName, StorageClient())
+  def apply(bucketName: BucketName) = new GCP(bucketName, StorageClient())
 }
 
 /** Deploys files in `dist` to `bucketName` in Google Cloud Storage.
@@ -38,7 +38,8 @@ class GCP(val bucketName: BucketName, client: StorageClient) {
   }
 
   def deploy(website: Website): Unit = {
-    val uploads = Future.traverse(website.files) { file =>
+    log.info(s"Deploying to GCP bucket '$bucketName'...")
+    val uploads = Future.traverse(website.files.files) { file =>
       upload(file)
     }
     Await.result(uploads, 180.seconds)
@@ -46,7 +47,7 @@ class GCP(val bucketName: BucketName, client: StorageClient) {
     log.info(s"Set index page to '${website.indexKey}'.")
     bucket.toBuilder.setNotFoundPage(website.notFoundKey.value).build().update()
     log.info(s"Set 404 page to '${website.notFoundKey}'.")
-    log.info(s"Deployed to '$bucketName'.")
+    log.info(s"Deployed to GCP bucket '$bucketName'.")
     executionContext.shutdown()
   }
 
@@ -54,9 +55,9 @@ class GCP(val bucketName: BucketName, client: StorageClient) {
     val key = websiteFile.key
     val file = websiteFile.file
     val name = websiteFile.name
-    val contentType = ContentTypes.resolve(file)
+    val contentType = websiteFile.contentType
     val blob = BlobInfo
-      .newBuilder(bucketName.name, key.value)
+      .newBuilder(bucketName.value, key.value)
       .setContentType(contentType.value)
       .setAcl(Seq(Acl.of(User.ofAllUsers(), Role.READER)).asJava)
       .setContentEncoding("gzip")

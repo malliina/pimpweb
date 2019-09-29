@@ -24,7 +24,7 @@ object StorageClient {
 }
 
 class StorageClient(val client: Storage) {
-  def bucket(name: BucketName) = client.get(name.name)
+  def bucket(name: BucketName) = client.get(name.value)
 
   def upload(blob: BlobInfo, file: Path) = client.create(blob, Files.readAllBytes(file))
 }

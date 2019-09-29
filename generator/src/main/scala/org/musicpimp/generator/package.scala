@@ -1,19 +1,17 @@
 package org.musicpimp
 
-import java.nio.file.{Path, Paths}
+import java.nio.file.Path
 
-import play.api.libs.json.{Format, Json, Reads, Writes}
+import play.api.libs.json.Format
 
 package object generator {
-  implicit val pathFormat: Format[Path] = Format[Path](
-    Reads(json => json.validate[String].map(s => Paths.get(s))),
-    Writes(p => Json.toJson(p.toAbsolutePath.toString))
-  )
+  implicit val pathFormat: Format[Path] = Formats.pathFormat
 
   implicit class PathOps(val path: Path) extends AnyVal {
     def extension = PathUtils.ext(path)
-
     def name = path.getFileName.toString
+    def /(name: String): Path = path.resolve(name)
+    def /(name: Path): Path = path.resolve(name)
   }
 
 }
