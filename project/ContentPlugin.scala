@@ -25,7 +25,7 @@ case class AssetsManifest(scripts: Seq[Path],
                           assetsBase: Path) {
   def to(file: Path) = {
     val pretty = Json.prettyPrint(AssetsManifest.json.writes(this))
-    Files.write(file, pretty.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE).toAbsolutePath
+    Files.write(file, pretty.getBytes(StandardCharsets.UTF_8), StandardOpenOption.TRUNCATE_EXISTING).toAbsolutePath
   }
 }
 
