@@ -55,7 +55,6 @@ object ContentPlugin extends AutoPlugin {
     val deploy = taskKey[Unit]("Deploys the website")
     val produceManifestDev = taskKey[Path]("Builds the site assets file")
     val produceManifestProd = taskKey[Path]("Builds the site assets file")
-    val buildManifest = taskKey[Path]("Builds the site manifest")
     val Static = config("static")
     val jsProject = settingKey[Project]("Scala.js project")
     val fastWebpack = taskKey[Seq[Attributed[File]]]("Dev webpack")
@@ -98,13 +97,6 @@ object ContentPlugin extends AutoPlugin {
       .manifest(assetTarget.value)
       .to(manifestFile.value),
     produceManifestProd := produceManifestProd.dependsOn(clean in Static).value,
-    buildManifest := Def
-      .taskDyn {
-        val manifestFile = produceManifestDev.value
-        (run in Compile toTask s" manifest $manifestFile").map(_ => manifestFile)
-      }
-      .dependsOn(clean in Static)
-      .value,
     publish in Static := deploy.value,
     publish := deploy.value,
     // Hack to make the default release process work instead of fake error "Repository for publishing is not specified"
