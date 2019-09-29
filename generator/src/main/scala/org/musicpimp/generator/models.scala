@@ -4,6 +4,10 @@ import java.nio.file.{Files, Path, StandardOpenOption}
 
 import play.api.libs.json.{JsResult, Json}
 
+case class BucketName(name: String) extends AnyVal {
+  override def toString = name
+}
+
 /**
   * @param from local file
   * @param to   relative to the target directory

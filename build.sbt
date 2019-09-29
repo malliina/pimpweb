@@ -16,7 +16,7 @@ val deployDocs = taskKey[Unit]("Deploys docs.musicpimp.org")
 
 val commonSettings = Seq(
   organization := "org.musicpimp",
-  scalaVersion := "2.13.0"
+  scalaVersion := "2.13.1"
 )
 val siteTarget = settingKey[Path]("Content target")
 ThisBuild / siteTarget := (target.value / "dist").toPath
@@ -27,7 +27,8 @@ val shared = crossProject(JSPlatform, JVMPlatform)
 val sharedJs = shared.js
 val sharedJvm = shared.jvm
 
-val client: Project = project.in(file("client"))
+val client: Project = project
+  .in(file("client"))
   .enablePlugins(ScalaJSBundlerPlugin, WorkbenchBasePlugin, NodeJsPlugin)
   .dependsOn(sharedJs)
   .settings(commonSettings)
@@ -81,7 +82,8 @@ val client: Project = project.in(file("client"))
     skip in publish := true
   )
 
-val generator: Project = project.in(file("generator"))
+val generator: Project = project
+  .in(file("generator"))
   .enablePlugins(ContentPlugin, BuildInfoPlugin, NodeJsPlugin)
   .dependsOn(sharedJvm)
   .settings(commonSettings)
@@ -113,7 +115,8 @@ val generator: Project = project.in(file("generator"))
     buildInfoPackage := "org.musicpimp.generator"
   )
 
-val pimpweb = project.in(file("."))
+val pimpweb = project
+  .in(file("."))
   .aggregate(client, generator)
   .settings(
     build := build.in(generator).value,

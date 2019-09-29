@@ -1,5 +1,6 @@
 package org.musicpimp.generator
 
+import java.nio.charset.StandardCharsets
 import java.nio.file.{Files, Paths}
 
 import org.musicpimp.generator.gcp.{FileUtils, GCP}
@@ -40,13 +41,13 @@ object Generator {
       case "prepare" =>
         Site.build(spec)
       case "deploy" =>
-        val gcp = GCP(target, bucketName = args(2))
+        val gcp = GCP(target, bucketName = BucketName(args(2)))
         log.info(s"Deploying ${spec.targetDirectory} to ${gcp.bucketName}...")
-        gcp.deploy(routes.index.name, routes.notFound.name)
+        gcp.deploy(Website(routes.index.name, routes.notFound.name, WebsiteFile.list(target, CacheControls)))
       case "website" =>
         val web = Website(routes.index.name, routes.notFound.name, WebsiteFile.list(target, CacheControls))
         val out = Paths.get("website.json")
-        Files.write(out, Json.toBytes(Json.toJson(web)))
+        Files.write(out, Json.prettyPrint(Json.toJson(web)).getBytes(StandardCharsets.UTF_8))
         log.info(s"Wrote '${out.toAbsolutePath}'.")
       case other =>
         throw new Exception(s"Unknown argument: '$other'.")

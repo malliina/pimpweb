@@ -7,9 +7,8 @@ import java.util.zip.GZIPOutputStream
 
 import com.google.cloud.storage.Acl.{Role, User}
 import com.google.cloud.storage.{Acl, BlobInfo}
-import org.musicpimp.PathUtils
-import org.musicpimp.generator.{CacheControl, CacheControls, ContentTypes, StorageKey, Website, WebsiteFile}
 import org.musicpimp.generator.gcp.GCP.executionContext
+import org.musicpimp.generator.{BucketName, ContentTypes, Website, WebsiteFile}
 import org.slf4j.LoggerFactory
 
 import scala.concurrent.duration.DurationInt
@@ -20,34 +19,33 @@ object GCP {
   implicit val executionContext: ExecutionContextExecutorService =
     ExecutionContext.fromExecutorService(Executors.newCachedThreadPool())
 
-  def apply(dist: Path, bucketName: String) = new GCP(dist, bucketName, StorageClient())
+  def apply(dist: Path, bucketName: BucketName) = new GCP(bucketName, StorageClient())
 }
 
 /** Deploys files in `dist` to `bucketName` in Google Cloud Storage.
   */
-class GCP(dist: Path, val bucketName: String, client: StorageClient) {
+class GCP(val bucketName: BucketName, client: StorageClient) {
   private val log = LoggerFactory.getLogger(getClass)
   val bucket = client.bucket(bucketName)
 
   val contentTypes = ContentTypes.contentTypes
 
-  def deployDryRun(): Unit = {
+  def deployDryRun(dist: Path): Unit = {
     Files.walk(dist).iterator().asScala.toList.filter(p => Files.isRegularFile(p)).foreach { p =>
       val relative = dist.relativize(p).toString.replace('\\', '/')
       println(relative)
     }
   }
 
-  def deploy(indexFile: StorageKey, notFoundFile: StorageKey, stripHtmlExt: Boolean = true): Unit = {
-    val website = Website(indexFile, notFoundFile, WebsiteFile.list(dist, CacheControls))
+  def deploy(website: Website): Unit = {
     val uploads = Future.traverse(website.files) { file =>
       upload(file)
     }
     Await.result(uploads, 180.seconds)
-    bucket.toBuilder.setIndexPage(indexFile.value).build().update()
-    log.info(s"Set index page to '$indexFile'.")
-    bucket.toBuilder.setNotFoundPage(notFoundFile.value).build().update()
-    log.info(s"Set 404 page to '$notFoundFile'.")
+    bucket.toBuilder.setIndexPage(website.indexKey.value).build().update()
+    log.info(s"Set index page to '${website.indexKey}'.")
+    bucket.toBuilder.setNotFoundPage(website.notFoundKey.value).build().update()
+    log.info(s"Set 404 page to '${website.notFoundKey}'.")
     log.info(s"Deployed to '$bucketName'.")
     executionContext.shutdown()
   }
@@ -58,7 +56,7 @@ class GCP(dist: Path, val bucketName: String, client: StorageClient) {
     val name = websiteFile.name
     val contentType = ContentTypes.resolve(file)
     val blob = BlobInfo
-      .newBuilder(bucketName, key.value)
+      .newBuilder(bucketName.name, key.value)
       .setContentType(contentType.value)
       .setAcl(Seq(Acl.of(User.ofAllUsers(), Role.READER)).asJava)
       .setContentEncoding("gzip")
@@ -67,8 +65,7 @@ class GCP(dist: Path, val bucketName: String, client: StorageClient) {
     val gzipFile = Files.createTempFile(name, "gz")
     gzip(file, gzipFile)
     client.upload(blob, gzipFile)
-    log.info(
-      s"Uploaded '$file' as '$key' of '$contentType' with cache '${websiteFile.cacheControl}' to '$bucketName'.")
+    log.info(s"Uploaded '$file' as '$key' of '$contentType' with cache '${websiteFile.cacheControl}' to '$bucketName'.")
     gzipFile
   }
 
