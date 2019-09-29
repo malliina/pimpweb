@@ -88,7 +88,7 @@ object ContentPlugin extends AutoPlugin {
       run in Compile toTask s" build ${produceManifestDev.value}"
     }.value,
     deploy := Def.taskDyn {
-      run in Compile toTask s" deploy ${produceManifestDev.value} ${bucket.value}"
+      run in Compile toTask s" deploy ${produceManifestProd.value} ${bucket.value}"
     }.value,
     produceManifestDev := assetGroup(fastWebpack.value, adhocScripts = Seq("/workbench.js"))
       .manifest(assetTarget.value)
