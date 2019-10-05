@@ -1,9 +1,9 @@
-package org.musicpimp.generator
+package com.malliina.generator
 
 import java.nio.file.{Files, Path}
 
+import com.malliina.PathUtils
 import com.malliina.values.{StringCompanion, WrappedString}
-import org.musicpimp.PathUtils
 import play.api.libs.json.Json
 
 import scala.jdk.CollectionConverters.IteratorHasAsScala
@@ -27,12 +27,6 @@ object StorageKey extends StringCompanion[StorageKey] {
     StorageKey(if (chopped.startsWith("/")) chopped.drop(1) else chopped)
   }
 }
-
-case class CacheControl(value: String) extends AnyVal with WrappedString
-object CacheControl extends StringCompanion[CacheControl]
-
-case class ContentType(value: String) extends AnyVal with WrappedString
-object ContentType extends StringCompanion[ContentType]
 
 case class WebsiteFile(
   file: Path,
@@ -70,13 +64,4 @@ object WebsiteFile {
       val cacheControl = cacheControls.compute(file, key)
       WebsiteFile(file, key, ContentTypes.resolve(file), cacheControl)
     }
-}
-
-case class Website(indexKey: StorageKey, notFoundKey: StorageKey, files: BuiltSite)
-
-object Website {
-  implicit val json = Json.format[Website]
-
-  val defaultIndexFile = StorageKey("index")
-  val defaultNotFoundFile = StorageKey("404")
 }

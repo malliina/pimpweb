@@ -1,9 +1,18 @@
-package org.musicpimp.generator
+package com.malliina.generator
 
 import java.nio.file.{Files, Path, StandardOpenOption}
 
-import com.malliina.values.WrappedString
+import com.malliina.values.{StringCompanion, WrappedString}
 import play.api.libs.json.{JsResult, Json}
+import scalatags.Text.all.AttrValue
+
+case class BuildCommand(cmd: String, manifest: Path, bucket: Option[BucketName])
+
+case class CacheControl(value: String) extends AnyVal with WrappedString
+object CacheControl extends StringCompanion[CacheControl]
+
+case class ContentType(value: String) extends AnyVal with WrappedString
+object ContentType extends StringCompanion[ContentType]
 
 case class BucketName(value: String) extends AnyVal with WrappedString
 
@@ -13,11 +22,21 @@ case class MappedAssets(
   styles: Seq[FileMapping],
   other: Seq[FileMapping]) {
   def all = scripts ++ styles ++ other
-  def site(pages: Seq[PageMapping], other: Seq[ByteMapping]) = CompleteSite(this, pages, other)
+  def site(
+    pages: Seq[PageMapping],
+    other: Seq[ByteMapping],
+    index: StorageKey,
+    notFound: StorageKey
+  ) = CompleteSite(this, pages, other, index, notFound)
   def withOther(otherFiles: Seq[FileMapping]) = MappedAssets(scripts, adhocScripts, styles, other ++ otherFiles)
 }
 
-case class CompleteSite(assets: MappedAssets, pages: Seq[PageMapping], bytes: Seq[ByteMapping]) {
+case class CompleteSite(
+  assets: MappedAssets,
+  pages: Seq[PageMapping],
+  bytes: Seq[ByteMapping],
+  index: StorageKey,
+  notFound: StorageKey) {
 
   /** Writes the site to `base`.
     *
@@ -38,7 +57,7 @@ case class CompleteSite(assets: MappedAssets, pages: Seq[PageMapping], bytes: Se
       WebsiteFile(out, byteMapping.to)
     }
 
-    BuiltSite(pageFiles ++ assetFiles ++ otherFiles)
+    BuiltSite(pageFiles ++ assetFiles ++ otherFiles, index, notFound)
   }
 }
 
@@ -93,23 +112,16 @@ object SiteManifest {
     Json.parse(Files.readAllBytes(file)).validate[SiteManifest]
 }
 
-case class SiteSpec(
-  css: Seq[FileMapping],
-  js: Seq[FileMapping],
-  assets: Seq[FileMapping],
-  statics: Seq[FileMapping],
-  targetDirectory: Path,
-  routes: Routes) {
-  def all = css ++ js ++ assets ++ statics
-}
-
 /**
   * @param files files written
   */
-case class BuiltSite(files: Seq[WebsiteFile])
+case class BuiltSite(files: Seq[WebsiteFile], index: StorageKey, notFound: StorageKey)
 
 object BuiltSite {
   implicit val json = Json.format[BuiltSite]
+
+  val defaultIndexFile = StorageKey("index")
+  val defaultNotFoundFile = StorageKey("404")
 }
 
 case class VersionInfo(name: String, version: String, gitHash: String)
@@ -119,3 +131,22 @@ object VersionInfo {
 
   val default: VersionInfo = VersionInfo(BuildInfo.name, BuildInfo.version, BuildInfo.gitHash)
 }
+
+case class Route(name: StorageKey, file: String, uri: String)
+
+object Route {
+  def apply(name: String): Route = Route(StorageKey(name), s"$name.html", s"/$name")
+  def local(name: String): Route = Route(StorageKey(name), s"$name.html", s"/$name.html")
+  def simple(name: String): Route = Route(StorageKey(name), name, s"/$name")
+
+  implicit val v: AttrValue[Route] = HTML.attrValue(_.uri)
+}
+
+sealed trait AppMode
+
+object AppMode {
+  case object Dev extends AppMode
+  case object Prod extends AppMode
+}
+
+case class BuiltPages(pages: Seq[PageMapping], index: StorageKey, notFound: StorageKey)

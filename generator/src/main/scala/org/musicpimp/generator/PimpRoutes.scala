@@ -1,8 +1,6 @@
 package org.musicpimp.generator
 
-import scalatags.Text
-import scalatags.Text.all._
-import scalatags.text.Builder
+import com.malliina.generator.{Route, StorageKey}
 
 trait Routes {
   def about: Route
@@ -16,18 +14,6 @@ trait Routes {
   def notFound: Route
   def ping: Route
   def wp: Route
-  def build: Route
-}
-
-case class Route(name: StorageKey, file: String, uri: String)
-
-object Route {
-  def apply(name: String): Route = Route(StorageKey(name), s"$name.html", s"/$name")
-  def local(name: String): Route = Route(StorageKey(name), s"$name.html", s"/$name.html")
-  def simple(name: String): Route = Route(StorageKey(name), name, s"/$name")
-
-  implicit val v: AttrValue[Route] =
-    (t: Builder, a: Text.Attr, v: Route) => t.setAttr(a.name, Builder.GenericAttrValueSource(v.uri))
 }
 
 object ProdRoutes extends PimpRoutes(true)
@@ -48,7 +34,6 @@ class PimpRoutes(isProd: Boolean) extends Routes {
   val notFound = build("notfound")
   val ping = build("ping")
   val wp = build("docs/wp")
-  val build = Route.simple("build.json")
 }
 
 object Images extends Images

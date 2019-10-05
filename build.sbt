@@ -112,7 +112,7 @@ val generator: Project = project
     releasePublishArtifactsAction := Def.sequential(publish, deployDocs).value,
     publishTo := Option(Resolver.defaultLocal),
     buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, "gitHash" -> gitHash),
-    buildInfoPackage := "org.musicpimp.generator"
+    buildInfoPackage := "com.malliina.generator"
   )
 
 val pimpweb = project

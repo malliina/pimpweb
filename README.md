@@ -15,7 +15,7 @@ Code changes in JavaScript, HTML or CSS triggers a browser refresh automatically
 ### Code structure
 
 - Scala.js frontend code in [client](client)
-- Stylesheets in [client/css](client/css)
+- Stylesheets in [client/src/main/resources/css](client/src/main/resources/css)
 - Site generator in [generator](generator)
 
 ## Deployments
@@ -25,8 +25,11 @@ documentation site at [docs.musicpimp.org](https://docs.musicpimp.org).
 
 Prerequisites:
 
-    pip install mkdocs
-    pip install mkdocs-material
+1. GCP service account credentials in `~/.gcp/credentials.json`.
+1. MkDocs:
+
+        pip install mkdocs
+        pip install mkdocs-material
 
 To deploy both the main website and documentation site:
 
@@ -41,6 +44,14 @@ via a CNAME entry in CloudFlare.
 The documentation site is a GitHub Pages site using the 
 [Material theme](https://squidfunk.github.io/mkdocs-material/) for 
 [MkDocs](https://www.mkdocs.org/).
+
+### HTML generation
+
+Implement trait [Generator](generator/src/main/scala/com/malliina/generator/Generator.scala). It has one method:
+
+    def pages(assets: MappedAssets, assetFinder: AssetFinder, mode: AppMode): BuiltPages
+    
+Its return value is a mapping of HTML content to paths, which is used by the site generator to deploy the desired pages.
 
 ### Asset generation
 

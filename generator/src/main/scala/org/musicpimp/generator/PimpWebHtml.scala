@@ -1,5 +1,6 @@
 package org.musicpimp.generator
 
+import com.malliina.generator.{AssetFinder, AssetPath, HTML, TagPage}
 import com.malliina.html.{Bootstrap, HtmlTags}
 import com.malliina.pimpweb.{Download, FrontKeys}
 import org.musicpimp.generator.PimpWebHtml.{Page, PageConf, PageTitle, subHeader}
@@ -33,18 +34,15 @@ class PimpWebHtml(
   js: Seq[AssetPath],
   homeRoute: Routes,
   assetFinder: AssetFinder)
-    extends Bootstrap(HtmlTags) {
+    extends Bootstrap(HtmlTags)
+    with HTML {
 
   import tags._
 
   val DocsUrl = "https://docs.musicpimp.org"
 
-  val titleTag = tag("title")
-  val defer = attr("defer").empty
   val images = Images
 
-  def aHref(url: String): Modifier = aHref(url, url)
-  def aHref[V: AttrValue](url: V, text: String): Modifier = a(href := url)(text)
   def asset(path: AssetPath) = assetFinder.path(path)
 
   val index = indexNoContainer("home")(

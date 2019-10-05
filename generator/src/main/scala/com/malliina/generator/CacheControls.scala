@@ -1,8 +1,7 @@
-package org.musicpimp.generator
+package com.malliina.generator
 
 import java.nio.file.Path
-
-import org.musicpimp.PathUtils
+import com.malliina.PathUtils
 
 object CacheControls extends CacheControls
 

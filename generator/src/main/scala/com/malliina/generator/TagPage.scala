@@ -1,4 +1,4 @@
-package org.musicpimp.generator
+package com.malliina.generator
 
 import java.nio.charset.StandardCharsets
 import java.nio.file.{Files, Path, StandardOpenOption}

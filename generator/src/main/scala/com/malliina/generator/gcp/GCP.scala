@@ -1,14 +1,12 @@
-package org.musicpimp.generator.gcp
+package com.malliina.generator.gcp
 
-import java.io._
 import java.nio.file._
 import java.util.concurrent.Executors
-import java.util.zip.GZIPOutputStream
 
 import com.google.cloud.storage.Acl.{Role, User}
 import com.google.cloud.storage.{Acl, BlobInfo}
-import org.musicpimp.generator.gcp.GCP.executionContext
-import org.musicpimp.generator.{BucketName, ContentTypes, Website, WebsiteFile}
+import com.malliina.generator.gcp.GCP.executionContext
+import com.malliina.generator.{BucketName, BuiltSite, ContentTypes, FileIO, WebsiteFile}
 import org.slf4j.LoggerFactory
 
 import scala.concurrent.duration.DurationInt
@@ -20,6 +18,8 @@ object GCP {
     ExecutionContext.fromExecutorService(Executors.newCachedThreadPool())
 
   def apply(bucketName: BucketName) = new GCP(bucketName, StorageClient())
+
+  def close(): Unit = executionContext.shutdown()
 }
 
 /** Deploys files in `dist` to `bucketName` in Google Cloud Storage.
@@ -37,16 +37,16 @@ class GCP(val bucketName: BucketName, client: StorageClient) {
     }
   }
 
-  def deploy(website: Website): Unit = {
+  def deploy(website: BuiltSite): Unit = {
     log.info(s"Deploying to GCP bucket '$bucketName'...")
-    val uploads = Future.traverse(website.files.files) { file =>
+    val uploads = Future.traverse(website.files) { file =>
       upload(file)
     }
     Await.result(uploads, 180.seconds)
-    bucket.toBuilder.setIndexPage(website.indexKey.value).build().update()
-    log.info(s"Set index page to '${website.indexKey}'.")
-    bucket.toBuilder.setNotFoundPage(website.notFoundKey.value).build().update()
-    log.info(s"Set 404 page to '${website.notFoundKey}'.")
+    bucket.toBuilder.setIndexPage(website.index.value).build().update()
+    log.info(s"Set index page to '${website.index}'.")
+    bucket.toBuilder.setNotFoundPage(website.notFound.value).build().update()
+    log.info(s"Set 404 page to '${website.notFound}'.")
     log.info(s"Deployed to GCP bucket '$bucketName'.")
     executionContext.shutdown()
   }
@@ -64,41 +64,9 @@ class GCP(val bucketName: BucketName, client: StorageClient) {
       .setCacheControl(websiteFile.cacheControl.value)
       .build()
     val gzipFile = Files.createTempFile(name, "gz")
-    gzip(file, gzipFile)
+    FileIO.gzip(file, gzipFile)
     client.upload(blob, gzipFile)
     log.info(s"Uploaded '$file' as '$key' of '$contentType' with cache '${websiteFile.cacheControl}' to '$bucketName'.")
     gzipFile
   }
-
-  def gzip(src: Path, dest: Path): Unit =
-    using(new FileInputStream(src.toFile)) { in =>
-      using(new FileOutputStream(dest.toFile)) { out =>
-        using(new GZIPOutputStream(out, 8192)) { gzip =>
-          copyStream(in, gzip)
-          gzip.finish()
-        }
-      }
-    }
-
-  // Adapted from sbt-io
-  private def copyStream(in: InputStream, out: OutputStream): Unit = {
-    val buffer = new Array[Byte](8192)
-
-    def read(): Unit = {
-      val byteCount = in.read(buffer)
-      if (byteCount >= 0) {
-        out.write(buffer, 0, byteCount)
-        read()
-      }
-    }
-
-    read()
-  }
-
-  def using[T <: AutoCloseable, U](res: T)(code: T => U): U =
-    try {
-      code(res)
-    } finally {
-      res.close()
-    }
 }

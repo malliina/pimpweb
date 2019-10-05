@@ -1,16 +1,13 @@
-package org.musicpimp.generator
+package com.malliina.generator
 
 import java.nio.file.{Files, Path}
 
+import com.malliina.PathUtils
 import com.malliina.values.{StringCompanion, WrappedString}
 import org.apache.commons.codec.digest.DigestUtils
-import org.musicpimp.PathUtils
-import scalatags.Text
+import scalatags.Text.all._
 
 import scala.collection.concurrent.TrieMap
-import scalatags.Text.all._
-import scalatags.text.Builder
-
 import scala.language.implicitConversions
 
 case class AssetPath(value: String) extends AnyVal with WrappedString {
@@ -22,10 +19,7 @@ case class AssetPath(value: String) extends AnyVal with WrappedString {
 }
 
 object AssetPath extends StringCompanion[AssetPath] {
-  implicit val v: AttrValue[AssetPath] = attrValue(_.value)
-
-  def attrValue[T](f: T => String): AttrValue[T] =
-    (t: Builder, a: Text.Attr, v: T) => t.setAttr(a.name, Builder.GenericAttrValueSource(f(v)))
+  implicit val v: AttrValue[AssetPath] = HTML.attrValue(_.value)
 
   implicit def fromString(s: String): AssetPath = apply(s)
 }

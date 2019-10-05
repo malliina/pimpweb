@@ -1,4 +1,4 @@
-package org.musicpimp
+package com.malliina
 
 import java.nio.file.Path
 

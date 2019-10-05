@@ -1,11 +1,11 @@
-package org.musicpimp.generator.gcp
+package com.malliina.generator.gcp
 
 import java.io.FileInputStream
 import java.nio.file.{Files, Path, Paths}
 
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.storage.{BlobInfo, Storage, StorageOptions}
-import org.musicpimp.generator.BucketName
+import com.malliina.generator.BucketName
 
 import scala.jdk.CollectionConverters.SeqHasAsJava
 
