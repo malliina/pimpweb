@@ -9,7 +9,11 @@ import sbt.Keys._
 import sbt._
 import scalajsbundler.sbtplugin.ScalaJSBundlerPlugin.autoImport.{BundlerFileType, BundlerFileTypeAttr, webpack}
 
-case class AssetGroup(scripts: Seq[File], adhocScripts: Seq[String], styles: Seq[File], statics: Seq[File]) {
+case class AssetGroup(
+  scripts: Seq[File],
+  adhocScripts: Seq[String],
+  styles: Seq[File],
+  statics: Seq[File]) {
   def manifest(assetsBase: File): AssetsManifest =
     AssetsManifest(scripts.map(_.toPath), adhocScripts, styles.map(_.toPath), statics.map(_.toPath), assetsBase.toPath)
 }
@@ -18,11 +22,12 @@ case class AssetGroup(scripts: Seq[File], adhocScripts: Seq[String], styles: Seq
   *
   * @param assetsBase typically .../scalajs-bundler/main
   */
-case class AssetsManifest(scripts: Seq[Path],
-                          adhocScripts: Seq[String],
-                          styles: Seq[Path],
-                          statics: Seq[Path],
-                          assetsBase: Path) {
+case class AssetsManifest(
+  scripts: Seq[Path],
+  adhocScripts: Seq[String],
+  styles: Seq[Path],
+  statics: Seq[Path],
+  assetsBase: Path) {
   def to(file: Path) = {
     val pretty = Json.prettyPrint(AssetsManifest.json.writes(this))
     Files.write(file, pretty.getBytes(StandardCharsets.UTF_8), StandardOpenOption.TRUNCATE_EXISTING).toAbsolutePath
@@ -103,9 +108,11 @@ object ContentPlugin extends AutoPlugin {
     publishTo := Option(Resolver.defaultLocal)
   )
 
-  def assetGroup(files: Seq[Attributed[File]],
-                 excludePrefixes: Seq[String] = Seq("styles", "fonts", "vendors"),
-                 adhocScripts: Seq[String] = Nil): AssetGroup = {
+  def assetGroup(
+    files: Seq[Attributed[File]],
+    excludePrefixes: Seq[String] = Seq("styles", "fonts", "vendors"),
+    adhocScripts: Seq[String] = Nil
+  ): AssetGroup = {
     def filesOf(fileType: BundlerFileType) = files.filter(_.metadata.get(BundlerFileTypeAttr).contains(fileType))
 
     // Orders library scripts before app scripts

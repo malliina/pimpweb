@@ -9,20 +9,21 @@ object CacheControls extends CacheControls
 trait CacheControls {
   val defaultCacheControl = CacheControl("public, max-age=60")
   val eternalCache = CacheControl("public, max-age=31536000")
-  val cacheControls = Map(
-    "js" -> eternalCache,
-    "css" -> eternalCache,
-    "jpg" -> eternalCache,
-    "png" -> eternalCache,
-    "svg" -> eternalCache,
+  val eternallyCached = Seq("js", "css", "jpg", "png", "svg", "woff", "woff2", "ttf", "svg", "eot")
+  val eternalControls = eternallyCached.map { k =>
+    k -> eternalCache
+  }.toMap
+  val cacheControls = eternalControls ++ Map(
     "html" -> CacheControl("public, max-age=60")
   )
 
   def compute(file: Path, key: StorageKey): CacheControl = {
     val name = file.getFileName.toString
-    val isFingerprinted = name.count(_ == '.') > 1
-    if (key.startsWith("assets/static")) eternalCache
-    else if (isFingerprinted) cacheControls.getOrElse(PathUtils.ext(file), defaultCacheControl)
+    compute(file, name.count(_ == '.') > 1)
+  }
+
+  def compute(file: Path, isFingerprinted: Boolean): CacheControl = {
+    if (isFingerprinted) cacheControls.getOrElse(PathUtils.ext(file), defaultCacheControl)
     else defaultCacheControl
   }
 }

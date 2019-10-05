@@ -1,5 +1,6 @@
 package org.musicpimp.generator
 
+import java.nio.charset.StandardCharsets
 import java.nio.file.{Files, Path, StandardCopyOption, StandardOpenOption}
 
 import org.slf4j.LoggerFactory
@@ -10,7 +11,8 @@ object FileIO extends FileIO
 class FileIO {
   private val log = LoggerFactory.getLogger(getClass)
 
-  def writeJson[T: Writes](t: T, to: Path): Path = write(Json.toBytes(Json.toJson(t)), to)
+  def writeJson[T: Writes](t: T, to: Path): Path =
+    write(Json.prettyPrint(Json.toJson(t)).getBytes(StandardCharsets.UTF_8), to)
 
   def write(page: TagPage, to: Path): Path = write(page.toBytes, to)
 

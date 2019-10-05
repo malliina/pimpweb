@@ -32,7 +32,8 @@ class DownloadsPage extends com.malliina.html.Bootstrap(JSTags) {
             .map(_.name)
             .filterNot(name => Downloads.latestDownloads.exists(_.fileName == name))
             .sorted
-            .reverse)
+            .reverse
+        )
       }
       .left
       .foreach { err =>

@@ -9,23 +9,31 @@ object PimpWebHtml {
   val PageTitle = "MusicPimp"
   val subHeader = "No ads. No social media. Pure music."
 
-  def apply(css: Seq[String], js: Seq[String], routes: Routes): PimpWebHtml = new PimpWebHtml(css, js, routes)
+  def apply(
+    css: Seq[AssetPath],
+    js: Seq[AssetPath],
+    routes: Routes,
+    paths: AssetFinder
+  ): PimpWebHtml =
+    new PimpWebHtml(css, js, routes, paths)
 
   trait PageConf {
     def title: String
-
     def bodyClasses: Seq[String]
   }
 
   case class Page(title: String, bodyClasses: Seq[String]) extends PageConf
-
   object Page {
     def default = Page(PageTitle, Nil)
   }
-
 }
 
-class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends Bootstrap(HtmlTags) {
+class PimpWebHtml(
+  css: Seq[AssetPath],
+  js: Seq[AssetPath],
+  homeRoute: Routes,
+  assetFinder: AssetFinder)
+    extends Bootstrap(HtmlTags) {
 
   import tags._
 
@@ -36,8 +44,8 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
   val images = Images
 
   def aHref(url: String): Modifier = aHref(url, url)
-
   def aHref[V: AttrValue](url: V, text: String): Modifier = a(href := url)(text)
+  def asset(path: AssetPath) = assetFinder.path(path)
 
   val index = indexNoContainer("home")(
     divClass(Jumbotron)(
@@ -45,7 +53,8 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
         h1("MusicPimp"),
         h2(subHeader),
         leadNormal(
-          "Control your music libraries with your phone. Play the music on your phone, home stereo system, in your car or stream it anywhere.")
+          "Control your music libraries with your phone. Play the music on your phone, home stereo system, in your car or stream it anywhere."
+        )
       )
     ),
     divClass("container page-content")(
@@ -79,7 +88,7 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
               "."
             )
           )
-        ),
+        )
       ),
       row(
         div4(
@@ -114,9 +123,11 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
       row(
         feature("PC to Phone", "pc-phone", "Make the music library on a PC available for playback on your phone."),
         feature("Phone to PC", "phone-pc", "Play the music stored on your phone on speakers connected to a PC."),
-        feature("PC to Phone to PC",
-                "pc-phone-pc",
-                "Play music from your PC on another PC. Control playback with your phone.")
+        feature(
+          "PC to Phone to PC",
+          "pc-phone-pc",
+          "Play music from your PC on another PC. Control playback with your phone."
+        )
       ),
       hr(`class` := "hr-front"),
       divClass(s"$Row mb-5")(
@@ -151,10 +162,12 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
     rowColumn(s"${col.md.twelve}")(
       linuxReqs,
       docHeader("Installation"),
-      p(`class` := "mb-5")("Download ",
-                           aHref(Home.debDownload.url, Home.debDownload.fileName),
-                           " and execute: ",
-                           code(s"dpkg -i ${Home.debDownload.fileName}"))
+      p(`class` := "mb-5")(
+        "Download ",
+        aHref(Home.debDownload.url, Home.debDownload.fileName),
+        " and execute: ",
+        code(s"dpkg -i ${Home.debDownload.fileName}")
+      )
     )
   )
 
@@ -168,10 +181,12 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
       docHeader("System Requirements"),
       ul(`class` := "mb-5")(
         li(aHref("http://java.com/en/download/index.jsp", "Java 11")),
-        li("A modern browser, such as ",
-           aHref("http://getfirefox.com", "Firefox"),
-           " or ",
-           aHref("http://www.google.com/chrome", "Chrome")),
+        li(
+          "A modern browser, such as ",
+          aHref("http://getfirefox.com", "Firefox"),
+          " or ",
+          aHref("http://www.google.com/chrome", "Chrome")
+        ),
         li(aHref("http://www.microsoft.com/net/download", ".NET Framework"), " 3.5 or higher")
       ),
       docHeader("Installation"),
@@ -184,7 +199,12 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
 
   val docWin = docuBase("win", Home.windowsConfFile, winInstall, winUninstall)
 
-  def docuBase(os: String, confPath: String, installation: Modifier, uninstallation: Modifier) =
+  def docuBase(
+    os: String,
+    confPath: String,
+    installation: Modifier,
+    uninstallation: Modifier
+  ) =
     docPlain(os)(
       fullRow(
         installation,
@@ -197,13 +217,13 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
             " and specify folders containing MP3s under ",
             strong("Music Folders"),
             ":",
-            img(src := images.usage_folders2_png, `class` := "img-responsive img-thumbnail my-4")
+            img(src := asset(images.usage_folders2_png), `class` := "img-responsive img-thumbnail my-4")
           ),
           li(
             "Open the ",
             strong("MusicPimp"),
             " app on your mobile device and add your PC as a music endpoint:",
-            img(src := images.usage_wp8_png, `class` := "img-responsive img-thumbnail my-4")
+            img(src := asset(images.usage_wp8_png), `class` := "img-responsive img-thumbnail my-4")
           ),
           li("Enjoy your music.")
         ),
@@ -271,7 +291,7 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
       rowColumn(col.md.six)(
         div(`class` := s"${btn.group} last-box", attr("src-toggle") := "buttons-radio")(
           docLink("Windows", homeRoute.docs.uri, "win"),
-          docLink("DEB", homeRoute.docsDeb.uri, "deb"),
+          docLink("DEB", homeRoute.docsDeb.uri, "deb")
         )
       ),
       rowColumn(col.md.eight)(inner)
@@ -296,11 +316,14 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
           "currently supported on Windows Phone provided that the server " +
           "certificate passes validation and is trusted by your phone. This " +
           "means that self-signed certificates will most likely not work. " +
-          "Commercial certificates are likely to work."),
+          "Commercial certificates are likely to work."
+      ),
       h3("Miscellaneous"),
-      p("MusicPimp for Windows Phone also supports the ",
+      p(
+        "MusicPimp for Windows Phone also supports the ",
         aHref("http://www.subsonic.org", "Subsonic"),
-        " media streamer as a music server.")
+        " media streamer as a music server."
+      )
     )
   )
 
@@ -353,7 +376,8 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
         "Add a new alarm or update an existing one. When updating, " +
           "include the ID of the alarm you update. If no ID is provided, " +
           "the interpretation is that you add a new alarm; the server will " +
-          "generate a new ID."),
+          "generate a new ID."
+      ),
       pre("""{
           |    "cmd":"save",
           |    "ap":{
@@ -394,7 +418,7 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
         div(`class` := col.lg.four)(
           h2(`class` := "mb-4")(iClass("icon-linux"), " Linux"),
           downloadLink(Home.debDownload, s"primary ${btn.lg}"),
-          p("DEB packages are tested on Ubuntu."),
+          p("DEB packages are tested on Ubuntu.")
         )
       ),
       rowColumn(s"${col.md.twelve} mb-5")(
@@ -450,7 +474,7 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
     row(
       divClass(col.md.six)(
         p("Developed by ", aHref("https://github.com/malliina", "Michael Skogberg"), "."),
-        p(img(src := images.beauty_png, `class` := "img-responsive img-thumbnail")),
+        p(img(src := asset(images.beauty_png), `class` := "img-responsive img-thumbnail")),
         p(
           "Should you have any questions, don't hesitate to:",
           ul(
@@ -465,7 +489,9 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
         p("Developed with ", a(href := "https://www.jetbrains.com/idea/")("IntelliJ IDEA"), "."),
         p(
           a(href := "https://www.jetbrains.com/idea/")(
-            img(src := images.logo_JetBrains_3_png, `class` := "img-responsive")))
+            img(src := asset(images.logo_JetBrains_3_png), `class` := "img-responsive")
+          )
+        )
       )
     )
   )
@@ -476,7 +502,12 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
     )
 
   def indexNoContainer(tabName: String, pageConf: PageConf = Page(PageTitle, Nil))(inner: Modifier*) = {
-    def navItem[V: AttrValue](thisTabName: String, tabId: String, url: V, iconicName: String) = {
+    def navItem[V: AttrValue](
+      thisTabName: String,
+      tabId: String,
+      url: V,
+      iconicName: String
+    ) = {
       val activeClass = if (tabId == tabName) " active" else ""
       li(`class` := s"nav-item$activeClass")(
         a(href := url, `class` := "nav-link")(iconic(iconicName), s" $thisTabName")
@@ -525,19 +556,31 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
         inner,
         footer(`class` := "footer")(
           divClass(Container)(
-            spanClass("text-muted float-right")("Developed by ",
-                                                a(href := "https://www.musicpimp.org")("Michael Skogberg"),
-                                                ".")
+            spanClass("text-muted float-right")(
+              "Developed by ",
+              a(href := "https://www.musicpimp.org")("Michael Skogberg"),
+              "."
+            )
           )
         )
       )
     )
   )
 
-  def badgeFromAssets(link: String, altText: String, badgeClass: String, linkClass: String = "") =
+  def badgeFromAssets(
+    link: String,
+    altText: String,
+    badgeClass: String,
+    linkClass: String = ""
+  ) =
     badge(link, altText, badgeClass, linkClass)
 
-  def badge(link: String, altText: String, classes: String, linkClass: String) =
+  def badge(
+    link: String,
+    altText: String,
+    classes: String,
+    linkClass: String
+  ) =
     a(href := link, `class` := s"d-none d-md-block app-badge $linkClass")(
       div(aria.labelledby := altText, `class` := s"app-badge-image $classes")
     )
@@ -553,8 +596,11 @@ class PimpWebHtml(css: Seq[String], js: Seq[String], homeRoute: Routes) extends 
 
   def downloadLink(dl: Download, btnName: String = "primary") =
     p(
-      a(`class` := s"${btn.Btn} ${btn.Btn}-$btnName", href := dl.url)(iconic("data-transfer-download"),
-                                                                      s" ${dl.fileName}"))
+      a(`class` := s"${btn.Btn} ${btn.Btn}-$btnName", href := dl.url)(
+        iconic("data-transfer-download"),
+        s" ${dl.fileName}"
+      )
+    )
 
   def iconic(iconicName: String) = spanClass(s"oi oi-$iconicName", title := iconicName, aria.hidden := True)
 

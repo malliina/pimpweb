@@ -11,19 +11,23 @@ object Generator {
   def mappings(assets: AssetsManifest, to: Path): MappedAssets = {
     def map(files: Seq[Path], folder: String) = files.map { src =>
       val dest = to / "assets" / folder / src.getFileName
-      FileMapping(src, "/" + to.relativize(dest).toString.replace('\\', '/'))
+      FileMapping(src, "/" + to.relativize(dest).toString.replace('\\', '/'), isFingerprinted = true)
     }
     val staticMappings = assets.statics.map { s =>
-      FileMapping(s, "/" + assets.assetsBase.relativize(s).toString.replace('\\', '/'))
+      FileMapping(s, "/" + assets.assetsBase.relativize(s).toString.replace('\\', '/'), isFingerprinted = true)
     }
     MappedAssets(map(assets.scripts, "js"), assets.adhocScripts, map(assets.styles, "css"), staticMappings)
   }
 
   def main(args: Array[String]): Unit = {
-    // TODO use fingerprinted images
-    val imgDir = Paths.get("client/src/main/resources/img")
+    val digests = Digests
+    val assetFinder = new DigestFinder(digests)
+    val base = Paths.get("client/src/main/resources")
+    val imgDir = base.resolve("img")
     val imgs = Files.list(imgDir).iterator().asScala.toList.map { img =>
-      FileMapping(img, s"img/${img.getFileName.toString}")
+      val digested = digests.compute(img)
+      val undigested = AssetPath(s"/img/${img.getFileName}")
+      FileMapping(img, assetFinder.digestedPath(undigested, digested.hash), isFingerprinted = true)
     }
     val command = args(0)
     val isLocal = command == "build"
@@ -35,7 +39,7 @@ object Generator {
       val manifest = AssetsManifest(assetsJson)
         .fold(err => throw new Exception(s"Failed to read assets file: '${JsError(err)}'."), identity)
       val mapped = mappings(manifest, targetDir)
-      Site.complete(mapped.withOther(imgs), routes).write(targetDir)
+      Site.complete(mapped.withOther(imgs), routes, assetFinder).write(targetDir)
     }
 
     // Receives built assets and turns it into a website
@@ -43,7 +47,8 @@ object Generator {
       case "clean" =>
         FileUtils.deleteDirectory(assetsJson)
       case "build" | "prepare" =>
-        buildSite()
+        val built = buildSite()
+        FileIO.writeJson(built, Paths.get("target/built.json"))
       case "deploy" =>
         val built = buildSite()
         val gcp = GCP(BucketName(args(2)))

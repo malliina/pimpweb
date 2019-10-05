@@ -34,7 +34,11 @@ object CacheControl extends StringCompanion[CacheControl]
 case class ContentType(value: String) extends AnyVal with WrappedString
 object ContentType extends StringCompanion[ContentType]
 
-case class WebsiteFile(file: Path, key: StorageKey, contentType: ContentType, cacheControl: CacheControl) {
+case class WebsiteFile(
+  file: Path,
+  key: StorageKey,
+  contentType: ContentType,
+  cacheControl: CacheControl) {
   def ext = PathUtils.ext(file)
   def name = file.getFileName.toString
 }
@@ -49,7 +53,17 @@ object WebsiteFile {
     WebsiteFile(file, key, ContentTypes.resolve(file), CacheControls.compute(file, key))
   }
 
-  def list(dir: Path, cacheControls: CacheControls) =
+  def apply(mapping: FileMapping): WebsiteFile = {
+    val key = StorageKey(mapping.relative.value, mapping.relative.value.endsWith(htmlExt))
+    WebsiteFile(
+      mapping.from,
+      key,
+      ContentTypes.resolve(mapping.from),
+      CacheControls.compute(mapping.from, mapping.isFingerprinted)
+    )
+  }
+
+  def list(dir: Path, cacheControls: CacheControls): List[WebsiteFile] =
     Files.walk(dir).iterator().asScala.toList.filter(p => Files.isRegularFile(p)).map { file =>
       val relativePath = dir.relativize(file)
       val key = StorageKey(relativePath, relativePath.name.endsWith(htmlExt))

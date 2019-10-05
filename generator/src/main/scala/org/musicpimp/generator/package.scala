@@ -20,6 +20,10 @@ object PathUtils {
   def ext(path: Path) =
     extOf(path.getFileName.toString).getOrElse("")
 
+  /** The extension, excluding the dot.
+    *
+    * "king.jpg" returns "jpg"
+    */
   def extOf(name: String): Option[String] = {
     val idx = name.lastIndexOf('.')
     if (idx >= 0 && name.length > idx + 1) Option(name.substring(idx + 1)).filter(_.nonEmpty)

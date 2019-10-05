@@ -48,7 +48,7 @@ const WebApp = Merge(ScalaJS, {
     ]
   },
   output: {
-    filename: '[name].[chunkhash].js',
+    filename: '[name].[chunkhash].js'
   },
   plugins: [
     new MiniCssExtractPlugin({filename: '[name].[contenthash].css'})

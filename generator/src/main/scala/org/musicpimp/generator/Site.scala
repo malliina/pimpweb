@@ -3,8 +3,9 @@ package org.musicpimp.generator
 import play.api.libs.json.Json
 
 object Site {
-  def complete(assets: MappedAssets, routes: Routes): CompleteSite = {
-    val html = PimpWebHtml(assets.styles.map(_.to), assets.scripts.map(_.to) ++ assets.adhocScripts, routes)
+  def complete(assets: MappedAssets, routes: Routes, assetFinder: AssetFinder): CompleteSite = {
+    val html =
+      PimpWebHtml(assets.styles.map(_.to), assets.scripts.map(_.to) ++ assets.adhocScripts, routes, assetFinder)
     val fileMap = Map(
       routes.index -> html.index,
       routes.notFound -> html.notFound,
