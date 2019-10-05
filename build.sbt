@@ -29,15 +29,12 @@ val sharedJvm = shared.jvm
 
 val client: Project = project
   .in(file("client"))
-  .enablePlugins(ScalaJSBundlerPlugin, WorkbenchBasePlugin, NodeJsPlugin)
+  .enablePlugins(GeneratorClientPlugin, NodeJsPlugin)
   .dependsOn(sharedJs)
   .settings(commonSettings)
   .settings(
     libraryDependencies ++= Seq(
-      "org.scala-js" %%% "scalajs-dom" % "0.9.7",
-      "com.lihaoyi" %%% "scalatags" % scalatagsVersion,
-      "com.malliina" %%% "util-html" % utilHtmlVersion,
-      "com.typesafe.play" %%% "play-json" % "2.7.4"
+      "com.malliina" %%% "util-html" % utilHtmlVersion
     ),
     version in webpack := "4.39.1",
     version in startWebpackDevServer := "3.7.2",
@@ -64,17 +61,6 @@ val client: Project = project
       "url-loader" -> "2.1.0",
       "webpack-merge" -> "4.2.1"
     ),
-    scalaJSUseMainModuleInitializer := true,
-    webpackConfigFile in fastOptJS := Some(baseDirectory.value / "webpack.dev.config.js"),
-    webpackConfigFile in fullOptJS := Some(baseDirectory.value / "webpack.prod.config.js"),
-    // Enables hot-reload of CSS
-    webpackMonitoredDirectories ++= (resourceDirectories in Compile).value.map { dir =>
-      dir / "css"
-    },
-    includeFilter in webpackMonitoredFiles := "*.less",
-    watchSources ++= (resourceDirectories in Compile).value.map { dir =>
-      WatchSource(dir / "css", "*.less", HiddenFileFilter)
-    },
     workbenchDefaultRootObject := {
       val dist = siteTarget.value
       Some((s"$dist/index.html", s"$dist/"))
@@ -89,12 +75,7 @@ val generator: Project = project
   .settings(commonSettings)
   .settings(
     libraryDependencies ++= Seq(
-      "com.lihaoyi" %% "scalatags" % scalatagsVersion,
-      "com.malliina" %% "util-html" % utilHtmlVersion,
-      "org.slf4j" % "slf4j-api" % "1.7.27",
-      "ch.qos.logback" % "logback-classic" % "1.2.3",
-      "ch.qos.logback" % "logback-core" % "1.2.3",
-      "com.google.cloud" % "google-cloud-storage" % "1.86.0"
+      "com.malliina" %% "util-html" % utilHtmlVersion
     ),
     jsProject := client,
     refreshBrowsers := {

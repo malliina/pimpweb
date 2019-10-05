@@ -112,7 +112,14 @@ object ContentPlugin extends AutoPlugin {
     publish in Static := deploy.value,
     publish := deploy.value,
     // Hack to make the default release process work instead of fake error "Repository for publishing is not specified"
-    publishTo := Option(Resolver.defaultLocal)
+    publishTo := Option(Resolver.defaultLocal),
+    libraryDependencies ++= Seq(
+      "com.lihaoyi" %% "scalatags" % "0.7.0",
+      "org.slf4j" % "slf4j-api" % "1.7.27",
+      "ch.qos.logback" % "logback-classic" % "1.2.3",
+      "ch.qos.logback" % "logback-core" % "1.2.3",
+      "com.google.cloud" % "google-cloud-storage" % "1.86.0"
+    )
   )
 
   def assetGroup(
