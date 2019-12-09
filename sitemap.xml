@@ -2,22 +2,22 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
      <loc>https://www.musicpimp.org/docs/docs/</loc>
-     <lastmod>2019-12-09</lastmod>
+     <lastmod>2019-12-10</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://www.musicpimp.org/docs/docs/http-endpoints/</loc>
-     <lastmod>2019-12-09</lastmod>
+     <lastmod>2019-12-10</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://www.musicpimp.org/docs/docs/server-events/</loc>
-     <lastmod>2019-12-09</lastmod>
+     <lastmod>2019-12-10</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://www.musicpimp.org/docs/docs/code-samples/</loc>
-     <lastmod>2019-12-09</lastmod>
+     <lastmod>2019-12-10</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>
