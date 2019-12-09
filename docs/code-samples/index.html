@@ -11,7 +11,7 @@
       <meta http-equiv="x-ua-compatible" content="ie=edge">
       
       
-        <link rel="canonical" href="https://docs.musicpimp.org/docs/">
+        <link rel="canonical" href="https://docs.musicpimp.org/docs/docs/code-samples/">
       
       
         <meta name="author" content="Michael Skogberg">
@@ -35,21 +35,21 @@
       
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
-      <link rel="shortcut icon" href="assets/images/favicon.png">
+      <link rel="shortcut icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.5.1">
     
     
       
-        <title>MusicPimp</title>
+        <title>Code Samples - MusicPimp</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/application.1b62728e.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/application.1b62728e.css">
       
       
     
     
-      <script src="assets/javascripts/modernizr.268332fc.js"></script>
+      <script src="../../assets/javascripts/modernizr.268332fc.js"></script>
     
     
       
@@ -58,7 +58,7 @@
         <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
       
     
-    <link rel="stylesheet" href="assets/fonts/material-icons.css">
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
     
     
     
@@ -78,10 +78,6 @@
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
-    
-      <a href="#requests" tabindex="1" class="md-skip">
-        Skip to content
-      </a>
     
     
       <header class="md-header" data-md-component="header">
@@ -105,7 +101,7 @@
             </span>
             <span class="md-header-nav__topic">
               
-                Home
+                Code Samples
               
             </span>
           
@@ -174,7 +170,7 @@
 
 
   <li class="md-nav__item">
-    <a href="docs/" title="Develop" class="md-nav__link">
+    <a href="../" title="Develop" class="md-nav__link">
       Develop
     </a>
   </li>
@@ -186,7 +182,7 @@
 
 
   <li class="md-nav__item">
-    <a href="http-endpoints/" title="Http Endpoints" class="md-nav__link">
+    <a href="../http-endpoints/" title="Http Endpoints" class="md-nav__link">
       Http Endpoints
     </a>
   </li>
@@ -198,7 +194,7 @@
 
 
   <li class="md-nav__item">
-    <a href="server-events/" title="Server Events" class="md-nav__link">
+    <a href="../server-events/" title="Server Events" class="md-nav__link">
       Server Events
     </a>
   </li>
@@ -208,11 +204,18 @@
       
       
 
+  
 
-  <li class="md-nav__item">
-    <a href="code-samples/" title="Code Samples" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+    
+    <a href="./" title="Code Samples" class="md-nav__link md-nav__link--active">
       Code Samples
     </a>
+    
   </li>
 
     
@@ -223,138 +226,25 @@
               </div>
             
             
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
-                <div class="md-sidebar__scrollwrap">
-                  <div class="md-sidebar__inner">
-                    
-<nav class="md-nav md-nav--secondary">
-  
-  
-  
-    <label class="md-nav__title" for="__toc">Table of contents</label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#requests" class="md-nav__link">
-    Requests 
-  </a>
-  
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#media-types" class="md-nav__link">
-    Media Types
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#authentication" class="md-nav__link">
-    Authentication
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#responses" class="md-nav__link">
-    Responses 
-  </a>
-  
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#compression" class="md-nav__link">
-    Compression
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#success-and-failure" class="md-nav__link">
-    Success and Failure
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-      
-      
-      
-      
-    </ul>
-  
-</nav>
-                  </div>
-                </div>
-              </div>
-            
           
           <div class="md-content">
             <article class="md-content__inner md-typeset">
               
                 
                 
-                  <h1>Home</h1>
+                  <h1>Code Samples</h1>
                 
-                <p>Develop apps for <a href="https://www.musicpimp.org">MusicPimp</a> using the JSON API.</p>
-<h2 id="requests">Requests <div id="requests" class="area"></div></h2>
-<p>Clients may interact with the MusicPimp server using HTTP requests and/or 
-<a href="http://en.wikipedia.org/wiki/WebSockets">WebSocket</a> connections.</p>
-<p>Obtain information using HTTP GET requests, and send JSON-formatted messages either 
-in the body of HTTP POST requests or as WebSocket messages.</p>
-<p>To upload files, HTTP POST them as <strong>multipart/form-data</strong>.</p>
-<h3 id="media-types">Media Types</h3>
-<p>When making requests, indicate the desired response format in the <strong>Accept</strong> HTTP header.
-The JSON response formats are versioned, and in order to ensure API compatibility,
-clients should be explicit about which version of the format they accept. The following formats are
-currently valid:</p>
-<ul>
-<li>application/vnd.musicpimp.v18+json</li>
-<li>application/vnd.musicpimp.v17+json</li>
-<li>application/vnd.musicpimp+json</li>
-<li>application/json</li>
-</ul>
-<p>Remember this also when opening WebSocket connections; the value in the Accept header of the 
-HTTP request that initiates a WebSocket connection will determine the format of the messages.</p>
-<p>Whenever backwards-incompatible changes are made to the JSON response format in future MusicPimp server 
-updates, they will be made under a new version. However, new content (name/value pairs) may be added to an existing 
-format without notice. The examples in this documentation are based on the latest format, 
-<em>application/vnd.musicpimp.v18+json</em>.</p>
-<p><span class="label label-info">Note</span> To force the server to respond with the latest JSON format
-regardless of the Accept header, append query parameter <code>f=json</code> to the request URL.</p>
-<h3 id="authentication">Authentication</h3>
-<p>HTTP Basic authentication is supported and required most of the time. Set your 
-credentials in the <strong>Authorization</strong> HTTP header of the request.</p>
-<p>For example, if your username is <code>i_love</code> and password <code>michael</code>,
-the value of the Authorization header must be </p>
-<pre><code>Basic aV9sb3ZlOm1pY2hhZWw=
-</code></pre>
-<p>where <code>aV9sb3ZlOm1pY2hhZWw=</code> is <code>i_love:michael</code> base64-encoded.</p>
-<h2 id="responses">Responses <div id="responses" class="area"></div></h2>
-<p>The MusicPimp server responds to requests in either <strong>JSON</strong> (application/json)
-or <strong>HTML</strong> (text/html), depending on what the client has requested.</p>
-<h3 id="compression">Compression</h3>
-<p>The responses are gzip-compressed provided that the <strong>Accept-Encoding</strong> HTTP header 
-of the request contains <code>gzip</code>.</p>
-<h3 id="success-and-failure">Success and Failure</h3>
-<p>A successful HTTP status code indicates that the request was processed successfully. The 
-response of a failed request will have an HTTP status code indicating failure.</p>
-<p>In addition to the information you get from the status code, failed API requests may contain 
-a JSON response content indicating the reason your request went titsup.</p>
-<p>Example: </p>
-<pre><code>{"reason":"Invalid parameter."}
-</code></pre>
+                <p>As an example, let's use the API to ping a locally installed MusicPimp server 
+and validate our credentials. We make a request and expect to get an HTTP response 
+with status code 200 <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html">OK</a>.</p>
+<p>Here's how it can be done in Scala, using either <a href="http://hc.apache.org/httpcomponents-client-ga/index.html">Apache HttpClient</a> or 
+the <a href="http://www.playframework.com/documentation/2.1.x/ScalaWS">Web Services library</a> in 
+<a href="http://www.playframework.com/">Play Framework</a>:</p>
+<script src="https://gist.github.com/malliina/5509130.js"></script>
+
+<p>Here's the same in C#, using either <a href="https://www.nuget.org/packages/Microsoft.Net.Http">Microsoft HTTP Client Libraries (HttpClient)</a> 
+or <a href="http://restsharp.org/">RestSharp</a>:</p>
+<script src="https://gist.github.com/malliina/5513464.js"></script>
                 
                   
                 
@@ -371,6 +261,27 @@ a JSON response content indicating the reason your request went titsup.</p>
       
         
 <footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../server-events/" title="Server Events" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Server Events
+              </span>
+            </div>
+          </a>
+        
+        
+      </nav>
+    </div>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
@@ -393,9 +304,9 @@ a JSON response content indicating the reason your request went titsup.</p>
       
     </div>
     
-      <script src="assets/javascripts/application.8e03edeb.js"></script>
+      <script src="../../assets/javascripts/application.8e03edeb.js"></script>
       
-      <script>app.initialize({version:"1.0.4",url:{base:"."}})</script>
+      <script>app.initialize({version:"1.0.4",url:{base:"../.."}})</script>
       
     
   </body>

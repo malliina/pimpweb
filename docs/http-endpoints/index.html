@@ -40,7 +40,7 @@
     
     
       
-        <title>Http endpoints - MusicPimp</title>
+        <title>Http Endpoints - MusicPimp</title>
       
     
     
@@ -105,7 +105,7 @@
             </span>
             <span class="md-header-nav__topic">
               
-                Http endpoints
+                Http Endpoints
               
             </span>
           
@@ -184,11 +184,348 @@
       
       
 
+  
 
-  <li class="md-nav__item">
-    <a href="../../http-endpoints/" title="Http Endpoints" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Http Endpoints
+      </label>
+    
+    <a href="./" title="Http Endpoints" class="md-nav__link md-nav__link--active">
       Http Endpoints
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#library" class="md-nav__link">
+    Library
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get-root-folder" class="md-nav__link">
+    Get root folder
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-subfolder" class="md-nav__link">
+    Get subfolder
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-track" class="md-nav__link">
+    Get track
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-track-with-accept-ranges" class="md-nav__link">
+    Get track, with Accept-Ranges
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#search" class="md-nav__link">
+    Search
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-most-popular-tracks" class="md-nav__link">
+    Get most popular tracks
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-most-recently-played-tracks" class="md-nav__link">
+    Get most recently played tracks
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#player" class="md-nav__link">
+    Player
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#play-track-http-post-or-websocket" class="md-nav__link">
+    Play track HTTP POST or WebSocket
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#play-all" class="md-nav__link">
+    Play all
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#play-uploaded-file-post-to-playbackuploads" class="md-nav__link">
+    Play uploaded file POST to /playback/uploads
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stop-playback-http-post-or-websocket" class="md-nav__link">
+    Stop playback HTTP POST or WebSocket
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resume-playback-http-post-or-websocket" class="md-nav__link">
+    Resume playback HTTP POST or WebSocket
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#next" class="md-nav__link">
+    Next
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#previous" class="md-nav__link">
+    Previous
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#skip-http-post-or-websocket" class="md-nav__link">
+    Skip HTTP POST or WebSocket
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seek-http-post-or-websocket" class="md-nav__link">
+    Seek HTTP POST or WebSocket
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adjust-volume-http-post-or-websocket" class="md-nav__link">
+    Adjust volume HTTP POST or WebSocket
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mute-and-unmute-http-post-or-websocket" class="md-nav__link">
+    Mute and unmute HTTP POST or WebSocket
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#status" class="md-nav__link">
+    Status
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#upload-library-track-post-to-playbackstream" class="md-nav__link">
+    Upload library track POST to /playback/stream
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#playlist" class="md-nav__link">
+    Playlist
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add-http-post-or-websocket" class="md-nav__link">
+    Add HTTP POST or WebSocket
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-all" class="md-nav__link">
+    Add all
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reset-playlist" class="md-nav__link">
+    Reset playlist
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-uploaded-file-post-to-playlistuploads" class="md-nav__link">
+    Add uploaded file POST to /playlist/uploads
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remove-http-post-or-websocket" class="md-nav__link">
+    Remove HTTP POST or WebSocket
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#insert-track" class="md-nav__link">
+    Insert track
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#move-track-in-playlist" class="md-nav__link">
+    Move track in playlist
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-saved-playlists" class="md-nav__link">
+    Get saved playlists
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-one-saved-playlist" class="md-nav__link">
+    Get one saved playlist
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-or-update-a-saved-playlist" class="md-nav__link">
+    Create or update a saved playlist
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete-a-saved-playlist" class="md-nav__link">
+    Delete a saved playlist
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alarms" class="md-nav__link">
+    Alarms
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get-alarms" class="md-nav__link">
+    Get alarms
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#control-alarms" class="md-nav__link">
+    Control alarms
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#miscellaneous" class="md-nav__link">
+    Miscellaneous
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ping" class="md-nav__link">
+    Ping
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#authenticated-ping" class="md-nav__link">
+    Authenticated ping
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
   </li>
 
     
@@ -198,7 +535,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../server-events/" title="Server Events" class="md-nav__link">
+    <a href="../server-events/" title="Server Events" class="md-nav__link">
       Server Events
     </a>
   </li>
@@ -210,7 +547,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../code-samples/" title="Code Samples" class="md-nav__link">
+    <a href="../code-samples/" title="Code Samples" class="md-nav__link">
       Code Samples
     </a>
   </li>
@@ -561,7 +898,7 @@
               
                 
                 
-                  <h1>Http endpoints</h1>
+                  <h1>Http Endpoints</h1>
                 
                 <p>HTTP requests are made using URLs like</p>
 <pre><code>http://my_server_ip:8456/playback
@@ -1110,6 +1447,41 @@ and the server version as JSON content if the credentials are valid, and with
       
         
 <footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../" title="Develop" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Develop
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../server-events/" title="Server Events" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Server Events
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
