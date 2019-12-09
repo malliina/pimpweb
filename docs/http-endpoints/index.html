@@ -1,0 +1,1141 @@
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+        <link rel="canonical" href="https://docs.musicpimp.org/docs/docs/http-endpoints/">
+      
+      
+        <meta name="author" content="Michael Skogberg">
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.5.1">
+    
+    
+      
+        <title>Http endpoints - MusicPimp</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.1b62728e.css">
+      
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.268332fc.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#library" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="https://docs.musicpimp.org/docs/" title="MusicPimp" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              MusicPimp
+            </span>
+            <span class="md-header-nav__topic">
+              
+                Http endpoints
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="https://docs.musicpimp.org/docs/" title="MusicPimp" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    MusicPimp
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../" title="Develop" class="md-nav__link">
+      Develop
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../http-endpoints/" title="Http Endpoints" class="md-nav__link">
+      Http Endpoints
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../server-events/" title="Server Events" class="md-nav__link">
+      Server Events
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../code-samples/" title="Code Samples" class="md-nav__link">
+      Code Samples
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#library" class="md-nav__link">
+    Library
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get-root-folder" class="md-nav__link">
+    Get root folder
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-subfolder" class="md-nav__link">
+    Get subfolder
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-track" class="md-nav__link">
+    Get track
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-track-with-accept-ranges" class="md-nav__link">
+    Get track, with Accept-Ranges
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#search" class="md-nav__link">
+    Search
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-most-popular-tracks" class="md-nav__link">
+    Get most popular tracks
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-most-recently-played-tracks" class="md-nav__link">
+    Get most recently played tracks
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#player" class="md-nav__link">
+    Player
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#play-track-http-post-or-websocket" class="md-nav__link">
+    Play track HTTP POST or WebSocket
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#play-all" class="md-nav__link">
+    Play all
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#play-uploaded-file-post-to-playbackuploads" class="md-nav__link">
+    Play uploaded file POST to /playback/uploads
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stop-playback-http-post-or-websocket" class="md-nav__link">
+    Stop playback HTTP POST or WebSocket
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resume-playback-http-post-or-websocket" class="md-nav__link">
+    Resume playback HTTP POST or WebSocket
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#next" class="md-nav__link">
+    Next
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#previous" class="md-nav__link">
+    Previous
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#skip-http-post-or-websocket" class="md-nav__link">
+    Skip HTTP POST or WebSocket
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seek-http-post-or-websocket" class="md-nav__link">
+    Seek HTTP POST or WebSocket
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adjust-volume-http-post-or-websocket" class="md-nav__link">
+    Adjust volume HTTP POST or WebSocket
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mute-and-unmute-http-post-or-websocket" class="md-nav__link">
+    Mute and unmute HTTP POST or WebSocket
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#status" class="md-nav__link">
+    Status
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#upload-library-track-post-to-playbackstream" class="md-nav__link">
+    Upload library track POST to /playback/stream
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#playlist" class="md-nav__link">
+    Playlist
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add-http-post-or-websocket" class="md-nav__link">
+    Add HTTP POST or WebSocket
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-all" class="md-nav__link">
+    Add all
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reset-playlist" class="md-nav__link">
+    Reset playlist
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-uploaded-file-post-to-playlistuploads" class="md-nav__link">
+    Add uploaded file POST to /playlist/uploads
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remove-http-post-or-websocket" class="md-nav__link">
+    Remove HTTP POST or WebSocket
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#insert-track" class="md-nav__link">
+    Insert track
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#move-track-in-playlist" class="md-nav__link">
+    Move track in playlist
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-saved-playlists" class="md-nav__link">
+    Get saved playlists
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-one-saved-playlist" class="md-nav__link">
+    Get one saved playlist
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-or-update-a-saved-playlist" class="md-nav__link">
+    Create or update a saved playlist
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete-a-saved-playlist" class="md-nav__link">
+    Delete a saved playlist
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alarms" class="md-nav__link">
+    Alarms
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get-alarms" class="md-nav__link">
+    Get alarms
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#control-alarms" class="md-nav__link">
+    Control alarms
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#miscellaneous" class="md-nav__link">
+    Miscellaneous
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ping" class="md-nav__link">
+    Ping
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#authenticated-ping" class="md-nav__link">
+    Authenticated ping
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  <h1>Http endpoints</h1>
+                
+                <p>HTTP requests are made using URLs like</p>
+<pre><code>http://my_server_ip:8456/playback
+</code></pre>
+<h3 id="library">Library</h3>
+<p>Library folders contain audio tracks and subfolders. Use the following methods 
+to browse and retrieve items from the library.</p>
+<h4 id="get-root-folder">Get root folder</h4>
+<pre><code>GET /folders
+</code></pre>
+<p>Returns the contents of the root folder of the music library.</p>
+<p>Example response:</p>
+<pre><code>{
+    "folders":[
+        {
+            "id":"100+Hits+-+Dance+Mix",
+            "title":"100 Hits - Dance Mix",
+            "path":"100 Hits - Dance Mix"
+        },
+        {
+            "id":"22+Pistepirkko",
+            "title":"22 Pistepirkko",
+            "path":"22 Pistepirkko"
+        },
+        {
+            "id":"2pac",
+            "title":"2pac",
+            "path":"2pac"
+        },
+        {
+            "id":"3+Doors+Down",
+            "title":"3 Doors Down",
+            "path":"3 Doors Down"
+        }
+    ],
+    "tracks":[
+        {
+            "id":"00+-+Preludio+Obsesivo.mp3",
+            "title":"Preludio Obsesivo",
+            "artist":"Rata Blanca",
+            "album":"Rata Blanca",
+            "duration":222,
+            "size":3108553
+        },
+        {
+                "id":"00+-+Turn+Me+On.mp3",
+                "title":"Turn Me On",
+                "artist":"Kevin Lyttle",
+                "album":"Summer In The City - Latin Party",
+                "duration":175,
+                "size":4225234
+        },
+        {
+                "id":"A+Ha+-+Take+On+Me.mp3",
+                "title":"Take On Me [October 1985]",
+                "artist":"A-Ha",
+                "album":"The Definitive Singles Collection 1984-2004",
+                "duration":227,
+                "size":5470208
+        }
+    ]
+}
+</code></pre>
+<h4 id="get-subfolder">Get subfolder</h4>
+<pre><code>GET /folders/my_folder_id_here
+</code></pre>
+<p>Returns the contents of the specified music library folder.</p>
+<p><span class="label label-info">Note</span> First request the contents of the root folder 
+in order to get a list of subfolders for further browsing.</p>
+<h4 id="get-track">Get track</h4>
+<pre><code>GET /tracks/my_track_id
+</code></pre>
+<p>Retrieves the file with the specified ID. Supply this to a media player that accepts a 
+URI as media source, for example.</p>
+<h4 id="get-track-with-accept-ranges">Get track, with Accept-Ranges</h4>
+<pre><code>GET /downloads/my_track_id
+</code></pre>
+<p>The same as above except that the HTTP response contains the string <code>bytes</code> 
+in the <strong>Accept-Ranges</strong> header.</p>
+<h4 id="search">Search</h4>
+<pre><code>GET /search?term=tillbaka+till+samtiden&amp;limit=100
+</code></pre>
+<p>Search for a track, album or artist. Specify your search query in the <strong>term</strong> query
+parameter, and optionally set the maximum number of returned results in the <strong>limit</strong> query
+parameter.</p>
+<p>Example response:</p>
+<pre><code>[
+    {
+        "id": "Kent%5C2007+-+Tillbaka+Till+Samtiden%5C01_kent-elefanter.mp3",
+        "title": "Elefanter",
+        "artist": "Kent",
+        "album": "Tillbaka Till Samtiden",
+        "duration": 321,
+        "size": 7639850
+    },
+    {
+        "id": "Kent%5C2007+-+Tillbaka+Till+Samtiden%5C02_kent-berlin.mp3",
+        "title": "Berlin",
+        "artist": "Kent",
+        "album": "Tillbaka Till Samtiden",
+        "duration": 276,
+        "size": 7143257
+    }
+]
+</code></pre>
+<h4 id="get-most-popular-tracks">Get most popular tracks</h4>
+<pre><code>GET /player/popular
+</code></pre>
+<p>Returns an array (in key <em>populars</em>) of the most played tracks along with the playback count
+ (in key <em>playbackCount</em>) of each track:</p>
+<pre><code>{
+    "populars": [
+        {
+            "track": {
+                "id": "Kent%5C2007+-+Tillbaka+Till+Samtiden%5C01_kent-elefanter.mp3",
+                "title": "Elefanter",
+                "artist": "Kent",
+                "album": "Tillbaka Till Samtiden",
+                "duration": 321,
+                "size": 7639850
+            },
+            "playbackCount": 42
+        },
+        {
+            "track": {
+                "id": "Kent%5C2007+-+Tillbaka+Till+Samtiden%5C02_kent-berlin.mp3",
+                "title": "Berlin",
+                "artist": "Kent",
+                "album": "Tillbaka Till Samtiden",
+                "duration": 276,
+                "size": 7143257
+            },
+            "playbackCount": 41
+        }
+    ]
+}
+</code></pre>
+<h4 id="get-most-recently-played-tracks">Get most recently played tracks</h4>
+<pre><code>GET /player/recent
+</code></pre>
+<p>Returns an array (in key <em>recents</em>) of the most recently played tracks, 
+starting from the most recently played track, along with a timestamp 
+(in key <em>when</em>, given in unix time in milliseconds) when playback started:</p>
+<pre><code>{
+    "recents": [
+        {
+            "track": {
+                "id": "Kent%5C2007+-+Tillbaka+Till+Samtiden%5C01_kent-elefanter.mp3",
+                "title": "Elefanter",
+                "artist": "Kent",
+                "album": "Tillbaka Till Samtiden",
+                "duration": 321,
+                "size": 7639850
+            },
+            "when": 1462812430364
+        },
+        {
+            "track": {
+                "id": "Kent%5C2007+-+Tillbaka+Till+Samtiden%5C02_kent-berlin.mp3",
+                "title": "Berlin",
+                "artist": "Kent",
+                "album": "Tillbaka Till Samtiden",
+                "duration": 276,
+                "size": 7143257
+            },
+            "when": 1462812422540
+        }
+    ]
+}
+</code></pre>
+<h3 id="player">Player</h3>
+<p>Control playback on the MusicPimp server using WebSockets or HTTP POST calls. </p>
+<p>To use the MusicPimp server as the playback device, open a WebSocket connection to
+<code>/ws/playback</code> or HTTP POST to <code>/playback</code>.</p>
+<p>The available commands are described below.</p>
+<h4 id="play-track-http-post-or-websocket">Play track <small>HTTP POST or WebSocket</small></h4>
+<p>Start playback of the track with the given ID using the following HTTP request body or WebSocket message:</p>
+<pre><code>{"cmd": "play", "track": "my_track_id"}
+</code></pre>
+<p><span class="label label-info">Note</span> Browse the music <a href="#library">library</a> 
+to obtain IDs of available tracks. If the track you wish to play is not
+located on the MusicPimp server, see the next item instead.</p>
+<h4 id="play-all">Play all</h4>
+<p>Reset the playlist with the given tracks and start playback from the first track:</p>
+<pre><code>{
+    "cmd": "play_items", 
+    "folders": [ "folder_id1", "folder_id2" ], 
+    "tracks": [ "track_id1", "track_id2" ]
+}
+</code></pre>
+<h4 id="play-uploaded-file-post-to-playbackuploads">Play uploaded file <small>POST to /playback/uploads</small></h4>
+<p>Starts playback of the file uploaded as <em>multipart/form-data</em>.</p>
+<h4 id="stop-playback-http-post-or-websocket">Stop playback <small>HTTP POST or WebSocket</small></h4>
+<p>Stop playback:</p>
+<pre><code>{"cmd": "stop"}
+</code></pre>
+<h4 id="resume-playback-http-post-or-websocket">Resume playback <small>HTTP POST or WebSocket</small></h4>
+<p>Resume playback: </p>
+<pre><code>{"cmd": "resume"}
+</code></pre>
+<h4 id="next">Next</h4>
+<p>Start playback of the next track in the playlist:</p>
+<pre><code>{"cmd": "next"}
+</code></pre>
+<h4 id="previous">Previous</h4>
+<p>Start playback of the previous track in the playlist:</p>
+<pre><code>{"cmd": "prev"}
+</code></pre>
+<h4 id="skip-http-post-or-websocket">Skip <small>HTTP POST or WebSocket</small></h4>
+<p>Start playback of the track at the specified playlist index:</p>
+<pre><code>{"cmd": "skip", "value": 3}
+</code></pre>
+<h4 id="seek-http-post-or-websocket">Seek <small>HTTP POST or WebSocket</small></h4>
+<p>Seek playback to the specified position, in seconds, of the current track:</p>
+<pre><code>{"cmd": "seek", "value": 42}
+</code></pre>
+<h4 id="adjust-volume-http-post-or-websocket">Adjust volume <small>HTTP POST or WebSocket</small></h4>
+<p>Adjust the volume, which is an integer in the range [0, 100]: </p>
+<pre><code>{"cmd": "volume", "value": 42}
+</code></pre>
+<h4 id="mute-and-unmute-http-post-or-websocket">Mute and unmute <small>HTTP POST or WebSocket</small></h4>
+<p>Turn mute on or off (true/false): </p>
+<pre><code>{"cmd": "mute", "value": true}
+</code></pre>
+<h4 id="status">Status</h4>
+<pre><code>GET /playback
+</code></pre>
+<p>Returns a server player status message.</p>
+<p>Example response:</p>
+<pre><code>{
+    "track": {
+        "id": "Paola+-+Interstellar+Love.mp3",
+        "title": "Interstellar Love",
+        "artist": "Paola",
+        "album": "Stockcity Girl",
+        "duration": 201,
+        "size": 4840094
+    },
+    "state": "Started",
+    "position": 14,
+    "volume": 40,
+    "mute": false,
+    "playlist": [
+        {
+            "id": "Paola+-+Interstellar+Love.mp3",
+            "title": "Interstellar Love",
+            "artist": "Paola",
+            "album": "Stockcity Girl",
+            "duration": 201,
+            "size": 4840094
+        },
+        {
+            "id": "cheap+trick+-+hello+there.mp3",
+            "title": "Hello There",
+            "artist": "Cheap Trick",
+            "album": "The Essential Cheap Trick",
+            "duration": 100,
+            "size": 2573904
+        }
+    ],
+    "playlist_index": 0
+}
+</code></pre>
+<h4 id="upload-library-track-post-to-playbackstream">Upload library track <small>POST to /playback/stream</small></h4>
+<p>Instruct the MusicPimp server to perform a <strong>multipart/form-data</strong> upload
+of a track in its library to a remote destination.</p>
+<pre><code>{
+    "track": "my_track_id",
+    "uri": "destination_uri",
+    "username": "destination_username",
+    "password": "destination_password"
+}
+</code></pre>
+<p>The credentials will be put into the <strong>Authorization</strong> header of the upload request
+as if the destination required HTTP Basic authentication.</p>
+<h3 id="playlist">Playlist</h3>
+<h4 id="add-http-post-or-websocket">Add <small>HTTP POST or WebSocket</small></h4>
+<p>Add the track with the specified ID to the playlist:</p>
+<pre><code>{"cmd": "add", "track": "my_track_id"}
+</code></pre>
+<h4 id="add-all">Add all</h4>
+<p>Add multiple items to the playlist:</p>
+<pre><code>{
+    "cmd": "add_items", 
+    "folders": [ "folder_id1", "folder_id2" ], 
+    "tracks": [ "track_id1", "track_id2" ]
+}
+</code></pre>
+<h4 id="reset-playlist">Reset playlist</h4>
+<p>Reset the playlist to the given <em>tracks</em> and set the index to <em>index</em>:</p>
+<pre><code>{
+    "cmd": "reset_playlist",
+    "tracks": [ "track_id1", "track_id2" ],
+    "index": 0
+}
+</code></pre>
+<p>Resetting the playlist does not start or stop playback.    </p>
+<h4 id="add-uploaded-file-post-to-playlistuploads">Add uploaded file <small>POST to /playlist/uploads</small></h4>
+<p>Add the file uploaded as multipart/form-data to the playlist.</p>
+<h4 id="remove-http-post-or-websocket">Remove <small>HTTP POST or WebSocket</small></h4>
+<p>Remove the track at the specified playlist index from the playlist:</p>
+<pre><code>{"cmd": "remove", "value": 3}
+</code></pre>
+<h4 id="insert-track">Insert track</h4>
+<p>Insert the given track at the specified index in the playlist:</p>
+<pre><code>{"cmd": "insert", "track": "my_track_id", "index": 42}
+</code></pre>
+<h4 id="move-track-in-playlist">Move track in playlist</h4>
+<p>Move the track at index <em>from</em> in the playlist to index <em>to</em>:</p>
+<pre><code>{"cmd": "move", "from": 42, "to": 43}
+</code></pre>
+<h4 id="get-saved-playlists">Get saved playlists</h4>
+<p>Saved playlists are user-specific.</p>
+<pre><code>GET /playlists
+</code></pre>
+<p>Returns an array of saved playlists for the logged in user:    </p>
+<pre><code>{
+    "playlists": [
+        {
+            "id": 42,
+            "name": "The best playlist ever",
+            "tracks":[
+                {
+                    "id":"00+-+Preludio+Obsesivo.mp3",
+                    "title":"Preludio Obsesivo",
+                    "artist":"Rata Blanca",
+                    "album":"Rata Blanca",
+                    "duration":222,
+                    "size":3108553
+                },
+                {
+                    "id":"00+-+Turn+Me+On.mp3",
+                    "title":"Turn Me On",
+                    "artist":"Kevin Lyttle",
+                    "album":"Summer In The City - Latin Party",
+                    "duration":175,
+                    "size":4225234
+                },
+                {
+                    "id":"A+Ha+-+Take+On+Me.mp3",
+                    "title":"Take On Me [October 1985]",
+                    "artist":"A-Ha",
+                    "album":"The Definitive Singles Collection 1984-2004",
+                    "duration":227,
+                    "size":5470208
+                }
+            ]
+        }
+    ]
+}
+</code></pre>
+<h4 id="get-one-saved-playlist">Get one saved playlist</h4>
+<p>Get a playlist by ID:</p>
+<pre><code>GET /playlists/42
+</code></pre>
+<p>Example response:</p>
+<pre><code>{
+    "playlist": {
+        "id": 42,
+        "name": "The best playlist ever",
+        "tracks":[
+            {
+                "id":"00+-+Preludio+Obsesivo.mp3",
+                "title":"Preludio Obsesivo",
+                "artist":"Rata Blanca",
+                "album":"Rata Blanca",
+                "duration":222,
+                "size":3108553
+            },
+            {
+                "id":"00+-+Turn+Me+On.mp3",
+                "title":"Turn Me On",
+                "artist":"Kevin Lyttle",
+                "album":"Summer In The City - Latin Party",
+                "duration":175,
+                "size":4225234
+            },
+            {
+                "id":"A+Ha+-+Take+On+Me.mp3",
+                "title":"Take On Me [October 1985]",
+                "artist":"A-Ha",
+                "album":"The Definitive Singles Collection 1984-2004",
+                "duration":227,
+                "size":5470208
+            }
+        ]
+    }
+}
+</code></pre>
+<h4 id="create-or-update-a-saved-playlist">Create or update a saved playlist</h4>
+<pre><code>POST /playlists
+</code></pre>
+<p>Saves the playlist supplied in the JSON body of the request:    </p>
+<pre><code>{
+    "playlist": {
+        "id": 42,
+        "name": "My updated playlist",
+        "tracks": [ "track_id1", "track_id2" ]
+    }
+}
+</code></pre>
+<p>To create a new playlist, set the ID to <em>null</em> in the above JSON body:</p>
+<pre><code>"id": null
+</code></pre>
+<p>Returns the ID of the saved playlist in a JSON object:</p>
+<pre><code>{
+    "id": 42
+}
+</code></pre>
+<h4 id="delete-a-saved-playlist">Delete a saved playlist</h4>
+<p>Delete a playlist with a given ID:</p>
+<pre><code>POST /playlists/delete/42
+</code></pre>
+<p>Returns HTTP 202 Accepted if deletion succeeds.</p>
+<h3 id="alarms">Alarms</h3>
+<p>Schedule tracks for playback on your MusicPimp server. Use this as an
+alarm clock, for example.</p>
+<h4 id="get-alarms">Get alarms</h4>
+<pre><code>GET /alarms
+</code></pre>
+<p>Returns an array of alarms configured on the MusicPimp server:</p>
+<pre><code>[
+    {
+        "id": "d7e506f0-9c05-4253-8fff-13ef37b8b38c",
+        "job": {
+            "track": "Chicane%5C17-chicane_ft_moya_brennan-saltwater.mp3"
+        },
+        "when": {
+            "hour": 6,
+            "minute": 40,
+            "days": [
+                "fri",
+                "wed",
+                "mon",
+                "thu",
+                "tue"
+            ]
+        },
+        "enabled": true
+    }
+]
+</code></pre>
+<h4 id="control-alarms">Control alarms</h4>
+<pre><code>POST /alarms
+</code></pre>
+<p>To control alarms, HTTP POST a request body with JSON to the <em>/alarms</em> endpoint. Each JSON body
+must at least contain a <em>cmd</em> key and may contain other key-value pairs, as documented below.</p>
+<p>Save changes to an existing alarm:</p>
+<pre><code>{
+    "cmd": "save",
+    "ap": {
+        "id": "d7e506f0-9c05-4253-8fff-13ef37b8b38c",
+        "job": {
+            "track": "Chicane%5C17-chicane_ft_moya_brennan-saltwater.mp3"
+        },
+        "when": {
+            "hour": 6,
+            "minute": 40,
+            "days": [
+                "fri",
+                "wed",
+                "mon",
+                "thu",
+                "tue"
+            ]
+        },
+        "enabled": true
+    }
+}
+</code></pre>
+<p>To create a new alarm, POST a payload like above, but set the alarm <em>id</em> to <em>null</em>:</p>
+<pre><code>"id": null
+</code></pre>
+<p>MusicPimp will generate a suitable ID for the alarm.</p>
+<p>Delete an alarm:</p>
+<pre><code>{ "cmd": "delete", "id": "alarm_id_here" }
+</code></pre>
+<p>Start alarm playback:</p>
+<pre><code>{ "cmd": "start", "id": "alarm_id_here" }
+</code></pre>
+<p>Stop alarm playback:</p>
+<pre><code>{ "cmd": "stop" }
+</code></pre>
+<p>You may opt-in to receive push notifications to your mobile device(s) when
+scheduled playback starts. You may use such a notification to stop playback.</p>
+<p>To opt-in, you must register your device for push notifications with MusicPimp:</p>
+<p>Register a Microsoft Push Notification Service (MPNS) device:</p>
+<pre><code>{ "cmd": "push_add", "url": "mpns_device_url_here", "silent": true, "tag": "tag_identifier" }
+</code></pre>
+<p>Unregister an MPNS device:</p>
+<pre><code>{ "cmd": "push_remove", "url": "mpns_device_url_here" }
+</code></pre>
+<p>or</p>
+<pre><code>{ "cmd": "push_remove", "tag": "tag_identifier" }
+</code></pre>
+<p>Register an Android device using Google Cloud Messaging (GCM):</p>
+<pre><code>{ "cmd": "gcm_add", "id": "device_token", "tag": "tag_identifier" }
+</code></pre>
+<p>Unregister a GCM device:</p>
+<pre><code>{ "cmd": "gcm_remove", "id": "tag_identifier" }
+</code></pre>
+<p>Register an Android device using Amazon Device Messaging (ADM):</p>
+<pre><code>{ "cmd": "adm_add", "id": "device_token", "tag": "tag_identifier" }
+</code></pre>
+<p>Unregister an ADM device:</p>
+<pre><code>{ "cmd": "adm_remove", "id": "tag_identifier" }
+</code></pre>
+<p>Register an Apple Push Notification service (APNs) device:</p>
+<pre><code>{ "cmd": "apns_add", "id": "device_token", "tag": "tag_identifier" }
+</code></pre>
+<p>Unregister an APNs device:</p>
+<pre><code>{ "cmd": "apns_remove", "id": "tag_identifier" }
+</code></pre>
+<p>Supply a unique and static <em>tag</em> ID with your registrations. This is used to
+identify your device (as device tokens may change) and is included in the payload
+of every push notification so that devices can identify the source MusicPimp server.</p>
+<h3 id="miscellaneous">Miscellaneous</h3>
+<h4 id="ping">Ping</h4>
+<pre><code>GET /ping
+</code></pre>
+<p>Pings the server. Returns a 200 OK HTTP response on success.</p>
+<p><span class="label label-info">Note</span> Ping is the only API call that 
+does not require authentication.</p>
+<h4 id="authenticated-ping">Authenticated ping</h4>
+<pre><code>GET /pingauth
+</code></pre>
+<p>Pings the server and validates the supplied credentials. Responds with 200 OK 
+and the server version as JSON content if the credentials are valid, and with
+401 Unauthorized if authentication fails.</p>
+<p>Example response:</p>
+<pre><code>{"version":"1.8.0"}
+</code></pre>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2019 <a href="https://github.com/malliina">Michael Skogberg</a>
+          </div>
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.8e03edeb.js"></script>
+      
+      <script>app.initialize({version:"1.0.4",url:{base:"../.."}})</script>
+      
+    
+  </body>
+</html>
