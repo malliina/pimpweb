@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-     <loc>None</loc>
-     <lastmod>2019-10-05</lastmod>
+     <loc>https://docs.musicpimp.org/docs/</loc>
+     <lastmod>2019-12-09</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>None</loc>
-     <lastmod>2019-10-05</lastmod>
+     <loc>https://docs.musicpimp.org/docs/http-endpoints/</loc>
+     <lastmod>2019-12-09</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>None</loc>
-     <lastmod>2019-10-05</lastmod>
+     <loc>https://docs.musicpimp.org/docs/server-events/</loc>
+     <lastmod>2019-12-09</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>None</loc>
-     <lastmod>2019-10-05</lastmod>
+     <loc>https://docs.musicpimp.org/docs/code-samples/</loc>
+     <lastmod>2019-12-09</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>
