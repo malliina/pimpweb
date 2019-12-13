@@ -51,7 +51,7 @@ class GCP(val bucketName: BucketName, client: StorageClient) {
     executionContext.shutdown()
   }
 
-  def upload(websiteFile: WebsiteFile): Future[Path] = Future {
+  private def upload(websiteFile: WebsiteFile): Future[Path] = Future {
     val key = websiteFile.key
     val file = websiteFile.file
     val name = websiteFile.name

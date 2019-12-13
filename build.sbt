@@ -90,7 +90,7 @@ val generator: Project = project
       if (exitCode != 0)
         sys.error(s"Invalid exit code for 'mkdocs gh-deploy': $exitCode.")
     },
-    releasePublishArtifactsAction := Def.sequential(publish, deployDocs).value,
+    releasePublishArtifactsAction := Def.sequential(publish, build, deployDocs).value,
     publishTo := Option(Resolver.defaultLocal),
     buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, "gitHash" -> gitHash),
     buildInfoPackage := "com.malliina.generator"

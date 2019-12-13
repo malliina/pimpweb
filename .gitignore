@@ -13,3 +13,7 @@ site
 .bloop
 .hydra
 hydra.sbt
+out
+
+# Local Netlify folder
+.netlify

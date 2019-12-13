@@ -97,7 +97,8 @@ object ContentPlugin extends AutoPlugin {
     clean in Static := deleteDirectory(distDirectory.value),
     // https://github.com/sbt/sbt/issues/2975#issuecomment-358709526
     build := Def.taskDyn {
-      run in Compile toTask s" build ${produceManifestDev.value}"
+//      run in Compile toTask s" gh ${produceManifestProd.value}"
+      run in Compile toTask s" netlify ${produceManifestProd.value}"
     }.value,
     deploy := Def.taskDyn {
       run in Compile toTask s" deploy ${produceManifestProd.value} ${bucket.value}"

@@ -24,16 +24,16 @@ class PimpRoutes(isProd: Boolean) extends Routes {
   def build(name: String) = if (isProd) Route(name) else Route.local(name)
 
   val about = build("about")
-  val docs = build("docs")
-  val docsAlarms = build("docs/alarms")
-  val docsDeb = build("docs/deb")
+  val docs = build("getting-started")
+  val docsAlarms = build("getting-started/alarms")
+  val docsDeb = build("getting-started/deb")
   val downloads = build("downloads")
   val forum = build("forum")
   val index = if (isProd) Route(StorageKey("index"), "index.html", "/") else Route.local("index")
   val legalPrivacy = build("legal/privacy")
   val notFound = build("notfound")
   val ping = build("ping")
-  val wp = build("docs/wp")
+  val wp = build("getting-started/wp")
 }
 
 object Images extends Images
