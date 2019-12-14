@@ -2,6 +2,8 @@ package com.malliina.generator
 
 import java.nio.file.{Files, Path, Paths}
 
+import com.malliina.generator.Command.{Build, Deploy}
+import com.malliina.generator.DeployTarget.{GCPTarget, NetlifyTarget}
 import com.malliina.generator.gcp.GCP
 import com.malliina.generator.netlify.Netlify
 import play.api.libs.json.{JsError, Json}
@@ -23,8 +25,13 @@ trait Generator {
     */
   def pages(assets: MappedAssets, assetFinder: AssetFinder, mode: AppMode): BuiltPages
 
-  def main(args: Array[String]): Unit =
-    generate(BuildCommand(args(0), Paths.get(args(1)), if (args.length > 2) Option(BucketName(args(2))) else None))
+  def parseCommand(args: Seq[String]): BuildSpec = {
+    val path = Paths.get(args.head)
+    val spec = Json.parse(Files.readAllBytes(path)).as[BuildSpec]
+    spec
+  }
+
+  def main(args: Array[String]): Unit = generate(parseCommand(args))
 
   def render(assets: MappedAssets, assetFinder: AssetFinder, mode: AppMode): CompleteSite = {
     val buildInfo = Seq(ByteMapping(Json.toBytes(Json.toJson(VersionInfo.default)), "build.json"))
@@ -32,7 +39,7 @@ trait Generator {
     assets.site(ps.pages, buildInfo, ps.index, ps.notFound)
   }
 
-  def generate(cmd: BuildCommand) = {
+  def generate(spec: BuildSpec) = {
     val digests = Digests
     val assetFinder = new DigestFinder(digests)
     // Fingerprints images
@@ -42,41 +49,38 @@ trait Generator {
       val undigested = AssetPath(s"/img/${img.getFileName}")
       FileMapping(img, assetFinder.digestedPath(undigested, digested.hash), isFingerprinted = true)
     }
-    val mode = if (cmd.cmd == "build") AppMode.Dev else AppMode.Prod
-    val assetsJson = cmd.manifest
+    val mode = if (spec.cmd == Build) AppMode.Dev else AppMode.Prod
+    val assetsJson = spec.manifest
 
-    def buildSite(dist: Path): BuiltSite = {
+    def compileSite(dist: Path): CompleteSite = {
       val manifest = AssetsManifest(assetsJson)
         .fold(err => fail(s"Failed to read assets file: '${JsError(err)}'."), identity)
       val mapped = mappings(manifest, dist)
-      render(mapped.withOther(imgs), assetFinder, mode).write(dist)
+      // Writes files to dist
+      render(mapped.withOther(imgs), assetFinder, mode)
     }
 
-    // Receives built assets and turns it into a website
-    cmd.cmd match {
-      case "clean" =>
-        FileIO.deleteDirectory(assetsJson)
-      case "build" | "prepare" =>
-        val built = buildSite(distDir)
-        FileIO.writeJson(built, target.resolve("built.json"))
-      case "gh" =>
-        buildSite(docsDir)
-      case "netlify" =>
-        val site = buildSite(distDir)
-        Netlify.headers(site.files, distDir.resolve("_headers"))
-      case "deploy" =>
-        cmd.bucket
-          .map { bucket =>
+    def buildSite(dist: Path): BuiltSite = compileSite(dist).write(dist)
+
+    spec.target match {
+      case NetlifyTarget =>
+        spec.cmd match {
+          case Build =>
+            Netlify.build(compileSite(distDir), distDir)
+          case Deploy =>
+            val built = Netlify.build(compileSite(distDir), distDir)
+            Netlify.deploy(built)
+        }
+      case GCPTarget(bucket) =>
+        spec.cmd match {
+          case Build =>
+            buildSite(distDir)
+          case Deploy =>
             val website: BuiltSite = buildSite(distDir)
             val gcp = GCP(bucket)
             FileIO.writeJson(website, target.resolve("receipt.json"))
             gcp.deploy(website)
-          }
-          .getOrElse {
-            fail("No bucket name defined.")
-          }
-      case other =>
-        fail(s"Unknown argument: '$other'.")
+        }
     }
   }
 

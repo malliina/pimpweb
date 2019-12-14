@@ -15,7 +15,7 @@ jobs:
       - name: Set up Python 2.7
         uses: actions/setup-python@v1
         with:
-          python-version: 2.7
+          python-version: 3.7
       - name: Set up Netlify
         uses: netlify/actions/cli@master
       - name: Set up JDK 11
@@ -38,8 +38,8 @@ jobs:
           sudo npm install netlify-cli -g
       - name: Run tests
         run: sbt test
-      - name: Build site
+      - name: Deploy site
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-        run: sbt buildAndDeploy
+        run: sbt deploy

@@ -2,11 +2,48 @@ package com.malliina.generator
 
 import java.nio.file.{Files, Path, StandardOpenOption}
 
-import com.malliina.values.{StringCompanion, WrappedString}
-import play.api.libs.json.{JsResult, Json}
+import com.malliina.values.{StringCompanion, StringEnumCompanion, WrappedString}
+import play.api.libs.json.{Format, JsError, JsResult, JsSuccess, Json}
 import scalatags.Text.all.AttrValue
 
-case class BuildCommand(cmd: String, manifest: Path, bucket: Option[BucketName])
+sealed abstract class Command(val name: String)
+
+object Command extends StringEnumCompanion[Command] {
+  override def all = Seq(Build, Deploy)
+  override def write(t: Command) = t.name
+
+  case object Build extends Command("build")
+  case object Deploy extends Command("deploy")
+}
+
+sealed abstract class DeployTarget(val name: String)
+
+object DeployTarget {
+  val ServiceKey = "service"
+  implicit val json: Format[DeployTarget] = Format[DeployTarget](
+    json =>
+      (json \ ServiceKey).validate[String].flatMap {
+        case NetlifyTarget.name => JsSuccess(NetlifyTarget)
+        case GCP.name           => GCP.gcpJson.reads(json)
+        case other              => JsError(s"Unknown service: '$other'.")
+      }, {
+      case NetlifyTarget      => Json.obj(ServiceKey -> NetlifyTarget.name)
+      case gcp @ GCPTarget(_) => Json.obj(ServiceKey -> GCP.name) ++ GCP.gcpJson.writes(gcp)
+    }
+  )
+  case class GCPTarget(bucket: BucketName) extends DeployTarget(GCP.name)
+  object GCP {
+    val name = "gcp"
+    val gcpJson = Json.format[GCPTarget]
+  }
+  case object NetlifyTarget extends DeployTarget("netlify")
+}
+
+case class BuildSpec(cmd: Command, manifest: Path, target: DeployTarget)
+
+object BuildSpec {
+  implicit val json = Json.format[BuildSpec]
+}
 
 case class CacheControl(value: String) extends AnyVal with WrappedString
 object CacheControl extends StringCompanion[CacheControl]
@@ -15,28 +52,31 @@ case class ContentType(value: String) extends AnyVal with WrappedString
 object ContentType extends StringCompanion[ContentType]
 
 case class BucketName(value: String) extends AnyVal with WrappedString
+object BucketName extends StringCompanion[BucketName]
 
 case class MappedAssets(
-  scripts: Seq[FileMapping],
-  adhocScripts: Seq[AssetPath],
-  styles: Seq[FileMapping],
-  other: Seq[FileMapping]) {
+    scripts: Seq[FileMapping],
+    adhocScripts: Seq[AssetPath],
+    styles: Seq[FileMapping],
+    other: Seq[FileMapping]
+) {
   def all = scripts ++ styles ++ other
   def site(
-    pages: Seq[PageMapping],
-    other: Seq[ByteMapping],
-    index: StorageKey,
-    notFound: StorageKey
+      pages: Seq[PageMapping],
+      other: Seq[ByteMapping],
+      index: StorageKey,
+      notFound: StorageKey
   ) = CompleteSite(this, pages, other, index, notFound)
   def withOther(otherFiles: Seq[FileMapping]) = MappedAssets(scripts, adhocScripts, styles, other ++ otherFiles)
 }
 
 case class CompleteSite(
-  assets: MappedAssets,
-  pages: Seq[PageMapping],
-  bytes: Seq[ByteMapping],
-  index: StorageKey,
-  notFound: StorageKey) {
+    assets: MappedAssets,
+    pages: Seq[PageMapping],
+    bytes: Seq[ByteMapping],
+    index: StorageKey,
+    notFound: StorageKey
+) {
 
   /** Writes the site to `base`.
     *
@@ -87,7 +127,8 @@ case class AssetsManifest(
   adhocScripts: Seq[AssetPath],
   styles: Seq[Path],
   statics: Seq[Path],
-  assetsBase: Path)
+  assetsBase: Path
+)
 
 object AssetsManifest {
   implicit val json = Json.format[AssetsManifest]
@@ -96,11 +137,7 @@ object AssetsManifest {
     Json.parse(Files.readAllBytes(file)).validate[AssetsManifest]
 }
 
-case class SiteManifest(
-  css: Seq[String],
-  js: Seq[String],
-  statics: Seq[String],
-  targetDirectory: Path) {
+case class SiteManifest(css: Seq[String], js: Seq[String], statics: Seq[String], targetDirectory: Path) {
   def to(file: Path): Path =
     Files.write(file, Json.toBytes(SiteManifest.json.writes(this)), StandardOpenOption.CREATE)
 }

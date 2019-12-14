@@ -13,17 +13,13 @@ import scala.util.Try
 val utilHtmlVersion = "5.2.4"
 val scalatagsVersion = "0.7.0"
 val buildDocs = taskKey[Unit]("Builds MkDocs")
-val deployDocs = taskKey[Unit]("Deploys docs.musicpimp.org")
-val deployNetlify = taskKey[Unit]("Runs 'netlify deploy --prod'")
-val buildSite = taskKey[Unit]("Builds local files")
-val buildAndDeploy = taskKey[Unit]("Builds and deploys")
 
 val commonSettings = Seq(
   organization := "org.musicpimp",
   scalaVersion := "2.13.1"
 )
 val siteTarget = settingKey[Path]("Content target")
-ThisBuild / siteTarget := (target.value / "dist").toPath
+ThisBuild / siteTarget := (baseDirectory.value / "site").toPath
 
 val shared = crossProject(JSPlatform, JVMPlatform)
   .settings(commonSettings)
@@ -72,6 +68,8 @@ val client: Project = project
     skip in publish := true
   )
 
+//val api = ProjectRef(file("project"), "api")
+
 val generator: Project = project
   .in(file("generator"))
   .enablePlugins(ContentPlugin, BuildInfoPlugin, NodeJsPlugin)
@@ -95,21 +93,8 @@ val generator: Project = project
       if (exitCode != 0)
         sys.error(s"Invalid exit code for '$cmd': $exitCode.")
     },
-    deployDocs := {
-      val exitCode = Process("mkdocs gh-deploy").run(streams.value.log).exitValue()
-      if (exitCode != 0)
-        sys.error(s"Invalid exit code for 'mkdocs gh-deploy': $exitCode.")
-    },
-    deployNetlify := {
-      val cmd = "netlify deploy --prod"
-      val exitCode = Process(cmd).run(streams.value.log).exitValue()
-      if (exitCode != 0)
-        sys.error(s"Invalid exit code for '$cmd': $exitCode.")
-    },
-    buildSite := Def.sequential(buildDocs, build).value,
-    buildAndDeploy := Def.sequential(buildDocs, build, deployNetlify).value,
-//    releasePublishArtifactsAction := Def.sequential(buildDocs, build, deployNetlify).value,
-    //    releasePublishArtifactsAction := Def.sequential(publish, build, deployDocs).value,
+    build := build.dependsOn(buildDocs).value,
+    deploy := deploy.dependsOn(buildDocs).value,
     releasePublishArtifactsAction := {},
     publishTo := Option(Resolver.defaultLocal),
     buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, "gitHash" -> gitHash),

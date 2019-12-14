@@ -3,7 +3,10 @@ package com.malliina.generator.netlify
 import java.nio.charset.StandardCharsets
 import java.nio.file.Path
 
-import com.malliina.generator.{FileIO, WebsiteFile}
+import com.malliina.generator.{BuiltSite, CompleteSite, FileIO, WebsiteFile}
+import org.slf4j.LoggerFactory
+
+import scala.sys.process.{Process, ProcessLogger}
 
 case class NetlifyHeader(path: String, headers: Map[String, String]) {
   def asString: String = {
@@ -21,7 +24,20 @@ object NetlifyHeader {
 object Netlify extends Netlify
 
 class Netlify {
-  def headers(files: Seq[WebsiteFile], to: Path): Path = {
+  private val log = LoggerFactory.getLogger(getClass)
+
+  def build(site: CompleteSite, to: Path): BuiltSite = {
+    val content = site.write(to)
+    headers(content.files, to.resolve("_headers"))
+    content
+  }
+
+  def deploy(site: BuiltSite) = {
+    val logger = ProcessLogger(out => log.info(out), err => log.error(err))
+    Process("netlify deploy --prod").run(logger).exitValue()
+  }
+
+  private def headers(files: Seq[WebsiteFile], to: Path): Path = {
     val netlifyHeaders = NetlifyHeader.security +: files.map { file =>
       NetlifyHeader(
         s"/${file.key.value}",

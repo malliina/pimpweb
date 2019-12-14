@@ -1,68 +1,22 @@
-import java.io.IOException
-import java.nio.charset.StandardCharsets
-import java.nio.file.attribute.BasicFileAttributes
-import java.nio.file.{FileVisitResult, Files, Path, SimpleFileVisitor, StandardOpenOption}
+import java.nio.file.Path
 
 import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport.{fastOptJS, fullOptJS}
-import play.api.libs.json.Json
 import sbt.Keys._
 import sbt._
 import scalajsbundler.sbtplugin.ScalaJSBundlerPlugin.autoImport.{BundlerFileType, BundlerFileTypeAttr, webpack}
 
-case class AssetGroup(
-  scripts: Seq[File],
-  adhocScripts: Seq[String],
-  styles: Seq[File],
-  statics: Seq[File]) {
-  def manifest(assetsBase: File): AssetsManifest =
-    AssetsManifest(scripts.map(_.toPath), adhocScripts, styles.map(_.toPath), statics.map(_.toPath), assetsBase.toPath)
-}
-
-/**
-  *
-  * @param assetsBase typically .../scalajs-bundler/main
-  */
-case class AssetsManifest(
-  scripts: Seq[Path],
-  adhocScripts: Seq[String],
-  styles: Seq[Path],
-  statics: Seq[Path],
-  assetsBase: Path) {
-  def to(file: Path) = {
-    val pretty = Json.prettyPrint(AssetsManifest.json.writes(this))
-    Files
-      .write(
-        file,
-        pretty.getBytes(StandardCharsets.UTF_8),
-        StandardOpenOption.CREATE,
-        StandardOpenOption.TRUNCATE_EXISTING
-      )
-      .toAbsolutePath
-  }
-}
-
-object AssetsManifest {
-  implicit val paths = Formats.pathFormat
-  implicit val json = Json.format[AssetsManifest]
-}
-
 /** Controls builds and deployments of a static website.
   *
-  * The `build` task uses webpack to build assets, then provides built assets as program
-  * arguments to the run task. The run task will run the main method of the SBT project
-  * this plugin is enabled for. You may trigger HTML generation from the main method
-  * with the given arguments.
-  *
-  * Similarly, use `prepare` to prep prod assets, and `deploy` to deploy the website to
-  * `bucket`.
+  * Task `build` prepares the site locally. Task `deploy` deploys the site.
   *
   * Specify the JS project, used to build assets, in key `jsProject`.
   */
 object ContentPlugin extends AutoPlugin {
-
   object autoImport {
+    val deployTarget = settingKey[DeployTarget]("Target deployment platform")
     val bucket = settingKey[String]("Target bucket name of website in Google Cloud Storage")
     val distDirectory = settingKey[Path]("Static site target directory")
+    val prepareBuildspec = taskKey[Path]("Creates the buildspec")
     val build = taskKey[Unit]("Builds the website")
     val deploy = taskKey[Unit]("Deploys the website")
     val produceManifestDev = taskKey[Path]("Builds the site assets file")
@@ -74,6 +28,7 @@ object ContentPlugin extends AutoPlugin {
     val dir = settingKey[Path]("Directory")
     val assetTarget = settingKey[File]("Assets target (from webpack)")
     val manifestFile = settingKey[Path]("Path to manifest file")
+    val buildspec = settingKey[Path]("Path to buildspec file")
   }
 
   import autoImport._
@@ -82,9 +37,11 @@ object ContentPlugin extends AutoPlugin {
 
   override def projectSettings: Seq[Setting[_]] = Seq(
     exportJars := false,
+    deployTarget := DeployTarget.NetlifyTarget,
     assetTarget := Def.settingDyn(crossTarget.in(clientProject.value, Compile, fullOptJS in clientProject.value)).value,
     distDirectory := (target.value / "dist").toPath,
     manifestFile := (target.value / "site.json").toPath,
+    buildspec := (target.value / "buildspec.json").toPath,
     // Triggers compilation on code changes in either project
     watchSources := watchSources.value ++ Def.taskDyn(watchSources in clientProject.value).value,
     fastWebpack := Def.taskDyn {
@@ -94,21 +51,27 @@ object ContentPlugin extends AutoPlugin {
       webpack.in(clientProject.value, Compile, fullOptJS in clientProject.value)
     }.value,
     publishLocal in Static := build.value,
-    clean in Static := deleteDirectory(distDirectory.value),
+    clean in Static := FileIO.deleteDirectory(distDirectory.value),
     // https://github.com/sbt/sbt/issues/2975#issuecomment-358709526
     build := Def.taskDyn {
-//      run in Compile toTask s" gh ${produceManifestProd.value}"
-      run in Compile toTask s" netlify ${produceManifestProd.value}"
+      val spec = prepareBuildspec.value
+      run in Compile toTask s" $spec"
     }.value,
     deploy := Def.taskDyn {
-      run in Compile toTask s" deploy ${produceManifestProd.value} ${bucket.value}"
+      val spec = BuildSpec(Command.Deploy, produceManifestProd.value, deployTarget.value)
+      val path = FileIO.writeJson(spec, buildspec.value, streams.value.log)
+      run in Compile toTask s" $path"
     }.value,
+    prepareBuildspec := {
+      val spec = BuildSpec(Command.Build, produceManifestProd.value, deployTarget.value)
+      FileIO.writeJson(spec, buildspec.value, streams.value.log)
+    },
     produceManifestDev := assetGroup(fastWebpack.value, adhocScripts = Seq("/workbench.js"))
       .manifest(assetTarget.value)
-      .to(manifestFile.value),
+      .to(manifestFile.value, streams.value.log),
     produceManifestProd := assetGroup(fullWebpack.value)
       .manifest(assetTarget.value)
-      .to(manifestFile.value),
+      .to(manifestFile.value, streams.value.log),
     produceManifestProd := produceManifestProd.dependsOn(clean in Static).value,
     publish in Static := deploy.value,
     publish := deploy.value,
@@ -142,27 +105,5 @@ object ContentPlugin extends AutoPlugin {
     val styles = files.map(_.data).filter(_.ext == "css")
     val statics = files.map(_.data).filter(f => f.ext != "css" && f.ext != "js")
     AssetGroup(scripts, adhocScripts, styles, statics)
-  }
-
-  // https://stackoverflow.com/a/27917071
-  def deleteDirectory(dir: Path): Path = {
-    if (Files.exists(dir)) {
-      Files.walkFileTree(
-        dir,
-        new SimpleFileVisitor[Path] {
-          override def visitFile(file: Path, attrs: BasicFileAttributes): FileVisitResult = {
-            Files.delete(file)
-            FileVisitResult.CONTINUE
-          }
-
-          override def postVisitDirectory(dir: Path, exc: IOException): FileVisitResult = {
-            Files.delete(dir)
-            FileVisitResult.CONTINUE
-          }
-        }
-      )
-    } else {
-      dir
-    }
   }
 }
