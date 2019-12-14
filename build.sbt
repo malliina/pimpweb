@@ -108,7 +108,7 @@ val generator: Project = project
     },
     buildSite := Def.sequential(buildDocs, build).value,
     buildAndDeploy := Def.sequential(buildDocs, build, deployNetlify).value,
-    releasePublishArtifactsAction := Def.sequential(buildDocs, build, deployNetlify).value,
+//    releasePublishArtifactsAction := Def.sequential(buildDocs, build, deployNetlify).value,
 //    releasePublishArtifactsAction := Def.sequential(publish, build, deployDocs).value,
     publishTo := Option(Resolver.defaultLocal),
     buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, "gitHash" -> gitHash),
