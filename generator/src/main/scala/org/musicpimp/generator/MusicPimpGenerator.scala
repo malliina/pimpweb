@@ -17,7 +17,7 @@ object MusicPimpGenerator extends Generator {
       routes.wp -> html.docWinPhone,
       routes.docsAlarms -> html.alarms,
       routes.legalPrivacy -> html.privacyPolicy,
-      routes.downloads -> html.downloads(Home.releaseDate, Nil),
+      routes.downloads -> html.downloads(Urls.releaseDate, Nil),
       routes.ping -> html.ping
     ).toList
     val pages: List[PageMapping] = fileMap.map {

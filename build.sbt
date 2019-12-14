@@ -12,7 +12,10 @@ import scala.util.Try
 
 val utilHtmlVersion = "5.2.4"
 val scalatagsVersion = "0.7.0"
+val buildDocs = taskKey[Unit]("Builds MkDocs")
 val deployDocs = taskKey[Unit]("Deploys docs.musicpimp.org")
+val deployNetlify = taskKey[Unit]("Runs 'netlify deploy --prod'")
+val buildSite = taskKey[Unit]("Builds local files")
 
 val commonSettings = Seq(
   organization := "org.musicpimp",
@@ -85,12 +88,26 @@ val generator: Project = project
     refreshBrowsers := refreshBrowsers.triggeredBy(build).value,
     bucket := "www.musicpimp.org",
     distDirectory := siteTarget.value,
+    buildDocs := {
+      val cmd = "mkdocs build"
+      val exitCode = Process(cmd).run(streams.value.log).exitValue()
+      if (exitCode != 0)
+        sys.error(s"Invalid exit code for '$cmd': $exitCode.")
+    },
     deployDocs := {
       val exitCode = Process("mkdocs gh-deploy").run(streams.value.log).exitValue()
       if (exitCode != 0)
         sys.error(s"Invalid exit code for 'mkdocs gh-deploy': $exitCode.")
     },
-    releasePublishArtifactsAction := Def.sequential(publish, deployDocs).value,
+    deployNetlify := {
+      val cmd = "netlify deploy --prod"
+      val exitCode = Process(cmd).run(streams.value.log).exitValue()
+      if (exitCode != 0)
+        sys.error(s"Invalid exit code for '$cmd': $exitCode.")
+    },
+    buildSite := Def.sequential(buildDocs, build).value,
+    releasePublishArtifactsAction := Def.sequential(buildDocs, build, deployNetlify).value,
+//    releasePublishArtifactsAction := Def.sequential(publish, build, deployDocs).value,
     publishTo := Option(Resolver.defaultLocal),
     buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, "gitHash" -> gitHash),
     buildInfoPackage := "com.malliina.generator"

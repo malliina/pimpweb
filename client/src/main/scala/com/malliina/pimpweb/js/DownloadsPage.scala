@@ -23,7 +23,7 @@ class DownloadsPage extends com.malliina.html.Bootstrap(JSTags) {
   val listObjectsUrl = s"https://www.googleapis.com/storage/v1/b/$bucketName/o"
   val downloadBaseUrl = FullUrl.https(bucketName, "")
 
-  Ajax.get(listObjectsUrl).map { xhr =>
+  def listObjects = Ajax.get(listObjectsUrl).map { xhr =>
     xhr
       .validate[ListObjectsResponse]
       .map { res =>

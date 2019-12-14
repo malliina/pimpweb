@@ -39,7 +39,7 @@ class PimpWebHtml(
 
   import tags._
 
-  val DocsUrl = "https://docs.musicpimp.org"
+  val DocsUrl = "https://www.musicpimp.org/docs/"
 
   val images = Images
 
@@ -65,24 +65,24 @@ class PimpWebHtml(
             li(
               aHref(homeRoute.downloads, "Download"),
               " the free server for ",
-              aHref(Home.msiDownload.url, "Windows"),
+              aHref(Urls.msiDownload.url, "Windows"),
               " or ",
-              aHref(Home.debDownload.url, "Linux"),
+              aHref(Urls.debDownload.url, "Linux"),
               "."
             ),
             li(
               "Get the ",
               strong("MusicPimp"),
               " apps for ",
-              aHref(Home.iosAppUri, "iOS"),
+              aHref(Urls.iosAppUri, "iOS"),
               ", ",
-              aHref(Home.androidAppUri, "Android"),
+              aHref(Urls.androidAppUri, "Android"),
               " and ",
-              aHref(Home.amazonAppUri, "Kindle Fire"),
+              aHref(Urls.amazonAppUri, "Kindle Fire"),
               ", ",
-              aHref(Home.winPhoneAppUri, "Windows Phone"),
+              aHref(Urls.winPhoneAppUri, "Windows Phone"),
               " and ",
-              aHref(Home.winStoreAppUri, "Windows 8"),
+              aHref(Urls.winStoreAppUri, "Windows 8"),
               "."
             )
           )
@@ -90,15 +90,15 @@ class PimpWebHtml(
       ),
       row(
         div4(
-          a(href := Home.iosAppUri, `class` := s"d-none d-md-block $PullRight app-badge-ios")
+          a(href := Urls.iosAppUri, `class` := s"d-none d-md-block $PullRight app-badge-ios")
         ),
         div4(
-          badgeFromAssets(Home.androidAppUri, "Android app on Google Play", "app-badge-google"),
-          badgeFromAssets(Home.amazonAppUri, "Android app on Amazon AppStore", "app-badge-amazon")
+          badgeFromAssets(Urls.androidAppUri, "Android app on Google Play", "app-badge-google"),
+          badgeFromAssets(Urls.amazonAppUri, "Android app on Amazon AppStore", "app-badge-amazon")
         ),
         div4(
-          badgeFromAssets(Home.winPhoneAppUri, "Windows Phone app", "app-badge-winphone", PullLeft),
-          badgeFromAssets(Home.winStoreAppUri, "Windows Store app", "app-badge-winstore", PullLeft)
+          badgeFromAssets(Urls.winPhoneAppUri, "Windows Phone app", "app-badge-winphone", PullLeft),
+          badgeFromAssets(Urls.winStoreAppUri, "Windows Store app", "app-badge-winstore", PullLeft)
         )
       ),
       hr(`class` := "hr-front"),
@@ -162,16 +162,16 @@ class PimpWebHtml(
       docHeader("Installation"),
       p(`class` := "mb-5")(
         "Download ",
-        aHref(Home.debDownload.url, Home.debDownload.fileName),
+        aHref(Urls.debDownload.url, Urls.debDownload.fileName),
         " and execute: ",
-        code(s"dpkg -i ${Home.debDownload.fileName}")
+        code(s"dpkg -i ${Urls.debDownload.fileName}")
       )
     )
   )
 
   val debUninstall = p(`class` := "mb-5")(code("apt-get purge musicpimp"))
 
-  val docDeb = docuBase("deb", Home.linuxConfFile, debInstall, debUninstall)
+  val docDeb = docuBase("deb", Urls.linuxConfFile, debInstall, debUninstall)
 
   val winInstall: Modifier = modifier(
     mainHeader("Windows"),
@@ -188,14 +188,14 @@ class PimpWebHtml(
         li(aHref("http://www.microsoft.com/net/download", ".NET Framework"), " 3.5 or higher")
       ),
       docHeader("Installation"),
-      p(`class` := "mb-5")("Download and run ", aHref(Home.msiDownload.url, Home.msiDownload.fileName), ".")
+      p(`class` := "mb-5")("Download and run ", aHref(Urls.msiDownload.url, Urls.msiDownload.fileName), ".")
     )
   )
 
   val winUninstall =
     p(`class` := "mb-5")("Uninstall MusicPimp using the Add/Remove Programs section in the Control Panel.")
 
-  val docWin = docuBase("win", Home.windowsConfFile, winInstall, winUninstall)
+  val docWin = docuBase("win", Urls.windowsConfFile, winInstall, winUninstall)
 
   def docuBase(
     os: String,
@@ -302,7 +302,7 @@ class PimpWebHtml(
       h2("System Requirements"),
       p("Windows Phone 7.5 and higher are supported."),
       h2("Installation"),
-      p("Install the ", strong("MusicPimp"), " ", aHref(Home.winPhoneAppUri, "app"), " to your Windows Phone device."),
+      p("Install the ", strong("MusicPimp"), " ", aHref(Urls.winPhoneAppUri, "app"), " to your Windows Phone device."),
       h2("Usage"),
       ol(
         li("Add music endpoints to your app. Any PC on which MusicPimp is installed works as a music endpoint."),
@@ -410,12 +410,12 @@ class PimpWebHtml(
       divClass(s"$Row mb-5 mt-4")(
         div(`class` := col.lg.four)(
           h2(`class` := "mb-4")(iClass("icon-windows"), " Windows"),
-          downloadLink(Home.msiDownload, s"primary ${btn.lg}"),
+          downloadLink(Urls.msiDownload, s"primary ${btn.lg}"),
           p(s"Released on $releaseDate.")
         ),
         div(`class` := col.lg.four)(
           h2(`class` := "mb-4")(iClass("icon-linux"), " Linux"),
-          downloadLink(Home.debDownload, s"primary ${btn.lg}"),
+          downloadLink(Urls.debDownload, s"primary ${btn.lg}"),
           p("DEB packages are tested on Ubuntu.")
         )
       ),
@@ -429,14 +429,14 @@ class PimpWebHtml(
           "."
         )
       ),
-      rowColumn(col.md.six)(
-        h3("Previous versions"),
-        ul(`class` := "pimp-list", id := FrontKeys.PimpListId)(
-          previous map { prev =>
-            liHref(Home.downloadBaseUrl + prev)(prev)
-          }
-        )
-      )
+//      rowColumn(col.md.six)(
+//        h3("Previous versions"),
+//        ul(`class` := "pimp-list", id := FrontKeys.PimpListId)(
+//          previous map { prev =>
+//            liHref(Urls.downloadBaseUrl + prev)(prev)
+//          }
+//        )
+//      )
     )
 
   val forum = indexMain("forum")(

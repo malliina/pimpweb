@@ -3,13 +3,15 @@ package com.malliina.generator
 import java.nio.file.{Files, Path, Paths}
 
 import com.malliina.generator.gcp.GCP
+import com.malliina.generator.netlify.Netlify
 import play.api.libs.json.{JsError, Json}
 
 import scala.jdk.CollectionConverters.IteratorHasAsScala
 
 trait Generator {
   val target = Paths.get("target")
-  val distDir = target.resolve("dist")
+  val distDir = Paths.get("site")
+  val docsDir = Paths.get("docs")
   val resourcesBaseDir = Paths.get("client/src/main/resources")
 
   /** Generates the HTML of the site.
@@ -43,11 +45,11 @@ trait Generator {
     val mode = if (cmd.cmd == "build") AppMode.Dev else AppMode.Prod
     val assetsJson = cmd.manifest
 
-    def buildSite(): BuiltSite = {
+    def buildSite(dist: Path): BuiltSite = {
       val manifest = AssetsManifest(assetsJson)
         .fold(err => fail(s"Failed to read assets file: '${JsError(err)}'."), identity)
-      val mapped = mappings(manifest, distDir)
-      render(mapped.withOther(imgs), assetFinder, mode).write(distDir)
+      val mapped = mappings(manifest, dist)
+      render(mapped.withOther(imgs), assetFinder, mode).write(dist)
     }
 
     // Receives built assets and turns it into a website
@@ -55,12 +57,17 @@ trait Generator {
       case "clean" =>
         FileIO.deleteDirectory(assetsJson)
       case "build" | "prepare" =>
-        val built = buildSite()
+        val built = buildSite(distDir)
         FileIO.writeJson(built, target.resolve("built.json"))
+      case "gh" =>
+        buildSite(docsDir)
+      case "netlify" =>
+        val site = buildSite(distDir)
+        Netlify.headers(site.files, distDir.resolve("_headers"))
       case "deploy" =>
         cmd.bucket
           .map { bucket =>
-            val website: BuiltSite = buildSite()
+            val website: BuiltSite = buildSite(distDir)
             val gcp = GCP(bucket)
             FileIO.writeJson(website, target.resolve("receipt.json"))
             gcp.deploy(website)

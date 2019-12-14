@@ -1,13 +1,14 @@
 site_name: MusicPimp
 site_author: Michael Skogberg
+site_url: https://www.musicpimp.org/docs/
 
 theme:
   name: 'material'
 
 nav:
-  - Develop: index.md
-  - Http Endpoints: http-endpoints.md
-  - Server Events: server-events.md
-  - Code Samples: code-samples.md
+  - Develop: docs/index.md
+  - Http Endpoints: docs/http-endpoints.md
+  - Server Events: docs/server-events.md
+  - Code Samples: docs/code-samples.md
 
 copyright: Copyright &copy; 2019 <a href="https://github.com/malliina">Michael Skogberg</a>
