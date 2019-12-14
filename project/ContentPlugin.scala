@@ -72,7 +72,7 @@ object ContentPlugin extends AutoPlugin {
     produceManifestProd := assetGroup(fullWebpack.value)
       .manifest(assetTarget.value)
       .to(manifestFile.value, streams.value.log),
-    produceManifestProd := produceManifestProd.dependsOn(clean in Static).value,
+//    produceManifestProd := produceManifestProd.dependsOn(clean in Static).value,
     publish in Static := deploy.value,
     publish := deploy.value,
     // Hack to make the default release process work instead of fake error "Repository for publishing is not specified"
