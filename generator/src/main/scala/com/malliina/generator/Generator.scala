@@ -3,8 +3,9 @@ package com.malliina.generator
 import java.nio.file.{Files, Path, Paths}
 
 import com.malliina.generator.Command.{Build, Deploy}
-import com.malliina.generator.DeployTarget.{GCPTarget, NetlifyTarget}
+import com.malliina.generator.DeployTarget.{GCPTarget, GitHubTarget, NetlifyTarget}
 import com.malliina.generator.gcp.GCP
+import com.malliina.generator.github.GitHubPages
 import com.malliina.generator.netlify.Netlify
 import play.api.libs.json.{JsError, Json}
 
@@ -80,6 +81,13 @@ trait Generator {
             val gcp = GCP(bucket)
             FileIO.writeJson(website, target.resolve("receipt.json"))
             gcp.deploy(website)
+        }
+      case GitHubTarget(cname) =>
+        spec.cmd match {
+          case Build =>
+            GitHubPages(cname).build(compileSite(distDir), distDir)
+          case Deploy =>
+            fail("Deploy to GitHub not supported yet.")
         }
     }
   }

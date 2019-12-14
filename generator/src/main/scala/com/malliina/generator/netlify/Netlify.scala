@@ -28,7 +28,7 @@ class Netlify {
 
   def build(site: CompleteSite, to: Path): BuiltSite = {
     val content = site.write(to)
-    headers(content.files, to.resolve("_headers"))
+    writeHeadersFile(content.files, to.resolve("_headers"))
     content
   }
 
@@ -37,7 +37,7 @@ class Netlify {
     Process("netlify deploy --prod").run(logger).exitValue()
   }
 
-  private def headers(files: Seq[WebsiteFile], to: Path): Path = {
+  private def writeHeadersFile(files: Seq[WebsiteFile], to: Path): Path = {
     val netlifyHeaders = NetlifyHeader.security +: files.map { file =>
       NetlifyHeader(
         s"/${file.key.value}",

@@ -10,7 +10,7 @@ sealed abstract class Command(val name: String)
 
 object Command extends StringEnumCompanion[Command] {
   override def all = Seq(Build, Deploy)
-  override def write(t: Command) = t.name
+  override def write(t: Command): String = t.name
 
   case object Build extends Command("build")
   case object Deploy extends Command("deploy")
@@ -20,15 +20,21 @@ sealed abstract class DeployTarget(val name: String)
 
 object DeployTarget {
   val ServiceKey = "service"
+
   implicit val json: Format[DeployTarget] = Format[DeployTarget](
     json =>
       (json \ ServiceKey).validate[String].flatMap {
         case NetlifyTarget.name => JsSuccess(NetlifyTarget)
         case GCP.name           => GCP.gcpJson.reads(json)
+        case GitHubTarget.name  => GitHubTarget.ghJson.reads(json)
         case other              => JsError(s"Unknown service: '$other'.")
       }, {
-      case NetlifyTarget      => Json.obj(ServiceKey -> NetlifyTarget.name)
-      case gcp @ GCPTarget(_) => Json.obj(ServiceKey -> GCP.name) ++ GCP.gcpJson.writes(gcp)
+      case NetlifyTarget =>
+        Json.obj(ServiceKey -> NetlifyTarget.name)
+      case gcp @ GCPTarget(_) =>
+        Json.obj(ServiceKey -> GCP.name) ++ GCP.gcpJson.writes(gcp)
+      case gh @ GitHubTarget(_) =>
+        Json.obj(ServiceKey -> GitHubTarget.name) ++ GitHubTarget.ghJson.writes(gh)
     }
   )
   case class GCPTarget(bucket: BucketName) extends DeployTarget(GCP.name)
@@ -37,6 +43,11 @@ object DeployTarget {
     val gcpJson = Json.format[GCPTarget]
   }
   case object NetlifyTarget extends DeployTarget("netlify")
+  case class GitHubTarget(cname: String) extends DeployTarget(GitHubTarget.name)
+  object GitHubTarget {
+    val name = "github"
+    val ghJson = Json.format[GitHubTarget]
+  }
 }
 
 case class BuildSpec(cmd: Command, manifest: Path, target: DeployTarget)
@@ -123,11 +134,11 @@ object AssetGroup {
 }
 
 case class AssetsManifest(
-  scripts: Seq[Path],
-  adhocScripts: Seq[AssetPath],
-  styles: Seq[Path],
-  statics: Seq[Path],
-  assetsBase: Path
+    scripts: Seq[Path],
+    adhocScripts: Seq[AssetPath],
+    styles: Seq[Path],
+    statics: Seq[Path],
+    assetsBase: Path
 )
 
 object AssetsManifest {
