@@ -16,6 +16,7 @@ val buildDocs = taskKey[Unit]("Builds MkDocs")
 val deployDocs = taskKey[Unit]("Deploys docs.musicpimp.org")
 val deployNetlify = taskKey[Unit]("Runs 'netlify deploy --prod'")
 val buildSite = taskKey[Unit]("Builds local files")
+val buildAndDeploy = taskKey[Unit]("Builds and deploys")
 
 val commonSettings = Seq(
   organization := "org.musicpimp",
@@ -106,7 +107,8 @@ val generator: Project = project
         sys.error(s"Invalid exit code for '$cmd': $exitCode.")
     },
     buildSite := Def.sequential(buildDocs, build).value,
-    releasePublishArtifactsAction := Def.sequential(buildDocs, build, deployNetlify).value,
+    buildAndDeploy := Def.sequential(buildDocs, build, deployNetlify).value,
+//    releasePublishArtifactsAction := Def.sequential(buildDocs, build, deployNetlify).value,
 //    releasePublishArtifactsAction := Def.sequential(publish, build, deployDocs).value,
     publishTo := Option(Resolver.defaultLocal),
     buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, "gitHash" -> gitHash),
