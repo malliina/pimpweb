@@ -15,7 +15,7 @@ val scalatagsVersion = "0.7.0"
 val buildDocs = taskKey[Unit]("Builds MkDocs")
 val deployDocs = taskKey[Unit]("Deploys docs.musicpimp.org")
 val deployNetlify = taskKey[Unit]("Runs 'netlify deploy --prod'")
-val buildAndDeploy = taskKey[Unit]("Deploys to Netlify")
+val buildSite = taskKey[Unit]("Builds local files")
 
 val commonSettings = Seq(
   organization := "org.musicpimp",
@@ -105,7 +105,7 @@ val generator: Project = project
       if (exitCode != 0)
         sys.error(s"Invalid exit code for '$cmd': $exitCode.")
     },
-    buildAndDeploy := Def.sequential(buildDocs, build, deployNetlify).value,
+    buildSite := Def.sequential(buildDocs, build).value,
     releasePublishArtifactsAction := Def.sequential(buildDocs, build, deployNetlify).value,
 //    releasePublishArtifactsAction := Def.sequential(publish, build, deployDocs).value,
     publishTo := Option(Resolver.defaultLocal),

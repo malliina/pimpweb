@@ -27,6 +27,6 @@ Seq(
   "org.portable-scala" % "sbt-scalajs-crossproject" % "0.6.0",
   "ch.epfl.scala" % "sbt-web-scalajs-bundler" % "0.14.0",
   "com.lihaoyi" % "workbench" % "0.4.1",
-  "ch.epfl.scala" % "sbt-bloop" % "1.3.2",
-  "org.scalameta" % "sbt-scalafmt" % "2.0.4"
+  "ch.epfl.scala" % "sbt-bloop" % "1.3.4",
+  "org.scalameta" % "sbt-scalafmt" % "2.2.0"
 ) map addSbtPlugin
