@@ -10,8 +10,8 @@ import scala.concurrent.ExecutionContext
 import scala.sys.process.Process
 import scala.util.Try
 
-val utilHtmlVersion = "5.2.4"
-val scalatagsVersion = "0.7.0"
+val utilHtmlVersion = "5.4.1"
+val scalatagsVersion = "0.8.5"
 val buildDocs = taskKey[Unit]("Builds MkDocs")
 
 val commonSettings = Seq(
@@ -68,14 +68,13 @@ val client: Project = project
     skip in publish := true
   )
 
-//val api = ProjectRef(file("project"), "api")
-
 val generator: Project = project
   .in(file("generator"))
   .enablePlugins(ContentPlugin, BuildInfoPlugin, NodeJsPlugin)
   .dependsOn(sharedJvm)
   .settings(commonSettings)
   .settings(
+    deployTarget := DeployTarget.GitHubTarget("www.musicpimp.org"),
     libraryDependencies ++= Seq(
       "com.malliina" %% "util-html" % utilHtmlVersion
     ),
@@ -113,3 +112,5 @@ val pimpweb = project
 
 def gitHash: String =
   Try(Process("git rev-parse --short HEAD").lineStream.head).toOption.getOrElse("unknown")
+
+Global / onChangedBuildSource := ReloadOnSourceChanges

@@ -37,7 +37,7 @@ object ContentPlugin extends AutoPlugin {
 
   override def projectSettings: Seq[Setting[_]] = Seq(
     exportJars := false,
-    deployTarget := DeployTarget.NetlifyTarget,
+    deployTarget := DeployTarget.GitHubTarget("www.musicpimp.org"),
     assetTarget := Def.settingDyn(crossTarget.in(clientProject.value, Compile, fullOptJS in clientProject.value)).value,
     distDirectory := (target.value / "dist").toPath,
     manifestFile := (target.value / "site.json").toPath,
@@ -78,7 +78,7 @@ object ContentPlugin extends AutoPlugin {
     // Hack to make the default release process work instead of fake error "Repository for publishing is not specified"
     publishTo := Option(Resolver.defaultLocal),
     libraryDependencies ++= Seq(
-      "com.lihaoyi" %% "scalatags" % "0.7.0",
+      "com.lihaoyi" %% "scalatags" % "0.8.5",
       "org.slf4j" % "slf4j-api" % "1.7.27",
       "ch.qos.logback" % "logback-classic" % "1.2.3",
       "ch.qos.logback" % "logback-core" % "1.2.3",
@@ -87,9 +87,9 @@ object ContentPlugin extends AutoPlugin {
   )
 
   def assetGroup(
-    files: Seq[Attributed[File]],
-    excludePrefixes: Seq[String] = Seq("styles", "fonts", "vendors"),
-    adhocScripts: Seq[String] = Nil
+      files: Seq[Attributed[File]],
+      excludePrefixes: Seq[String] = Seq("styles", "fonts", "vendors"),
+      adhocScripts: Seq[String] = Nil
   ): AssetGroup = {
     def filesOf(fileType: BundlerFileType) = files.filter(_.metadata.get(BundlerFileTypeAttr).contains(fileType))
 

@@ -25,11 +25,20 @@ documentation site at [docs.musicpimp.org](https://docs.musicpimp.org).
 
 Prerequisites:
 
-1. GCP service account credentials in `~/.gcp/credentials.json`.
-1. MkDocs:
+- MkDocs:
 
         pip install mkdocs
         pip install mkdocs-material
+
+### GitHub Pages
+
+    deployTarget := DeployTarget.GitHubTarget
+
+### GCP
+
+Prerequisites:
+
+1. GCP service account credentials in `~/.gcp/credentials.json`.
 
 To deploy both the main website and documentation site:
 
