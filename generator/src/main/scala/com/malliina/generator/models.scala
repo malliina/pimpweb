@@ -198,3 +198,7 @@ object AppMode {
 }
 
 case class BuiltPages(pages: Seq[PageMapping], index: StorageKey, notFound: StorageKey)
+
+case class ExitValue(value: Int) extends AnyVal {
+  override def toString = s"$value"
+}

@@ -87,7 +87,9 @@ trait Generator {
           case Build =>
             GitHubPages(cname).build(compileSite(distDir), distDir)
           case Deploy =>
-            fail("Deploy to GitHub not supported yet.")
+            val gh = GitHubPages(cname)
+            val website: BuiltSite = gh.build(compileSite(distDir), distDir)
+            gh.deploy(website)
         }
     }
   }

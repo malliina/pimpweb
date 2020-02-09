@@ -32,13 +32,19 @@ Prerequisites:
 
 ### GitHub Pages
 
+In build.sbt:
+
     deployTarget := DeployTarget.GitHubTarget
+    
+Run:
+    
+    sbt release
 
 ### GCP
 
 Prerequisites:
 
-1. GCP service account credentials in `~/.gcp/credentials.json`.
+- GCP service account credentials in `~/.gcp/credentials.json`.
 
 To deploy both the main website and documentation site:
 
