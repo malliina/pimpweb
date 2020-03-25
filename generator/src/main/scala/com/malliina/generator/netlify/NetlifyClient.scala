@@ -28,10 +28,7 @@ class NetlifyClient {
     content
   }
 
-  def deploy(site: BuiltSite) = {
-    sys.env.foreach { case (k, v) => println(s"$k=$v") }
-    IO.run("netlify deploy --prod")
-  }
+  def deploy(site: BuiltSite) = IO.run("netlify deploy --prod")
 
   private def writeHeadersFile(files: Seq[WebsiteFile], to: Path): Path = {
     val netlifyHeaders = NetlifyHeader.security +: files.map { file =>

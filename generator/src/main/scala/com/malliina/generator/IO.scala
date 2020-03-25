@@ -10,6 +10,7 @@ object IO {
   val cmdPrefix = if (isWindows) "cmd /c " else ""
 
   def run(cmd: String): ExitValue = {
+    log.info(s"Running '$cmd'...")
     val logger = ProcessLogger(out => log.info(out), err => log.error(err))
     val process = Process(s"$cmdPrefix$cmd").run(logger)
     // blocks

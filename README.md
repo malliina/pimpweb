@@ -40,6 +40,10 @@ In build.sbt:
 
     deployTarget := DeployTarget.Netlify
 
+Run:
+
+    sbt release
+
 ### GitHub Pages
 
 In build.sbt:
@@ -59,6 +63,14 @@ Prerequisites:
 To deploy both the main website and documentation site:
 
     sbt release
+
+#### Deployment notes
+
+The `sbt release` command pushes a tag which triggers a deployment via a [GitHub Action](.github/workflows/ci.yml).
+
+To deploy manually, run:
+
+    sbt deploy
 
 ## Implementation Notes
 
