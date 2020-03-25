@@ -3,12 +3,10 @@ package com.malliina.generator.netlify
 import java.nio.charset.StandardCharsets
 import java.nio.file.Path
 
-import com.malliina.generator.{BuiltSite, CompleteSite, FileIO, WebsiteFile}
-import org.slf4j.LoggerFactory
-
-import scala.sys.process.{Process, ProcessLogger}
+import com.malliina.generator.{BuiltSite, CompleteSite, FileIO, IO, WebsiteFile}
 
 case class NetlifyHeader(path: String, headers: Map[String, String]) {
+  // https://docs.netlify.com/routing/headers/#syntax-for-the-headers-file
   def asString: String = {
     val headerList = headers.map { case (k, v) => s"$k: $v" }.mkString("\n  ", "\n  ", "\n")
     s"$path$headerList"
@@ -21,11 +19,9 @@ object NetlifyHeader {
   def security = forall(Map("X-Frame-Options" -> "DENY", "X-XSS-Protection" -> "1; mode=block"))
 }
 
-object Netlify extends Netlify
+object NetlifyClient extends NetlifyClient
 
-class Netlify {
-  private val log = LoggerFactory.getLogger(getClass)
-
+class NetlifyClient {
   def build(site: CompleteSite, to: Path): BuiltSite = {
     val content = site.write(to)
     writeHeadersFile(content.files, to.resolve("_headers"))
@@ -33,8 +29,8 @@ class Netlify {
   }
 
   def deploy(site: BuiltSite) = {
-    val logger = ProcessLogger(out => log.info(out), err => log.error(err))
-    Process("netlify deploy --prod").run(logger).exitValue()
+    sys.env.foreach { case (k, v) => println(s"$k=$v") }
+    IO.run("netlify deploy --prod")
   }
 
   private def writeHeadersFile(files: Seq[WebsiteFile], to: Path): Path = {

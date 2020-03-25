@@ -30,11 +30,21 @@ Prerequisites:
         pip install mkdocs
         pip install mkdocs-material
 
+### Netlify
+
+Install the Netlify [CLI](https://docs.netlify.com/cli/get-started/):
+
+    npm install netlify-cli -g
+
+In build.sbt:
+
+    deployTarget := DeployTarget.Netlify
+
 ### GitHub Pages
 
 In build.sbt:
 
-    deployTarget := DeployTarget.GitHubTarget
+    deployTarget := DeployTarget.GitHub("cname.example.com")
     
 Run:
     

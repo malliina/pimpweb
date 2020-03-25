@@ -37,7 +37,6 @@ object ContentPlugin extends AutoPlugin {
 
   override def projectSettings: Seq[Setting[_]] = Seq(
     exportJars := false,
-    deployTarget := DeployTarget.GitHubTarget("www.musicpimp.org"),
     assetTarget := Def.settingDyn(crossTarget.in(clientProject.value, Compile, fullOptJS in clientProject.value)).value,
     distDirectory := (target.value / "dist").toPath,
     manifestFile := (target.value / "site.json").toPath,
@@ -55,12 +54,12 @@ object ContentPlugin extends AutoPlugin {
     // https://github.com/sbt/sbt/issues/2975#issuecomment-358709526
     build := Def.taskDyn {
       val spec = prepareBuildspec.value
-      run in Compile toTask s" $spec"
+      run.in(Compile).toTask(s" $spec")
     }.value,
     deploy := Def.taskDyn {
       val spec = BuildSpec(Command.Deploy, produceManifestProd.value, deployTarget.value)
       val path = FileIO.writeJson(spec, buildspec.value, streams.value.log)
-      run in Compile toTask s" $path"
+      run.in(Compile).toTask(s" $path")
     }.value,
     prepareBuildspec := {
       val spec = BuildSpec(Command.Build, produceManifestProd.value, deployTarget.value)
@@ -72,7 +71,6 @@ object ContentPlugin extends AutoPlugin {
     produceManifestProd := assetGroup(fullWebpack.value)
       .manifest(assetTarget.value)
       .to(manifestFile.value, streams.value.log),
-//    produceManifestProd := produceManifestProd.dependsOn(clean in Static).value,
     publish in Static := deploy.value,
     publish := deploy.value,
     // Hack to make the default release process work instead of fake error "Repository for publishing is not specified"

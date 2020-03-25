@@ -74,7 +74,7 @@ val generator: Project = project
   .dependsOn(sharedJvm)
   .settings(commonSettings)
   .settings(
-    deployTarget := DeployTarget.GitHubTarget("www.musicpimp.org"),
+    deployTarget := DeployTarget.Netlify,
     libraryDependencies ++= Seq(
       "com.malliina" %% "util-html" % utilHtmlVersion
     ),

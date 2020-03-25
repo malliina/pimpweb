@@ -4,9 +4,9 @@ import java.nio.file.{Files, Path, Paths}
 
 import com.malliina.generator.Command.{Build, Deploy}
 import com.malliina.generator.DeployTarget.{GCPTarget, GitHubTarget, NetlifyTarget}
-import com.malliina.generator.gcp.GCP
+import com.malliina.generator.gcp.GCPClient
 import com.malliina.generator.github.GitHubPages
-import com.malliina.generator.netlify.Netlify
+import com.malliina.generator.netlify.NetlifyClient
 import play.api.libs.json.{JsError, Json}
 
 import scala.jdk.CollectionConverters.IteratorHasAsScala
@@ -67,10 +67,10 @@ trait Generator {
       case NetlifyTarget =>
         spec.cmd match {
           case Build =>
-            Netlify.build(compileSite(distDir), distDir)
+            NetlifyClient.build(compileSite(distDir), distDir)
           case Deploy =>
-            val built = Netlify.build(compileSite(distDir), distDir)
-            Netlify.deploy(built)
+            val built = NetlifyClient.build(compileSite(distDir), distDir)
+            NetlifyClient.deploy(built)
         }
       case GCPTarget(bucket) =>
         spec.cmd match {
@@ -78,7 +78,7 @@ trait Generator {
             buildSite(distDir)
           case Deploy =>
             val website: BuiltSite = buildSite(distDir)
-            val gcp = GCP(bucket)
+            val gcp = GCPClient(bucket)
             FileIO.writeJson(website, target.resolve("receipt.json"))
             gcp.deploy(website)
         }

@@ -30,29 +30,34 @@ object DeployTarget {
   implicit val json: Format[DeployTarget] = Format[DeployTarget](
     json =>
       (json \ ServiceKey).validate[String].flatMap {
-        case NetlifyTarget.name => JsSuccess(NetlifyTarget)
-        case GCP.name           => GCP.gcpJson.reads(json)
-        case GitHubTarget.name  => GitHubTarget.ghJson.reads(json)
-        case other              => JsError(s"Unknown service: '$other'.")
+        case Netlify.name => JsSuccess(Netlify)
+        case GCP.name     => GCP.gcpJson.reads(json)
+        case GitHub.name  => GitHub.ghJson.reads(json)
+        case other        => JsError(s"Unknown service: '$other'.")
       }, {
-      case NetlifyTarget =>
-        Json.obj(ServiceKey -> NetlifyTarget.name)
-      case gcp @ GCPTarget(_) =>
+      case Netlify =>
+        Json.obj(ServiceKey -> Netlify.name)
+      case gcp @ GCP(_) =>
         Json.obj(ServiceKey -> GCP.name) ++ GCP.gcpJson.writes(gcp)
-      case gh @ GitHubTarget(_) =>
-        Json.obj(ServiceKey -> GitHubTarget.name) ++ GitHubTarget.ghJson.writes(gh)
+      case gh @ GitHub(_) =>
+        Json.obj(ServiceKey -> GitHub.name) ++ GitHub.ghJson.writes(gh)
     }
   )
-  case class GCPTarget(bucket: BucketName) extends DeployTarget(GCP.name)
+
+  case class GCP(bucket: BucketName) extends DeployTarget(GCP.name)
+
   object GCP {
     val name = "gcp"
-    val gcpJson = Json.format[GCPTarget]
+    val gcpJson = Json.format[GCP]
   }
-  case object NetlifyTarget extends DeployTarget("netlify")
-  case class GitHubTarget(cname: String) extends DeployTarget(GitHubTarget.name)
-  object GitHubTarget {
+
+  case object Netlify extends DeployTarget("netlify")
+
+  case class GitHub(cname: String) extends DeployTarget(GitHub.name)
+
+  object GitHub {
     val name = "github"
-    val ghJson = Json.format[GitHubTarget]
+    val ghJson = Json.format[GitHub]
   }
 }
 

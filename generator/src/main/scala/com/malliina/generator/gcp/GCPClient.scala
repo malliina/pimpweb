@@ -5,7 +5,7 @@ import java.util.concurrent.Executors
 
 import com.google.cloud.storage.Acl.{Role, User}
 import com.google.cloud.storage.{Acl, BlobInfo}
-import com.malliina.generator.gcp.GCP.executionContext
+import com.malliina.generator.gcp.GCPClient.executionContext
 import com.malliina.generator.{BucketName, BuiltSite, ContentTypes, FileIO, WebsiteFile}
 import org.slf4j.LoggerFactory
 
@@ -13,29 +13,28 @@ import scala.concurrent.duration.DurationInt
 import scala.concurrent.{Await, ExecutionContext, ExecutionContextExecutorService, Future}
 import scala.jdk.CollectionConverters.{IteratorHasAsScala, SeqHasAsJava}
 
-object GCP {
+object GCPClient {
   implicit val executionContext: ExecutionContextExecutorService =
     ExecutionContext.fromExecutorService(Executors.newCachedThreadPool())
 
-  def apply(bucketName: BucketName) = new GCP(bucketName, StorageClient())
+  def apply(bucketName: BucketName) = new GCPClient(bucketName, StorageClient())
 
   def close(): Unit = executionContext.shutdown()
 }
 
 /** Deploys files in `dist` to `bucketName` in Google Cloud Storage.
   */
-class GCP(val bucketName: BucketName, client: StorageClient) {
+class GCPClient(val bucketName: BucketName, client: StorageClient) {
   private val log = LoggerFactory.getLogger(getClass)
   val bucket = client.bucket(bucketName)
 
   val contentTypes = ContentTypes.contentTypes
 
-  def deployDryRun(dist: Path): Unit = {
+  def deployDryRun(dist: Path): Unit =
     Files.walk(dist).iterator().asScala.toList.filter(p => Files.isRegularFile(p)).foreach { p =>
       val relative = dist.relativize(p).toString.replace('\\', '/')
       println(relative)
     }
-  }
 
   def deploy(website: BuiltSite): Unit = {
     log.info(s"Deploying to GCP bucket '$bucketName'...")
