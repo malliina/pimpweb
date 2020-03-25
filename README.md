@@ -36,13 +36,20 @@ Install the Netlify [CLI](https://docs.netlify.com/cli/get-started/):
 
     npm install netlify-cli -g
 
-In build.sbt:
+Set in build.sbt:
 
     deployTarget := DeployTarget.Netlify
 
-Run:
+Deploy via [GitHub Actions](.github/workflows/ci.yml):
 
     sbt release
+
+To deploy manually:
+
+1. Set your site ID in environment variable NETLIFY_SITE_ID
+1. Run:
+
+        sbt deploy
 
 ### GitHub Pages
 
@@ -63,14 +70,6 @@ Prerequisites:
 To deploy both the main website and documentation site:
 
     sbt release
-
-#### Deployment notes
-
-The `sbt release` command pushes a tag which triggers a deployment via a [GitHub Action](.github/workflows/ci.yml).
-
-To deploy manually, run:
-
-    sbt deploy
 
 ## Implementation Notes
 
