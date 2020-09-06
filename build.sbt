@@ -10,8 +10,8 @@ import scala.concurrent.ExecutionContext
 import scala.sys.process.Process
 import scala.util.Try
 
-val utilHtmlVersion = "5.4.1"
-val scalatagsVersion = "0.8.5"
+val utilHtmlVersion = "5.10.0"
+val scalatagsVersion = "0.9.1"
 val buildDocs = taskKey[Unit]("Builds MkDocs")
 
 val commonSettings = Seq(
