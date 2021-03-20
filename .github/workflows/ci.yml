@@ -35,7 +35,7 @@ jobs:
           pip install mkdocs-material
       - name: Install Netlify CLI
         run: |
-          sudo npm install netlify-cli -g
+          sudo npm install netlify-cli@2.71.0 -g
       - name: Run tests
         run: sbt test
       - name: Deploy site
