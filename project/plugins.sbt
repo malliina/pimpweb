@@ -3,21 +3,17 @@ val buildRoot = (project in file("."))
     scalaVersion := "2.12.12",
     scalacOptions ++= Seq("-unchecked", "-deprecation"),
     libraryDependencies ++= Seq(
-      "com.typesafe.play" %% "play-json" % "2.9.0",
+      "com.typesafe.play" %% "play-json" % "2.9.2",
       "com.malliina" %% "primitives" % "1.17.0"
     ),
     Seq(
-      "com.malliina" %% "sbt-nodejs" % "0.15.7",
+      "com.malliina" %% "sbt-nodejs" % "1.0.0",
       "com.github.gseitz" % "sbt-release" % "1.0.11",
       "com.eed3si9n" % "sbt-buildinfo" % "0.10.0",
-      "com.typesafe.sbt" % "sbt-gzip" % "1.0.2",
-      "com.typesafe.sbt" % "sbt-digest" % "1.1.4",
-      "com.vmunier" % "sbt-web-scalajs" % "1.0.10-0.6",
-      "org.scala-js" % "sbt-scalajs" % "0.6.32",
+      "org.scala-js" % "sbt-scalajs" % "1.5.0",
       "org.portable-scala" % "sbt-scalajs-crossproject" % "0.6.0",
-      "ch.epfl.scala" % "sbt-web-scalajs-bundler-sjs06" % "0.16.0",
-      "com.lihaoyi" % "workbench" % "0.4.1",
-      "ch.epfl.scala" % "sbt-bloop" % "1.4.4",
-      "org.scalameta" % "sbt-scalafmt" % "2.3.0"
+      "ch.epfl.scala" % "sbt-scalajs-bundler" % "0.20.0",
+      "ch.epfl.scala" % "sbt-bloop" % "1.4.8",
+      "org.scalameta" % "sbt-scalafmt" % "2.4.2"
     ) map addSbtPlugin
   )

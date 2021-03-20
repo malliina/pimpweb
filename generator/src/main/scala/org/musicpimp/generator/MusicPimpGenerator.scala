@@ -1,6 +1,6 @@
 package org.musicpimp.generator
 
-import com.malliina.generator.{AppMode, AssetFinder, BuiltPages, Generator, MappedAssets, PageMapping, Route, TagPage}
+import com.malliina.generator.{AppMode, AssetFinder, BuiltPages, Generator, MappedAssets, PageMapping, Route}
 
 object MusicPimpGenerator extends Generator {
   override def pages(assets: MappedAssets, assetFinder: AssetFinder, mode: AppMode): BuiltPages = {
@@ -21,7 +21,7 @@ object MusicPimpGenerator extends Generator {
       routes.ping -> html.ping
     ).toList
     val pages: List[PageMapping] = fileMap.map {
-      case (route: Route, page: TagPage) => PageMapping(page, route.file)
+      case (route, page) => PageMapping(page, route.file)
     }
     BuiltPages(pages, routes.index.name, routes.notFound.name)
   }

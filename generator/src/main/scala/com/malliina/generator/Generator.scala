@@ -1,12 +1,12 @@
 package com.malliina.generator
 
 import java.nio.file.{Files, Path, Paths}
-
 import com.malliina.generator.Command.{Build, Deploy}
 import com.malliina.generator.DeployTarget.{GCPTarget, GitHubTarget, NetlifyTarget}
 import com.malliina.generator.gcp.GCPClient
 import com.malliina.generator.github.GitHubPages
 import com.malliina.generator.netlify.NetlifyClient
+import org.musicpimp.generator.PrivacyPolicy
 import play.api.libs.json.{JsError, Json}
 
 import scala.jdk.CollectionConverters.IteratorHasAsScala
@@ -28,16 +28,18 @@ trait Generator {
 
   def parseCommand(args: Seq[String]): BuildSpec = {
     val path = Paths.get(args.head)
-    val spec = Json.parse(Files.readAllBytes(path)).as[BuildSpec]
-    spec
+    Json.parse(Files.readAllBytes(path)).as[BuildSpec]
   }
 
   def main(args: Array[String]): Unit = generate(parseCommand(args))
 
   def render(assets: MappedAssets, assetFinder: AssetFinder, mode: AppMode): CompleteSite = {
-    val buildInfo = Seq(ByteMapping(Json.toBytes(Json.toJson(VersionInfo.default)), "build.json"))
+    val jsonFiles = Seq(
+      ByteMapping(Json.toBytes(Json.toJson(VersionInfo.default)), "build.json"),
+      ByteMapping(Json.toBytes(PrivacyPolicy.json), "legal/privacy.json")
+    )
     val ps = pages(assets, assetFinder, mode)
-    assets.site(ps.pages, buildInfo, ps.index, ps.notFound)
+    assets.site(ps.pages, jsonFiles, ps.index, ps.notFound)
   }
 
   def generate(spec: BuildSpec) = {

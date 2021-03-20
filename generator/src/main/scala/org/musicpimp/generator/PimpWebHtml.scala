@@ -2,7 +2,7 @@ package org.musicpimp.generator
 
 import com.malliina.generator.{AssetFinder, AssetPath, HTML, TagPage}
 import com.malliina.html.{Bootstrap, HtmlTags}
-import com.malliina.pimpweb.{Download, FrontKeys}
+import com.malliina.pimpweb.Download
 import org.musicpimp.generator.PimpWebHtml.{Page, PageConf, PageTitle, subHeader}
 import scalatags.Text.all._
 
@@ -11,10 +11,10 @@ object PimpWebHtml {
   val subHeader = "No ads. No social media. Pure music."
 
   def apply(
-    css: Seq[AssetPath],
-    js: Seq[AssetPath],
-    routes: Routes,
-    paths: AssetFinder
+      css: Seq[AssetPath],
+      js: Seq[AssetPath],
+      routes: Routes,
+      paths: AssetFinder
   ): PimpWebHtml =
     new PimpWebHtml(css, js, routes, paths)
 
@@ -29,11 +29,7 @@ object PimpWebHtml {
   }
 }
 
-class PimpWebHtml(
-  css: Seq[AssetPath],
-  js: Seq[AssetPath],
-  homeRoute: Routes,
-  assetFinder: AssetFinder)
+class PimpWebHtml(css: Seq[AssetPath], js: Seq[AssetPath], homeRoute: Routes, assetFinder: AssetFinder)
     extends Bootstrap(HtmlTags)
     with HTML {
 
@@ -198,10 +194,10 @@ class PimpWebHtml(
   val docWin = docuBase("win", Urls.windowsConfFile, winInstall, winUninstall)
 
   def docuBase(
-    os: String,
-    confPath: String,
-    installation: Modifier,
-    uninstallation: Modifier
+      os: String,
+      confPath: String,
+      installation: Modifier,
+      uninstallation: Modifier
   ) =
     docPlain(os)(
       fullRow(
@@ -428,7 +424,7 @@ class PimpWebHtml(
           aHref(homeRoute.docs, "documentation"),
           "."
         )
-      ),
+      )
 //      rowColumn(col.md.six)(
 //        h3("Previous versions"),
 //        ul(`class` := "pimp-list", id := FrontKeys.PimpListId)(
@@ -501,10 +497,10 @@ class PimpWebHtml(
 
   def indexNoContainer(tabName: String, pageConf: PageConf = Page(PageTitle, Nil))(inner: Modifier*) = {
     def navItem[V: AttrValue](
-      thisTabName: String,
-      tabId: String,
-      url: V,
-      iconicName: String
+        thisTabName: String,
+        tabId: String,
+        url: V,
+        iconicName: String
     ) = {
       val activeClass = if (tabId == tabName) " active" else ""
       li(`class` := s"nav-item$activeClass")(
@@ -566,18 +562,18 @@ class PimpWebHtml(
   )
 
   def badgeFromAssets(
-    link: String,
-    altText: String,
-    badgeClass: String,
-    linkClass: String = ""
+      link: String,
+      altText: String,
+      badgeClass: String,
+      linkClass: String = ""
   ) =
     badge(link, altText, badgeClass, linkClass)
 
   def badge(
-    link: String,
-    altText: String,
-    classes: String,
-    linkClass: String
+      link: String,
+      altText: String,
+      classes: String,
+      linkClass: String
   ) =
     a(href := link, `class` := s"d-none d-md-block app-badge $linkClass")(
       div(aria.labelledby := altText, `class` := s"app-badge-image $classes")

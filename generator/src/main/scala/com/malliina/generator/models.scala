@@ -66,27 +66,27 @@ case class BucketName(value: String) extends AnyVal with WrappedString
 object BucketName extends StringCompanion[BucketName]
 
 case class MappedAssets(
-    scripts: Seq[FileMapping],
-    adhocScripts: Seq[AssetPath],
-    styles: Seq[FileMapping],
-    other: Seq[FileMapping]
+  scripts: Seq[FileMapping],
+  adhocScripts: Seq[AssetPath],
+  styles: Seq[FileMapping],
+  other: Seq[FileMapping]
 ) {
   def all = scripts ++ styles ++ other
   def site(
-      pages: Seq[PageMapping],
-      other: Seq[ByteMapping],
-      index: StorageKey,
-      notFound: StorageKey
+    pages: Seq[PageMapping],
+    other: Seq[ByteMapping],
+    index: StorageKey,
+    notFound: StorageKey
   ) = CompleteSite(this, pages, other, index, notFound)
   def withOther(otherFiles: Seq[FileMapping]) = MappedAssets(scripts, adhocScripts, styles, other ++ otherFiles)
 }
 
 case class CompleteSite(
-    assets: MappedAssets,
-    pages: Seq[PageMapping],
-    bytes: Seq[ByteMapping],
-    index: StorageKey,
-    notFound: StorageKey
+  assets: MappedAssets,
+  pages: Seq[PageMapping],
+  bytes: Seq[ByteMapping],
+  index: StorageKey,
+  notFound: StorageKey
 ) {
 
   /** Writes the site to `base`.
@@ -134,11 +134,11 @@ object AssetGroup {
 }
 
 case class AssetsManifest(
-    scripts: Seq[Path],
-    adhocScripts: Seq[AssetPath],
-    styles: Seq[Path],
-    statics: Seq[Path],
-    assetsBase: Path
+  scripts: Seq[Path],
+  adhocScripts: Seq[AssetPath],
+  styles: Seq[Path],
+  statics: Seq[Path],
+  assetsBase: Path
 )
 
 object AssetsManifest {
@@ -185,6 +185,7 @@ case class Route(name: StorageKey, file: String, uri: String)
 object Route {
   def apply(name: String): Route = Route(StorageKey(name), s"$name.html", s"/$name")
   def local(name: String): Route = Route(StorageKey(name), s"$name.html", s"/$name.html")
+  def localJson(name: String): Route = Route(StorageKey(name), s"$name.json", s"/$name.json")
   def simple(name: String): Route = Route(StorageKey(name), name, s"/$name")
 
   implicit val v: AttrValue[Route] = HTML.attrValue(_.uri)

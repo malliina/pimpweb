@@ -16,24 +16,28 @@ trait Routes {
   def wp: Route
 }
 
-object ProdRoutes extends PimpRoutes(true)
+object ProdRoutes extends PimpRoutes {
+  def build(name: String) = Route(name)
+  def index = Route(StorageKey("index"), "index.html", "/")
+}
 
-object DevRoutes extends PimpRoutes(false)
+object DevRoutes extends PimpRoutes {
+  def build(name: String) = Route.local(name)
+  def index = Route.local("index")
+}
 
-class PimpRoutes(isProd: Boolean) extends Routes {
-  def build(name: String) = if (isProd) Route(name) else Route.local(name)
-
-  val about = build("about")
-  val docs = build("getting-started")
-  val docsAlarms = build("getting-started/alarms")
-  val docsDeb = build("getting-started/deb")
-  val downloads = build("downloads")
-  val forum = build("forum")
-  val index = if (isProd) Route(StorageKey("index"), "index.html", "/") else Route.local("index")
-  val legalPrivacy = build("legal/privacy")
-  val notFound = build("notfound")
-  val ping = build("ping")
-  val wp = build("getting-started/wp")
+abstract class PimpRoutes extends Routes {
+  def build(name: String): Route
+  def about = build("about")
+  def docs = build("getting-started")
+  def docsAlarms = build("getting-started/alarms")
+  def docsDeb = build("getting-started/deb")
+  def downloads = build("downloads")
+  def forum = build("forum")
+  def legalPrivacy = build("legal/privacy")
+  def notFound = build("notfound")
+  def ping = build("ping")
+  def wp = build("getting-started/wp")
 }
 
 object Images extends Images

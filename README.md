@@ -100,17 +100,6 @@ Assets are also:
 - fingerprinted at build time for aggressive caching
 - gzip-compressed at deploy time
 
-### Hot-reloading
-
-I use 
-
-    "com.lihaoyi" % "workbench" % "0.4.1"
-    
-instead of webpack-dev-server for hot reloading, because I also want to trigger the site generation
-on Scala code changes whereas by default webpack-dev-server would only build frontend assets.
-
-The workbench plugin also prints compilation output to the browser console, which is nice.
-
 ### Hot-reloading CSS
 
 CSS files are hot-reloaded. For reference, it is setup as follows:

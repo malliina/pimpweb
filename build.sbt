@@ -1,8 +1,5 @@
 import java.nio.file.Path
 
-import autowire._
-import com.lihaoyi.workbench.Api
-import com.lihaoyi.workbench.WorkbenchBasePlugin.server
 import sbt._
 import sbtcrossproject.CrossPlugin.autoImport.crossProject
 
@@ -10,13 +7,13 @@ import scala.concurrent.ExecutionContext
 import scala.sys.process.Process
 import scala.util.Try
 
-val utilHtmlVersion = "5.10.0"
-val scalatagsVersion = "0.9.1"
+val utilHtmlVersion = "6.0.0"
+val scalatagsVersion = "0.9.3"
 val buildDocs = taskKey[Unit]("Builds MkDocs")
 
 val commonSettings = Seq(
   organization := "org.musicpimp",
-  scalaVersion := "2.13.1"
+  scalaVersion := "2.13.5"
 )
 val siteTarget = settingKey[Path]("Content target")
 ThisBuild / siteTarget := (baseDirectory.value / "site").toPath
@@ -39,7 +36,7 @@ val client: Project = project
     version in webpack := "4.39.1",
     version in startWebpackDevServer := "3.7.2",
     //    webpackBundlingMode := BundlingMode.LibraryOnly(),
-    emitSourceMaps := false,
+    webpackEmitSourceMaps := false,
     npmDependencies in Compile ++= Seq(
       "@fortawesome/fontawesome-free" -> "5.10.1",
       "bootstrap" -> "4.3.1",
@@ -61,10 +58,6 @@ val client: Project = project
       "url-loader" -> "2.1.0",
       "webpack-merge" -> "4.2.1"
     ),
-    workbenchDefaultRootObject := {
-      val dist = siteTarget.value
-      Some((s"$dist/index.html", s"$dist/"))
-    },
     skip in publish := true
   )
 
@@ -76,14 +69,10 @@ val generator: Project = project
   .settings(
     deployTarget := DeployTarget.Netlify,
     libraryDependencies ++= Seq(
-      "com.malliina" %% "util-html" % utilHtmlVersion
+      "com.malliina" %% "util-html" % utilHtmlVersion,
+      "commons-codec" % "commons-codec" % "1.15"
     ),
     jsProject := client,
-    refreshBrowsers := {
-      implicit val ec: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
-      (server in client).value.Wire[Api].reload().call()
-    },
-    refreshBrowsers := refreshBrowsers.triggeredBy(build).value,
     bucket := "www.musicpimp.org",
     distDirectory := siteTarget.value,
     buildDocs := {

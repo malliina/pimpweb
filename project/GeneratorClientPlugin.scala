@@ -1,6 +1,5 @@
-import com.lihaoyi.workbench.WorkbenchBasePlugin
 import org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport.toPlatformDepsGroupID
-import org.scalajs.sbtplugin.ScalaJSPlugin.AutoImport.{fastOptJS, fullOptJS, scalaJSUseMainModuleInitializer}
+import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
 import sbt.Keys._
 import sbt._
 import scalajsbundler.sbtplugin.ScalaJSBundlerPlugin
@@ -11,13 +10,13 @@ import scalajsbundler.sbtplugin.ScalaJSBundlerPlugin.autoImport.{
 }
 
 object GeneratorClientPlugin extends AutoPlugin {
-  override def requires = WorkbenchBasePlugin && ScalaJSBundlerPlugin
+  override def requires = ScalaJSBundlerPlugin
 
   override def projectSettings: Seq[Setting[_]] = Seq(
     libraryDependencies ++= Seq(
-      "org.scala-js" %%% "scalajs-dom" % "0.9.7",
-      "com.lihaoyi" %%% "scalatags" % "0.8.5",
-      "com.typesafe.play" %%% "play-json" % "2.8.1"
+      "org.scala-js" %%% "scalajs-dom" % "1.1.0",
+      "com.lihaoyi" %%% "scalatags" % "0.9.3",
+      "com.typesafe.play" %%% "play-json" % "2.9.2"
     ),
     scalaJSUseMainModuleInitializer := true,
     webpackConfigFile in fastOptJS := Some(baseDirectory.value / "webpack.dev.config.js"),
