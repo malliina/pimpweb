@@ -7,10 +7,8 @@ Repository of the MusicPimp website at [www.musicpimp.org](https://www.musicpimp
 To develop locally, start incremental compilation:
 
     sbt ~build
-    
-Then navigate to [http://localhost:12345](http://localhost:12345).
 
-Code changes in JavaScript, HTML or CSS triggers a browser refresh automatically.
+Then open any HTML file written to `site`.
 
 ### Code structure
 

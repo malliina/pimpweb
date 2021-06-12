@@ -11,10 +11,10 @@ object PimpWebHtml {
   val subHeader = "No ads. No social media. Pure music."
 
   def apply(
-      css: Seq[AssetPath],
-      js: Seq[AssetPath],
-      routes: Routes,
-      paths: AssetFinder
+    css: Seq[AssetPath],
+    js: Seq[AssetPath],
+    routes: Routes,
+    paths: AssetFinder
   ): PimpWebHtml =
     new PimpWebHtml(css, js, routes, paths)
 
@@ -30,8 +30,8 @@ object PimpWebHtml {
 }
 
 class PimpWebHtml(css: Seq[AssetPath], js: Seq[AssetPath], homeRoute: Routes, assetFinder: AssetFinder)
-    extends Bootstrap(HtmlTags)
-    with HTML {
+  extends Bootstrap(HtmlTags)
+  with HTML {
 
   import tags._
 
@@ -95,22 +95,6 @@ class PimpWebHtml(css: Seq[AssetPath], js: Seq[AssetPath], homeRoute: Routes, as
         div4(
           badgeFromAssets(Urls.winPhoneAppUri, "Windows Phone app", "app-badge-winphone", PullLeft),
           badgeFromAssets(Urls.winStoreAppUri, "Windows Store app", "app-badge-winstore", PullLeft)
-        )
-      ),
-      hr(`class` := "hr-front"),
-      row(
-        divClass(s"${col.md.four} ${col.md.offset.two}")(
-          h2("MusicBeamer"),
-          leadNormal(
-            "Stream tracks from your music library to any PC using ",
-            strong("MusicBeamer"),
-            " at ",
-            a(href := "https://beam.musicpimp.org")("beam.musicpimp.org"),
-            "."
-          )
-        ),
-        div4(
-          div(`class` := s"$PullLeft d-none d-md-block image-upload")
         )
       ),
       hr(`class` := "hr-front"),
@@ -194,10 +178,10 @@ class PimpWebHtml(css: Seq[AssetPath], js: Seq[AssetPath], homeRoute: Routes, as
   val docWin = docuBase("win", Urls.windowsConfFile, winInstall, winUninstall)
 
   def docuBase(
-      os: String,
-      confPath: String,
-      installation: Modifier,
-      uninstallation: Modifier
+    os: String,
+    confPath: String,
+    installation: Modifier,
+    uninstallation: Modifier
   ) =
     docPlain(os)(
       fullRow(
@@ -497,10 +481,10 @@ class PimpWebHtml(css: Seq[AssetPath], js: Seq[AssetPath], homeRoute: Routes, as
 
   def indexNoContainer(tabName: String, pageConf: PageConf = Page(PageTitle, Nil))(inner: Modifier*) = {
     def navItem[V: AttrValue](
-        thisTabName: String,
-        tabId: String,
-        url: V,
-        iconicName: String
+      thisTabName: String,
+      tabId: String,
+      url: V,
+      iconicName: String
     ) = {
       val activeClass = if (tabId == tabName) " active" else ""
       li(`class` := s"nav-item$activeClass")(
@@ -562,18 +546,18 @@ class PimpWebHtml(css: Seq[AssetPath], js: Seq[AssetPath], homeRoute: Routes, as
   )
 
   def badgeFromAssets(
-      link: String,
-      altText: String,
-      badgeClass: String,
-      linkClass: String = ""
+    link: String,
+    altText: String,
+    badgeClass: String,
+    linkClass: String = ""
   ) =
     badge(link, altText, badgeClass, linkClass)
 
   def badge(
-      link: String,
-      altText: String,
-      classes: String,
-      linkClass: String
+    link: String,
+    altText: String,
+    classes: String,
+    linkClass: String
   ) =
     a(href := link, `class` := s"d-none d-md-block app-badge $linkClass")(
       div(aria.labelledby := altText, `class` := s"app-badge-image $classes")

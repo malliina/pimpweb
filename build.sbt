@@ -3,17 +3,16 @@ import java.nio.file.Path
 import sbt._
 import sbtcrossproject.CrossPlugin.autoImport.crossProject
 
-import scala.concurrent.ExecutionContext
 import scala.sys.process.Process
 import scala.util.Try
 
-val utilHtmlVersion = "6.0.0"
-val scalatagsVersion = "0.9.3"
+val utilHtmlVersion = "6.0.1"
+val scalatagsVersion = "0.9.4"
 val buildDocs = taskKey[Unit]("Builds MkDocs")
 
 val commonSettings = Seq(
   organization := "org.musicpimp",
-  scalaVersion := "2.13.5"
+  scalaVersion := "2.13.6"
 )
 val siteTarget = settingKey[Path]("Content target")
 ThisBuild / siteTarget := (baseDirectory.value / "site").toPath
@@ -33,17 +32,17 @@ val client: Project = project
     libraryDependencies ++= Seq(
       "com.malliina" %%% "util-html" % utilHtmlVersion
     ),
-    version in webpack := "4.39.1",
-    version in startWebpackDevServer := "3.7.2",
+    webpack / version := "4.39.1",
+    startWebpackDevServer / version := "3.7.2",
     //    webpackBundlingMode := BundlingMode.LibraryOnly(),
     webpackEmitSourceMaps := false,
-    npmDependencies in Compile ++= Seq(
+    Compile / npmDependencies ++= Seq(
       "@fortawesome/fontawesome-free" -> "5.10.1",
       "bootstrap" -> "4.3.1",
       "jquery" -> "3.4.1",
       "popper.js" -> "1.15.0"
     ),
-    npmDevDependencies in Compile ++= Seq(
+    Compile / npmDevDependencies ++= Seq(
       "autoprefixer" -> "9.6.1",
       "cssnano" -> "4.1.10",
       "css-loader" -> "3.2.0",
@@ -58,7 +57,7 @@ val client: Project = project
       "url-loader" -> "2.1.0",
       "webpack-merge" -> "4.2.1"
     ),
-    skip in publish := true
+    publish / skip := true
   )
 
 val generator: Project = project
@@ -93,10 +92,10 @@ val pimpweb = project
   .in(file("."))
   .aggregate(client, generator)
   .settings(
-    build := build.in(generator).value,
-    releaseProcess := releaseProcess.in(generator).value,
+    build := (generator / build).value,
+    releaseProcess := (generator / releaseProcess).value,
     publishTo := Option(Resolver.defaultLocal),
-    skip in publish := true
+    publish / skip := true
   )
 
 def gitHash: String =

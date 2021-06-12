@@ -37,29 +37,31 @@ object ContentPlugin extends AutoPlugin {
 
   override def projectSettings: Seq[Setting[_]] = Seq(
     exportJars := false,
-    assetTarget := Def.settingDyn(crossTarget.in(clientProject.value, Compile, fullOptJS in clientProject.value)).value,
+    assetTarget := Def
+      .settingDyn(clientProject.value / Compile / (clientProject.value / fullOptJS) / crossTarget)
+      .value,
     distDirectory := (target.value / "dist").toPath,
     manifestFile := (target.value / "site.json").toPath,
     buildspec := (target.value / "buildspec.json").toPath,
     // Triggers compilation on code changes in either project
-    watchSources := watchSources.value ++ Def.taskDyn(watchSources in clientProject.value).value,
+    watchSources := watchSources.value ++ Def.taskDyn(clientProject.value / watchSources).value,
     fastWebpack := Def.taskDyn {
-      webpack.in(clientProject.value, Compile, fastOptJS in clientProject.value)
+      clientProject.value / Compile / (clientProject.value / fastOptJS) / webpack
     }.value,
     fullWebpack := Def.taskDyn {
-      webpack.in(clientProject.value, Compile, fullOptJS in clientProject.value)
+      clientProject.value / Compile / (clientProject.value / fullOptJS) / webpack
     }.value,
-    publishLocal in Static := build.value,
-    clean in Static := FileIO.deleteDirectory(distDirectory.value),
+    Static / publishLocal := build.value,
+    Static / clean := FileIO.deleteDirectory(distDirectory.value),
     // https://github.com/sbt/sbt/issues/2975#issuecomment-358709526
     build := Def.taskDyn {
       val spec = prepareBuildspec.value
-      run.in(Compile).toTask(s" $spec")
+      (Compile / run).toTask(s" $spec")
     }.value,
     deploy := Def.taskDyn {
       val spec = BuildSpec(Command.Deploy, produceManifestProd.value, deployTarget.value)
       val path = FileIO.writeJson(spec, buildspec.value, streams.value.log)
-      run.in(Compile).toTask(s" $path")
+      (Compile / run).toTask(s" $path")
     }.value,
     prepareBuildspec := {
       val spec = BuildSpec(Command.Build, produceManifestProd.value, deployTarget.value)
@@ -71,23 +73,23 @@ object ContentPlugin extends AutoPlugin {
     produceManifestProd := assetGroup(fullWebpack.value)
       .manifest(assetTarget.value)
       .to(manifestFile.value, streams.value.log),
-    publish in Static := deploy.value,
+    Static / publish := deploy.value,
     publish := deploy.value,
     // Hack to make the default release process work instead of fake error "Repository for publishing is not specified"
     publishTo := Option(Resolver.defaultLocal),
     libraryDependencies ++= Seq(
-      "com.lihaoyi" %% "scalatags" % "0.9.3",
+      "com.lihaoyi" %% "scalatags" % "0.9.4",
       "org.slf4j" % "slf4j-api" % "1.7.30",
       "ch.qos.logback" % "logback-classic" % "1.2.3",
       "ch.qos.logback" % "logback-core" % "1.2.3",
-      "com.google.cloud" % "google-cloud-storage" % "1.113.14"
+      "com.google.cloud" % "google-cloud-storage" % "1.115.0"
     )
   )
 
   def assetGroup(
-      files: Seq[Attributed[File]],
-      excludePrefixes: Seq[String] = Seq("styles", "fonts", "vendors"),
-      adhocScripts: Seq[String] = Nil
+    files: Seq[Attributed[File]],
+    excludePrefixes: Seq[String] = Seq("styles", "fonts", "vendors"),
+    adhocScripts: Seq[String] = Nil
   ): AssetGroup = {
     def filesOf(fileType: BundlerFileType) = files.filter(_.metadata.get(BundlerFileTypeAttr).contains(fileType))
 

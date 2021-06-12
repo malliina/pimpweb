@@ -184,7 +184,7 @@ case class Route(name: StorageKey, file: String, uri: String)
 
 object Route {
   def apply(name: String): Route = Route(StorageKey(name), s"$name.html", s"/$name")
-  def local(name: String): Route = Route(StorageKey(name), s"$name.html", s"/$name.html")
+  def local(name: String): Route = Route(StorageKey(name), s"$name.html", s"$name.html")
   def localJson(name: String): Route = Route(StorageKey(name), s"$name.json", s"/$name.json")
   def simple(name: String): Route = Route(StorageKey(name), name, s"/$name")
 

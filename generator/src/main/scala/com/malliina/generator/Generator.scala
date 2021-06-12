@@ -46,19 +46,19 @@ trait Generator {
     val digests = Digests
     val assetFinder = new DigestFinder(digests)
     // Fingerprints images
+    val mode = if (spec.cmd == Build) AppMode.Dev else AppMode.Prod
     val imgDir = resourcesBaseDir.resolve("img")
     val imgs = Files.list(imgDir).iterator().asScala.toList.map { img =>
       val digested = digests.compute(img)
       val undigested = AssetPath(s"/img/${img.getFileName}")
       FileMapping(img, assetFinder.digestedPath(undigested, digested.hash), isFingerprinted = true)
     }
-    val mode = if (spec.cmd == Build) AppMode.Dev else AppMode.Prod
     val assetsJson = spec.manifest
 
     def compileSite(dist: Path): CompleteSite = {
       val manifest = AssetsManifest(assetsJson)
         .fold(err => fail(s"Failed to read assets file: '${JsError(err)}'."), identity)
-      val mapped = mappings(manifest, dist)
+      val mapped = mappings(manifest, dist, mode)
       // Writes files to dist
       render(mapped.withOther(imgs), assetFinder, mode)
     }
@@ -96,13 +96,14 @@ trait Generator {
     }
   }
 
-  def mappings(assets: AssetsManifest, to: Path): MappedAssets = {
+  def mappings(assets: AssetsManifest, to: Path, mode: AppMode): MappedAssets = {
+    val prefix = if (mode == AppMode.Dev) "" else "/"
     def map(files: Seq[Path], folder: String) = files.map { src =>
       val dest = to / "assets" / folder / src.getFileName
-      FileMapping(src, "/" + to.relativize(dest).toString.replace('\\', '/'), isFingerprinted = true)
+      FileMapping(src, prefix + to.relativize(dest).toString.replace('\\', '/'), isFingerprinted = true)
     }
     val staticMappings = assets.statics.map { s =>
-      FileMapping(s, "/" + assets.assetsBase.relativize(s).toString.replace('\\', '/'), isFingerprinted = true)
+      FileMapping(s, prefix + assets.assetsBase.relativize(s).toString.replace('\\', '/'), isFingerprinted = true)
     }
     MappedAssets(map(assets.scripts, "js"), assets.adhocScripts, map(assets.styles, "css"), staticMappings)
   }

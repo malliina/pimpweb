@@ -1,6 +1,6 @@
 package org.musicpimp.generator
 
-import com.malliina.generator.{AppMode, AssetFinder, BuiltPages, Generator, MappedAssets, PageMapping, Route}
+import com.malliina.generator.{AppMode, AssetFinder, BuiltPages, Generator, MappedAssets, PageMapping}
 
 object MusicPimpGenerator extends Generator {
   override def pages(assets: MappedAssets, assetFinder: AssetFinder, mode: AppMode): BuiltPages = {
