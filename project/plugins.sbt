@@ -1,5 +1,10 @@
 val utilsVersion = "2.0.10"
 
+libraryDependencies ++= Seq(
+  "com.malliina" %% "primitives" % "6.17.0",
+  "com.malliina" %% "okclient-io" % "6.17.0"
+)
+
 Seq(
   "com.malliina" % "sbt-utils-maven" % utilsVersion,
   "com.malliina" % "sbt-nodejs" % utilsVersion,
