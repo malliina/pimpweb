@@ -60,7 +60,7 @@ val generator: Project = project
       .dependsOn(buildDocs)
       .value,
     build := build.dependsOn(buildDocs).value,
-    deploy := deploy.dependsOn(buildDocs).value,
+    deploy := deploy.dependsOn(build).value,
     releasePublishArtifactsAction := {},
     publishTo := Option(Resolver.defaultLocal),
     buildInfoKeys ++= Seq[BuildInfoKey](
