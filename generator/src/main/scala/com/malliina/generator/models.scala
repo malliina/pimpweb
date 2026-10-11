@@ -124,7 +124,7 @@ case class BuiltSite(files: Seq[WebsiteFile], index: StorageKey, notFound: Stora
 
 object BuiltSite:
   val defaultIndexFile = StorageKey("index")
-  val defaultNotFoundFile = StorageKey("404")
+  val defaultNotFoundFile = StorageKey("not-found")
 
 case class VersionInfo(name: String, version: String, gitHash: String) derives Codec.AsObject
 

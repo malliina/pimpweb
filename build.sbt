@@ -56,6 +56,7 @@ val generator: Project = project
     },
     buildDocs := Def
       .uncached(Def.task(FileIO.copyDir((ThisBuild / siteTarget).value, assetsRoot.value)))
+      .dependsOn(Def.task(IO.delete((ThisBuild / siteTarget).value.toFile / "404.html")))
       .dependsOn(buildDocs)
       .value,
     build := build.dependsOn(buildDocs).value,
