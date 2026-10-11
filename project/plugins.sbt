@@ -1,7 +1,7 @@
 val utilsVersion = "2.0.8"
 
 libraryDependencies ++= Seq(
-  "com.malliina" %% "primitives" % "6.17.0"
+  "com.malliina" %% "primitives" % "6.16.0"
 )
 Seq(
   "com.malliina" % "sbt-utils-maven" % utilsVersion,
