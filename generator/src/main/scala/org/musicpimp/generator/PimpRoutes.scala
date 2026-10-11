@@ -27,8 +27,8 @@ abstract class PimpRoutes extends Routes:
   def build(name: String): Route
   def about = build("about")
   def docs = build("getting-started")
-  def docsAlarms = build("getting-started/alarms")
-  def docsDeb = build("getting-started/deb")
+  def docsAlarms = build("getting-started-alarms")
+  def docsDeb = build("getting-started-deb")
   def downloads = build("downloads")
   def forum = build("forum")
   def legalPrivacy = build("legal/privacy")
