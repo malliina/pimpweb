@@ -7,7 +7,7 @@ import sbtcrossproject.CrossPlugin.autoImport.crossProject
 import scala.sys.process.Process
 import scala.util.Try
 
-val utilHtmlVersion = "6.17.0"
+val utilBaseVersion = "6.17.0"
 val scalatagsVersion = "0.13.1"
 val buildDocs = taskKey[Unit]("Builds MkDocs")
 
@@ -31,11 +31,12 @@ val client: Project = project
   .settings(commonSettings)
   .settings(
     libraryDependencies ++= Seq(
-      "com.malliina" %% "util-html" % utilHtmlVersion
+      "com.malliina" %% "util-html" % utilBaseVersion
     ),
     publish / skip := true
   )
 
+val circeVersion = "0.14.17"
 val generator: Project = project
   .in(file("generator"))
   .enablePlugins(GeneratorPlugin, BuildInfoPlugin, NodeJsPlugin, NetlifyApiPlugin)
@@ -43,9 +44,10 @@ val generator: Project = project
   .settings(commonSettings)
   .settings(
     libraryDependencies ++= Seq(
-      "com.malliina" %% "util-html" % utilHtmlVersion,
+      "com.malliina" %% "util-html" % utilBaseVersion,
       "commons-codec" % "commons-codec" % "1.22.1",
-      "org.slf4j" % "slf4j-api" % "2.0.20"
+      "org.slf4j" % "slf4j-api" % "2.0.20",
+      "ch.qos.logback" % s"logback-classic" % "1.6.5"
     ),
     scalajsProject := client,
     buildDocs := {
@@ -77,6 +79,7 @@ val pimpweb = project
   .aggregate(client, generator)
   .settings(
     build := (generator / build).value,
+    deploy := (generator / deploy).value,
     releaseProcess := (generator / releaseProcess).value,
     publishTo := Option(Resolver.defaultLocal),
     publish / skip := true
