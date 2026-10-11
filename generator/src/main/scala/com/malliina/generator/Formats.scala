@@ -1,12 +1,11 @@
 package com.malliina.generator
 
+import io.circe.{Codec, Decoder, Encoder}
+
 import java.nio.file.{Path, Paths}
 
-import play.api.libs.json.{Format, Json, Reads, Writes}
-
-object Formats {
-  implicit val pathFormat: Format[Path] = Format[Path](
-    Reads(json => json.validate[String].map(s => Paths.get(s))),
-    Writes(p => Json.toJson(p.toAbsolutePath.toString))
+object Formats:
+  given pathFormat: Codec[Path] = Codec.from(
+    Decoder.decodeString.map(s => Paths.get(s)),
+    Encoder.encodeString.contramap(p => p.toAbsolutePath.toString)
   )
-}

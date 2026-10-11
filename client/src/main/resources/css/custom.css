@@ -6,6 +6,10 @@
   font-family: Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+a {
+  text-decoration: none;
+}
+
 h2 {
   margin-bottom: 20px;
 }
@@ -101,4 +105,48 @@ pre {
 
 .pc-phone-pc {
   background: url("../img/pc-phone-pc.png") no-repeat;
+}
+
+.old-jumbo {
+  background-color: #e9ecef;
+  margin-bottom: 2rem;
+}
+
+.nav-icon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background-repeat: no-repeat;
+  opacity: 0.7;
+  position: relative;
+  top: 2px;
+  margin-right: 2px;
+
+  &.home {
+    background: url("../img/house-solid-full.svg") no-repeat center;
+  }
+
+  &.download {
+    background: url("../img/download-solid-full.svg") no-repeat center;
+  }
+
+  &.globe {
+    background: url("../img/globe-solid-full.svg") no-repeat center;
+  }
+
+  &.file {
+    background: url("../img/file-solid-full.svg") no-repeat center;
+  }
+
+  &.message {
+    background: url("../img/message-solid-full.svg") no-repeat center;
+  }
+
+  &.pencil {
+    background: url("../img/pencil-solid-full.svg") no-repeat center;
+  }
+
+  &.up-right-from-square {
+    background: url("../img/up-right-from-square-solid-full.svg") no-repeat center;
+  }
 }

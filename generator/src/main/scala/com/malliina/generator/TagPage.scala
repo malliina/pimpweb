@@ -5,17 +5,14 @@ import java.nio.file.{Files, Path, StandardOpenOption}
 
 import scalatags.Text
 
-case class TagPage(tags: Text.TypedTag[String]) {
+case class TagPage(tags: Text.TypedTag[String]):
   override def toString = tags.toString()
 
   def toBytes = s"${TagPage.DocTypeTag}${tags.render}".getBytes(StandardCharsets.UTF_8)
 
-  def toFile(file: Path) = {
-    if (!Files.exists(file)) Files.createFile(file)
+  def toFile(file: Path) =
+    if !Files.exists(file) then Files.createFile(file)
     Files.write(file, toBytes, StandardOpenOption.TRUNCATE_EXISTING)
-  }
-}
 
-object TagPage {
+object TagPage:
   val DocTypeTag = "<!DOCTYPE html>"
-}

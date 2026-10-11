@@ -1,4 +1,7 @@
-@footer-height: 60px;
+:root {
+  --form-background: #fcfcfc;
+  --footer-height: 60px;
+}
 
 html {
   position: relative;
@@ -6,7 +9,7 @@ html {
 }
 
 body {
-  margin-bottom: @footer-height;
+  margin-bottom: var(--footer-height);
 }
 
 code {
@@ -17,7 +20,7 @@ code {
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: @footer-height;
-  line-height: @footer-height;
+  height: var(--footer-height);
+  line-height: var(--footer-height);
   background-color: #f5f5f5;
 }

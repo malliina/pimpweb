@@ -2,7 +2,7 @@ package org.musicpimp.generator
 
 import com.malliina.generator.{Route, StorageKey}
 
-trait Routes {
+trait Routes:
   def about: Route
   def docs: Route
   def docsAlarms: Route
@@ -14,19 +14,16 @@ trait Routes {
   def notFound: Route
   def ping: Route
   def wp: Route
-}
 
-object ProdRoutes extends PimpRoutes {
+object ProdRoutes extends PimpRoutes:
   def build(name: String) = Route(name)
   def index = Route(StorageKey("index"), "index.html", "/")
-}
 
-object DevRoutes extends PimpRoutes {
+object DevRoutes extends PimpRoutes:
   def build(name: String) = Route.local(name)
   def index = Route.local("index")
-}
 
-abstract class PimpRoutes extends Routes {
+abstract class PimpRoutes extends Routes:
   def build(name: String): Route
   def about = build("about")
   def docs = build("getting-started")
@@ -38,11 +35,10 @@ abstract class PimpRoutes extends Routes {
   def notFound = build("notfound")
   def ping = build("ping")
   def wp = build("getting-started/wp")
-}
 
 object Images extends Images
 
-trait Images {
+trait Images:
   val amazon_apps_kindle_us_gray_png = "/img/amazon-apps-kindle-us-gray.png"
   val badge_winphone2_png = "/img/badge_winphone2.png"
   val badge_winstore_png = "/img/badge_winstore.png"
@@ -56,4 +52,3 @@ trait Images {
   val usage_folders2_png = "/img/usage-folders2.png"
   val usage_wp8_png = "/img/usage-wp8.png"
   val upload_alt_blue_128_png = "/img/upload-alt-blue-128.png"
-}

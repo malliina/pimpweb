@@ -1,22 +1,19 @@
 package com.malliina
 
 import java.nio.file.Path
+import io.circe
+import io.circe.Codec
 
-import play.api.libs.json.Format
+package object generator:
+  implicit val pathFormat: Codec[Path] = Formats.pathFormat
 
-package object generator {
-  implicit val pathFormat: Format[Path] = Formats.pathFormat
-
-  implicit class PathOps(val path: Path) extends AnyVal {
+  implicit class PathOps(val path: Path) extends AnyVal:
     def extension = PathUtils.ext(path)
     def name = path.getFileName.toString
     def /(name: String): Path = path.resolve(name)
     def /(name: Path): Path = path.resolve(name)
-  }
 
-}
-
-object PathUtils {
+object PathUtils:
   def ext(path: Path) =
     extOf(path.getFileName.toString).getOrElse("")
 
@@ -24,10 +21,7 @@ object PathUtils {
     *
     * "king.jpg" returns "jpg"
     */
-  def extOf(name: String): Option[String] = {
+  def extOf(name: String): Option[String] =
     val idx = name.lastIndexOf('.')
-    if (idx >= 0 && name.length > idx + 1) Option(name.substring(idx + 1)).filter(_.nonEmpty)
+    if idx >= 0 && name.length > idx + 1 then Option(name.substring(idx + 1)).filter(_.nonEmpty)
     else None
-  }
-
-}

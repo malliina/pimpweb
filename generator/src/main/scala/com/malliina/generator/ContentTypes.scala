@@ -6,7 +6,7 @@ import com.malliina.PathUtils
 
 object ContentTypes extends ContentTypes
 
-trait ContentTypes {
+trait ContentTypes:
   val defaultContentType = ContentType("application/octet-stream")
 
   val contentTypes = Map(
@@ -26,4 +26,3 @@ trait ContentTypes {
   ).view.mapValues(ContentType.apply)
 
   def resolve(file: Path) = contentTypes.getOrElse(PathUtils.ext(file), defaultContentType)
-}
